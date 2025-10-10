@@ -1,7 +1,20 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Splash from './components/Splash';
+import basicDataSplash from './components/basicDataSplash';
+import Dashboard from './pages/Dashboard';
+import Settings from './pages/Settings';
+import Profile from './pages/Profile';
+import FoodRecognizer from './pages/FoodRecognizer';
+import FoodKB from './pages/FoodKB';
+import MyChats from './pages/MyChats';
+import Forum from './pages/Forum';
+import WorkoutGenerator from './pages/WorkoutGenerator';
+import MyWorkouts from './pages/MyWorkouts';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -39,12 +52,19 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
+        <Route component={Splash} path="/" exact></Route>
+        <Route component={Login} path="/login" exact></Route>
+        <Route component={Register} path="/register" exact></Route>
+        <Route component={basicDataSplash} path="/basicDataSplash" exact></Route>
+        <Route component={Dashboard} path="/Dashboard" exact></Route>
+        <Route component={Settings} path="/Settings" exact></Route>
+        <Route component={Profile} path="/Profile" exact></Route>
+        <Route component={FoodRecognizer} path="/foodRecognizer" exact></Route>
+        <Route component={FoodKB} path="/foodKB" exact></Route>
+        <Route component={Forum} path="/forum" exact></Route>
+        <Route component={MyChats} path="/myChats" exact></Route>
+        <Route component={WorkoutGenerator} path="/workoutGenerator" exact></Route>
+        <Route component={MyWorkouts} path="/myWorkouts" exact></Route>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
