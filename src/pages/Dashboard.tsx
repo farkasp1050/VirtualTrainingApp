@@ -1,12 +1,29 @@
-import { IonContent, IonHeader, IonItemDivider, IonMenuToggle, IonMenuButton, IonFooter, IonList, IonItem, IonButtons, IonPage, IonSplitPane, IonRouterOutlet, IonMenu, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonItemDivider, IonToast, IonMenuToggle, IonButton, IonMenuButton, IonFooter, IonList, IonItem, IonButtons, IonPage, IonSplitPane, IonRouterOutlet, IonMenu, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import React from 'react';
+import { useState } from 'react';
+import { supabase } from '../services/supabaseClient';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
+    const [ message, setMessage ] = useState("");
+    const [ showToast, setShowToast ] = useState(false);
+    const router = useIonRouter();
+
+    const handleLogOut = async () => {
+        setMessage("");
+        const { error } = await supabase.auth.signOut();
+
+        if(error){
+            setMessage(`Something went wrong! ${error.message}`);
+            return;
+        }
+
+        router.push("/login");
+    }
 
     return (
        <>
-        <IonMenu contentId='main-content'>
+        <IonMenu type={"push"} contentId='main-content'>
             <IonHeader>
                 <IonToolbar color="tertiary">
                     <IonTitle>
@@ -33,8 +50,14 @@ const Dashboard: React.FC = () => {
             </IonContent>
             <IonFooter>
                 <IonList>
-                    <IonItem routerLink='/login' color="danger">Logout</IonItem>
+                    <IonButton color="danger" onClick={handleLogOut}>Logout</IonButton>
                 </IonList>
+                <IonToast
+                    isOpen={showToast}
+                    message={message}
+                    duration={3000}
+                    onDidDismiss={() => setShowToast(false)}
+                />
             </IonFooter>
         </IonMenu>
         <IonPage id='main-content'>

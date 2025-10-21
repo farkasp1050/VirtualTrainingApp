@@ -52,7 +52,7 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route component={Splash} path="/" exact></Route>
+        <Route component={Login} path="/" exact></Route>
         <Route component={Login} path="/login" exact></Route>
         <Route component={Register} path="/register" exact></Route>
         <Route component={basicDataSplash} path="/basicDataSplash" exact></Route>

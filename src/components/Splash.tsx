@@ -51,54 +51,58 @@ const Splash: React.FC<splashContainer> = ({ onFinish }) => {
     }, [arrowRef, arrowRef2, arrowRef3]);
 
     return (
-        <Swiper>
-            <SwiperSlide>
-                <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                    <img src={swiperPic1} alt="swiperPic1"/>
-                    <IonText>
-                        <h4>Workout to get healthier!</h4>
-                        <h4>
-                            <IonIcon ref={arrowRef} icon={arrowBack}></IonIcon>
-                            <IonIcon ref={arrowRef2} icon={arrowBack}></IonIcon>
-                            <IonIcon ref={arrowRef3} icon={arrowBack}></IonIcon>
-                        </h4>
-                    </IonText>
-                </div>
-            </SwiperSlide>
-            <SwiperSlide>
-                <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                    <img src={swiperPic2} alt="swiperPic1" />
-                    <IonText>
-                        <h4>Share your success with others through our forum!</h4>
-                    </IonText>
-                </div>
-            </SwiperSlide>
-            <SwiperSlide>
-                <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                    <img src={swiperPic3} alt="swiperPic1" />
-                    <IonText>
-                        <h4>Get personalized workout plans!</h4>
-                    </IonText>
-                </div>
-            </SwiperSlide>
-            <SwiperSlide>
-                <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                    <img src={swiperPic4} alt="swiperPic1" />
-                    <IonText>
-                        <h4>Use our food recognizer to recognize and store any food you want!</h4>
-                    </IonText>
-                </div>
-            </SwiperSlide>
-            <SwiperSlide>
-                <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                    <img src={swiperPic5} alt="swiperPic1" />
-                    <IonText>
-                        <h4>Join us NOW!</h4>
-                    </IonText>
-                    <IonButton onClick={onFinish}>Lets Get Started</IonButton>
-                </div>
-            </SwiperSlide>
-        </Swiper>
+        <IonPage>
+            <IonContent>
+                <Swiper>
+                    <SwiperSlide>
+                        <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
+                            <img src={swiperPic1} alt="swiperPic1"/>
+                            <IonText>
+                                <h4>Workout to get healthier!</h4>
+                                <h4>
+                                    <IonIcon ref={arrowRef} icon={arrowBack}></IonIcon>
+                                    <IonIcon ref={arrowRef2} icon={arrowBack}></IonIcon>
+                                    <IonIcon ref={arrowRef3} icon={arrowBack}></IonIcon>
+                                </h4>
+                            </IonText>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
+                            <img src={swiperPic2} alt="swiperPic1" />
+                            <IonText>
+                                <h4>Share your success with others through our forum!</h4>
+                            </IonText>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
+                            <img src={swiperPic3} alt="swiperPic1" />
+                            <IonText>
+                                <h4>Get personalized workout plans!</h4>
+                            </IonText>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
+                            <img src={swiperPic4} alt="swiperPic1" />
+                            <IonText>
+                                <h4>Use our food recognizer to recognize and store any food you want!</h4>
+                            </IonText>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
+                            <img src={swiperPic5} alt="swiperPic1" />
+                            <IonText>
+                                <h4>Join us NOW!</h4>
+                            </IonText>
+                            <IonButton onClick={onFinish}>Lets Get Started</IonButton>
+                        </div>
+                    </SwiperSlide>
+                </Swiper>
+            </IonContent>
+        </IonPage>
     );
 };
 
