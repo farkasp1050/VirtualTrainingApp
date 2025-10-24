@@ -1,8 +1,9 @@
-import { IonContent, IonHeader, IonFab, IonToast, IonAlert, IonIcon, IonFabButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonButtons, IonList, IonInput, IonItem, IonBackButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonFab, IonToast, IonAlert, IonItemDivider, IonRow, IonCol, IonIcon, IonFabButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonButtons, IonList, IonInput, IonItem, IonBackButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { add } from 'ionicons/icons';
 import { supabase } from '../services/supabaseClient';
+import { send } from 'ionicons/icons';
 
 const Forum: React.FC = () => {
     const [ forumDesc, setForumDesc ] = useState("");
@@ -13,6 +14,8 @@ const Forum: React.FC = () => {
     const [ showToast, setShowToast ] = useState(false);
     const [ userId, setUserId ] = useState("");
     const [ loading, setLoading ] = useState(true);
+    const [ commentDesc, setCommentDesc ] = useState("");
+    const [ comments, setComments ] = useState<any[]>([]);
  
     const fetchUserData = async () => {
         const { data: userData, error: userError } = await supabase.auth.getUser();
@@ -53,12 +56,28 @@ const Forum: React.FC = () => {
         }
 
         setPosts(forumData);
+    }
+
+    const fetchForumComments = async () => {
+        const { data: commentData, error: commentError } = await supabase
+        .from("forumComments")
+        .select("id, created_at, forumPost_id, authorName, description")
+
+        if(commentError){
+            console.log(commentError);
+            setMessage("Something went wrong while fetching the forum comments!");
+            setShowToast(true);
+            return;
+        }
+
+        setComments(commentData);
         setLoading(false);
     }
 
     useEffect(() => {
         fetchUserData();
         fetchForumPosts();
+        fetchForumComments();
     }, []);
 
     const handleAddPost = async (data: any) => {
@@ -80,6 +99,29 @@ const Forum: React.FC = () => {
 
         setMessage("Post saved successfully!");
         fetchForumPosts();
+    }
+
+    const handleCommentSubmit = async (data: any) => {
+        const { error: commentDataInsertError } = await supabase
+        .from("forumComments")
+        .insert({
+            created_at: new Date().toISOString().slice(0, 16),
+            forumPost_id: data,
+            author_id: userId,
+            authorName: authorName,
+            description: commentDesc
+        });
+
+        if(commentDataInsertError){
+            console.log(commentDataInsertError);
+            setMessage("Something went wrong while saving your forum comment!");
+            setShowToast(true);
+            return;
+        }
+
+        setMessage("Comment saved successfully!");
+        setCommentDesc("");
+        fetchForumComments();
     }
 
     return (
@@ -147,6 +189,31 @@ const Forum: React.FC = () => {
                         </IonCardHeader>
 
                         <IonCardContent>{post.description}</IonCardContent>
+
+                        <IonRow>
+                            <IonCol>
+                            {comments.map((comment) => (
+                                comment.forumPost_id === post.id ? (
+                                    <IonCard key={comment.id} color="primary">
+                                        <IonCardHeader style={{ display: "flex", justifyContent: "space-between"}}>
+                                            <IonCardSubtitle>{comment.authorName}</IonCardSubtitle>
+                                            <IonCardSubtitle>{comment.created_at}</IonCardSubtitle>
+                                        </IonCardHeader>
+
+                                        <IonCardContent>{comment.description}</IonCardContent>
+                                    </IonCard>
+                                ) : null
+                            ))}
+                                <IonRow>
+                                    <IonCol>
+                                        <IonItem>
+                                            <IonIcon aria-hidden='true' icon={send} slot='end' onClick={() => handleCommentSubmit(post.id)}></IonIcon>
+                                            <IonInput label='Write a comment' value={commentDesc} onIonChange={e => setCommentDesc(String(e.detail.value))} type='text' labelPlacement='floating' fill='outline'  required placeholder='Text goes here!'></IonInput>
+                                        </IonItem>
+                                    </IonCol>
+                                </IonRow>
+                            </IonCol>
+                        </IonRow>
                     </IonCard>
                 ))}
             </IonContent>
