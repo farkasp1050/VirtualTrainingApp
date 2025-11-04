@@ -5,7 +5,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Splash from './components/Splash';
-import basicDataSplash from './components/basicDataSplash';
+import basicDataSplash from './components/BasicDataSplash';
 import Dashboard from './pages/Dashboard';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
@@ -15,6 +15,8 @@ import MyChats from './pages/MyChats';
 import Forum from './pages/Forum';
 import WorkoutGenerator from './pages/WorkoutGenerator';
 import MyWorkouts from './pages/MyWorkouts';
+import addFriends from './pages/AddFriends';
+import Conversation from './pages/Conversation';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -65,6 +67,8 @@ const App: React.FC = () => (
         <Route component={MyChats} path="/myChats" exact></Route>
         <Route component={WorkoutGenerator} path="/workoutGenerator" exact></Route>
         <Route component={MyWorkouts} path="/myWorkouts" exact></Route>
+        <Route component={addFriends} path="/addFriends" exact></Route>
+        <Route component={Conversation} path="/conversation/:friendshipId" exact></Route>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

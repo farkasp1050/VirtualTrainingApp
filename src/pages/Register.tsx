@@ -31,10 +31,11 @@ const Register: React.FC = () => {
                 fullName: fullName,
                 email: email
             });
-            setMessage("Registration was successful!");
-            setShowToast(true);
-            router.push("/login");
         }
+        
+        setMessage("Registration was successful!");
+        setShowToast(true);
+        router.push("/login");
     };
 
     return (

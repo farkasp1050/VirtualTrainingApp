@@ -12,7 +12,7 @@ import swiperPic4 from '../assets/swiper4.png';
 import swiperPic5 from '../assets/swiper5.png';
 
 interface splashContainer {
-    onFinish: () => void;
+    onFinish?: () => void;
 }
 
 const Splash: React.FC<splashContainer> = ({ onFinish }) => {

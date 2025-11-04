@@ -1,8 +1,10 @@
-import { IonContent, IonHeader, IonItem, IonToast, IonAlert, IonList, IonGrid, IonRow, IonCol, IonSelect, IonSelectOption, IonInput, IonAvatar, IonIcon, IonPage, IonButton, IonButtons, IonBackButton, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
+import { IonContent, IonHeader, IonItem, IonToast, IonCard, IonCardTitle, IonCardContent, IonAlert, IonList, IonGrid, IonRow, IonCol, IonSelect, IonSelectOption, IonInput, IonAvatar, IonIcon, IonPage, IonButton, IonButtons, IonBackButton, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
 import { checkmark } from "ionicons/icons";
+
+import defaultAvatar from "../assets/avatar.jpg";
 
 import './Profile.css';
 
@@ -13,6 +15,7 @@ interface ProfileData{
     Weight: Number
     Height: Number
     Gender: String
+    profilePicture: string
 }
 
 const Profile: React.FC = () => {
@@ -24,6 +27,9 @@ const Profile: React.FC = () => {
     const [ message, setMessage ] = useState("");
     const [ showToast, setShowToast ] = useState(false);
     const [ profileData, setProfileData ] = useState<ProfileData>();
+    const [ profilePictureFullPath, setProfilePictureFullPath ] = useState("");
+    const [ profilePicture, setProfilePicture ] = useState("");
+    const [ userId, setUserId ] = useState("");
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -34,9 +40,11 @@ const Profile: React.FC = () => {
                 return;
             }
 
+            setUserId(userData.user.id);
+
             const { data: profileData, error: dataFetchError } = await supabase
             .from("users")
-            .select("email, fullName, Age, Weight, Height, Gender")
+            .select("email, fullName, Age, Weight, Height, Gender, profilePicture")
             .eq("id", userData.user.id)
             .single();
 
@@ -52,11 +60,61 @@ const Profile: React.FC = () => {
                 setGender(profileData.Gender);
                 setWeight(profileData.Weight);
                 setHeight(profileData.Height);
+                setProfilePicture(profileData.profilePicture);
             }
+
+            const relativeUrl = userData.user.id + "/avatar.png";
+
+            const { data } = supabase.storage
+            .from("profile-pictures")
+            .getPublicUrl(relativeUrl)
+
+            setProfilePictureFullPath(data.publicUrl);
         }
 
         fetchUserData();
     }, []);
+
+    const handlePictureUpload = async (e: any) => {
+        const newUrl = userId + "/avatar.png";
+
+        const { data: pictureData, error: pictureError } = await supabase
+        .storage
+        .from('profile-pictures')
+        .upload(newUrl, e.target.files[0], { upsert: true })
+
+        if(pictureError){
+            console.log(pictureError);
+            setMessage("Error while updating profile picture!");
+            setShowToast(true);
+            return;
+        }
+
+        const { data: savedPicData} = await supabase
+        .storage
+        .from('profile-pictures')
+        .getPublicUrl(newUrl);
+
+        setProfilePictureFullPath(savedPicData.publicUrl + `?v=${Date.now()}`);
+
+        const { data: newPictureData, error: newPictureError } = await supabase
+        .from("users")
+        .update({
+            profilePicture: "/avatar.png"
+        })
+        .eq("id", userId);
+
+        if(newPictureError){
+            console.log(newPictureError);
+            setMessage("Error while updating profile picture!");
+            setShowToast(true);
+            return;
+        }
+
+        setMessage("Profile Picture updated successfully!");
+        setShowToast(true);
+        router.push("/dashboard");
+    }
 
     const handleProfileUpdate = async () => {
         const { data: userData, error: userError } = await supabase.auth.getUser();
@@ -124,9 +182,8 @@ const Profile: React.FC = () => {
             </IonHeader>
             <IonContent className="ion-padding ion-text-center">
                 <IonAvatar>
-                    <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Demo Avatar Picture" />
+                    <img src={profilePictureFullPath || defaultAvatar} alt="User Profile Picture" />
                 </IonAvatar>
-                
                 <IonList>
                     <IonItem className="ion-padding-top">
                         <IonInput label='Full Name' value={String(profileData?.fullName)} type='text' labelPlacement='floating' fill='outline' disabled placeholder='John Doe'></IonInput>
@@ -147,6 +204,9 @@ const Profile: React.FC = () => {
                         <IonSelectOption value="male">Male</IonSelectOption>
                         <IonSelectOption value="female">Female</IonSelectOption>
                     </IonSelect>
+                    <IonItem>
+                        <input type="file" accept='image/*' onChange={(e) => {handlePictureUpload(e)}}/>
+                    </IonItem>
                     <IonGrid>
                         <IonRow>
                            <IonCol size='12'>
@@ -173,6 +233,11 @@ const Profile: React.FC = () => {
                          </IonRow>
                     </IonGrid>
                 </IonList>
+                <IonCard>
+                    <IonCardTitle><IonAvatar></IonAvatar></IonCardTitle>
+                    <IonCardContent>Friends Name goes here.</IonCardContent>
+                </IonCard>
+
                 <IonToast
                 isOpen={showToast}
                 message={message}
