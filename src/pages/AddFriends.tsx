@@ -1,9 +1,11 @@
-import { IonContent, IonHeader, IonPage, IonList, IonText, IonAvatar, IonLabel, IonCard, IonItem, IonIcon, IonToast, IonButtons, IonBackButton, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonList, IonText, IonAvatar, IonLabel, IonCard, IonItem, IonIcon, IonToast, IonButtons, IonBackButton, IonTitle, IonToolbar } from '@ionic/react';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
 import { search, personAdd, personRemove, chatbubbleEllipses } from 'ionicons/icons';
+
+import "./AddFriends.css";
 
 import defaultAvatar from "../assets/avatar.jpg";
 
@@ -108,43 +110,44 @@ const addFriends: React.FC = () => {
     }
 
     return (
-        <IonPage>
+        <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
                     <IonBackButton defaultHref='/dashboard'/>
-                    <IonSearchbar value={searchParam} placeholder='John Doe' onIonChange={(e) => setSearchParam(String(e.detail.value))}></IonSearchbar>
-                    <IonIcon icon={search} size='large' onClick={(e) => { handleSearch(); }}></IonIcon>
+                    <input type='text' className='search-bar' value={searchParam} placeholder='John Doe' onChange={(e) => setSearchParam(String(e.target.value))}/>
+                    <IonIcon className='search-icon' icon={search} size='large' onClick={(e) => { handleSearch(); }}></IonIcon>
                     <IonTitle className='ion-text-end'>Add Friends</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding">
-                <p>Param was: {searchParam}</p>
+            <IonContent fullscreen className="ion-padding page-content">
             {searchResult && (
-                <IonList>
+                <IonList className='list'>
                     {searchResult.map((result) => (
-                        <IonItem key={result.id}>
-                            <IonAvatar>
-                                <img src={defaultAvatar} alt="User Picture" />
-                            </IonAvatar>
-                            <IonList>
-                                <IonItem>
-                                    <IonLabel>Name: </IonLabel>
-                                    <IonText>{result.fullName}</IonText>
-                                </IonItem>
-                                <IonItem>
-                                    <IonLabel>Age: </IonLabel>
-                                    <IonText>{result.Age}</IonText>
-                                </IonItem>
-                                <IonItem>
-                                    <IonLabel>User created at: </IonLabel>
-                                    <IonText>{result.created_at}</IonText>
-                                </IonItem>
-                                <IonItem>
-                                    <IonIcon icon={personAdd} slot='start' onClick={ () => { handleAddFriend(result.id) } }></IonIcon>
-                                    <IonIcon icon={personRemove} onClick={ () => { handleRemoveFriend(result.id) } }></IonIcon>
-                                    <IonIcon icon={chatbubbleEllipses} slot='end' onClick={ () => { handleCreateChat(result.id) } }></IonIcon>
-                                </IonItem>
-                            </IonList>
+                        <IonItem key={result.id} className='userCard'>
+                            <div className='cardContent'>
+                                <IonAvatar slot='start'>
+                                <img src={defaultAvatar} alt="User Picture" className='profilePicture'/>
+                                </IonAvatar>
+                                <div className='userDetails'>
+                                    <IonItem className='Name'>
+                                        <IonLabel>Name: </IonLabel>
+                                        <IonText>{result.fullName}</IonText>
+                                    </IonItem>
+                                    <IonItem className='Age'>
+                                        <IonLabel>Age: </IonLabel>
+                                        <IonText>{result.Age}</IonText>
+                                    </IonItem>
+                                    <IonItem className='Date'>
+                                        <IonLabel>User created at: </IonLabel>
+                                        <IonText>{result.created_at}</IonText>
+                                    </IonItem>
+                                    <IonItem>
+                                        <IonIcon className='addIcon' icon={personAdd} slot='start' onClick={ () => { handleAddFriend(result.id) } }></IonIcon>
+                                        <IonIcon className='removeIcon' icon={personRemove} onClick={ () => { handleRemoveFriend(result.id) } }></IonIcon>
+                                        <IonIcon className='createChatIcon' icon={chatbubbleEllipses} slot='end' onClick={ () => { handleCreateChat(result.id) } }></IonIcon>
+                                    </IonItem>
+                                </div>
+                            </div>
                         </IonItem>
                     ))}
                 </IonList>

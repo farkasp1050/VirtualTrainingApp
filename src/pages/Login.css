@@ -1,0 +1,56 @@
+.page{
+    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    color: #ff0000;
+}
+
+ion-header{
+    padding-top: 20px;
+}
+
+.page-content{
+    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --color: #ff0000;
+    align-items: center;
+}
+
+.form{
+    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    color: #ff0000;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 3px 7px black;
+    padding: 20px;
+}
+
+.form ion-item{
+    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    color: #ff0000;
+}
+
+.form ion-item::part(native){
+    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    color: #ff0000;
+}
+
+.form ion-item ion-icon{
+    color: #ff0000;
+}
+
+.form ion-input{
+    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    color: #ff0000;
+}
+
+.form ion-button{
+    padding: 6px 8px;
+}
+
+.form ion-button:hover{
+    transform: scale(1.1);
+    box-shadow: 3px 3px 7px black;
+}
+
+.introAgainButton{
+    width: 100%;
+}

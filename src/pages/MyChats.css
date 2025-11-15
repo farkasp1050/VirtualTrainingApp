@@ -1,0 +1,44 @@
+.page{
+    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    color: #ff0000;
+}
+
+ion-header{
+    padding-top: 20px;
+}
+
+.page-content{
+    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --color: #ff0000;
+    align-items: center;
+}
+
+.profilePicture{
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+}
+
+.profileSnack{
+    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --color: #ff0000;
+    border-radius: 10px;
+    box-shadow: 3px 3px 7px black;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    width: 100%;
+}
+
+.profileSnack:hover{
+    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --color: #ff0000;
+    width: 90%;
+}
+
+.Name{
+    text-align: center;
+}
+
+.Date{
+    text-align: end;
+}

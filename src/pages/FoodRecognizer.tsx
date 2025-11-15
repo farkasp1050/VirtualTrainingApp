@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { camera, add, analytics, save } from 'ionicons/icons';
 import React from 'react';
 
+import "./FoodRecognizer.css";
+
 import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 
 import * as tensorflowModel from "@tensorflow-models/mobilenet";
@@ -77,25 +79,25 @@ const FoodRecognizer: React.FC = () => {
     }
 
     return (
-        <IonPage>
+        <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
                     <IonBackButton defaultHref='/dashboard'/>
                     <IonTitle className='ion-text-end'>Food Recognizer</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent>
+            <IonContent className='page-content'>
             {loading ? (
                 <h1>Loading...</h1>
             ) : (
-                <div>
+                <div className='data'>
                     { model && newPhoto && (
-                        <img 
+                        <img className='photo'
                         src={newPhoto} 
                         alt="User Image"
                         ref={userImageRef} />
                     )}
-                    <IonFab slot='fixed' horizontal='center' vertical='bottom'>
+                    <IonFab slot='fixed' horizontal='center' vertical='bottom' className='magic-button'>
                         <IonFabButton color="primary">
                             <IonIcon icon={add}/>
                         </IonFabButton>

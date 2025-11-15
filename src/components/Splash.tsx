@@ -11,6 +11,8 @@ import swiperPic3 from '../assets/swiper3.png';
 import swiperPic4 from '../assets/swiper4.png';
 import swiperPic5 from '../assets/swiper5.png';
 
+import "./introduction.css";
+
 interface splashContainer {
     onFinish?: () => void;
 }
@@ -51,8 +53,8 @@ const Splash: React.FC<splashContainer> = ({ onFinish }) => {
     }, [arrowRef, arrowRef2, arrowRef3]);
 
     return (
-        <IonPage>
-            <IonContent>
+        <IonPage className='page'>
+            <IonContent className='page-content'>
                 <Swiper>
                     <SwiperSlide>
                         <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>

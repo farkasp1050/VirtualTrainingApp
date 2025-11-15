@@ -7,6 +7,8 @@ import { Preferences } from '@capacitor/preferences';
 
 import { supabase } from '../services/supabaseClient';
 
+import "./Login.css";
+
 const PREF_KEY = 'splashActive';
 
 const Login: React.FC = () => { 
@@ -62,8 +64,8 @@ const Login: React.FC = () => {
 	{splashActive ? (
 		<Splash onFinish={finishedSplash}/>
 	) : (
-		<IonPage>
-			<IonContent className="ion-padding" style={{ marginTop: "100px" }}>
+		<IonPage className='page'>
+			<IonContent className="ion-padding page-content" style={{ marginTop: "100px" }}>
 				<IonGrid fixed>
 					<IonRow class='ion-justify-content-center'>
 						<IonCol size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
@@ -78,7 +80,7 @@ const Login: React.FC = () => {
 							<IonText color="secondary">
 								<h2>Login</h2>
 							</IonText>
-							<form onSubmit={handleLogin}>
+							<form onSubmit={handleLogin} className='form'>
 								<IonItem>
 									<IonIcon aria-hidden='true' icon={mail} slot='start'></IonIcon>
 									<IonInput label='Email' value={email} onIonChange={e => setEmail(String(e.detail.value))} type='email' labelPlacement='floating' fill='outline'  required placeholder='somebody@something.com'></IonInput>
@@ -91,19 +93,19 @@ const Login: React.FC = () => {
 								</IonItem>
 									<IonRow>
 										<IonCol size='6'>
-											<IonButton type='submit' color={'primary'} shape='round' className='ion-margin-top' expand='block'>
+											<IonButton type='submit' size='default' color={'primary'} shape='round' className='ion-margin-top' expand='block'>
 												Login
 												<IonIcon icon={exit} style={{ marginLeft: "5px" }}></IonIcon>
 											</IonButton>
 										</IonCol>
 										<IonCol size='6'>
-											<IonButton routerLink='/register' color={'secondary'} shape='round' className='ion-margin-top' expand='block'>
+											<IonButton routerLink='/register' size='default' color={'secondary'} shape='round' className='ion-margin-top' expand='block'>
 												Register
 												<IonIcon icon={person} style={{ marginLeft: "5px" }}></IonIcon>
 												</IonButton>
 										</IonCol>
 									</IonRow>
-								<IonButton color={'secondary'} onClick={introAgain} type='button' shape='round'>Watch Intro Again</IonButton>
+								<IonButton color={'secondary'} className='introAgainButton' onClick={introAgain} type='button' shape='round'>Watch Intro Again</IonButton>
 							</form>
 							<IonToast
 								isOpen={showToast}

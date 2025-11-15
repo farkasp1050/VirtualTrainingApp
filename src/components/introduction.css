@@ -1,0 +1,37 @@
+.page{
+    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    color: #ff0000;
+}
+
+.page-content{
+    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --color: #ff0000;
+    align-items: center;
+}
+
+.swiper{
+    margin: 0;
+    padding: 0;
+}
+
+.swiperSlide{
+    margin: 0;
+    padding: 0;
+}
+
+.inputContainer{
+    --padding-start: 0px;
+    --padding-end: 0px;
+    --padding-top: 0px;
+    --padding-bottom: 0px;
+
+    --inner-padding-start: 0px;
+    --inner-padding-end: 0px;
+    --inner-padding-top: 0px;
+    --inner-padding-bottom: 0px;
+}
+
+.input{
+    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --color: #ff0000;
+}

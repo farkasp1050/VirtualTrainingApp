@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { add } from 'ionicons/icons';
 import { supabase } from '../services/supabaseClient';
 import { send } from 'ionicons/icons';
+import "./Forum.css";
 
 const Forum: React.FC = () => {
     const [ forumDesc, setForumDesc ] = useState("");
@@ -125,7 +126,7 @@ const Forum: React.FC = () => {
     }
 
     return (
-        <IonPage>
+        <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
                     <IonBackButton defaultHref='/dashboard' />
@@ -134,13 +135,13 @@ const Forum: React.FC = () => {
             </IonHeader>
             
             { loading ? (
-                <IonContent>
+                <IonContent className='page-content'>
                     <p>Loading...</p>
                 </IonContent>
             ) : (
-            <IonContent className="ion-padding">
+            <IonContent className="ion-padding page-content">
                 <IonFab vertical='top' horizontal='end' slot='fixed'>
-                <IonFabButton id='triggerPostSave' color="primary">
+                <IonFabButton id='triggerPostSave' color="primary" className='addPostButton'>
                     <IonIcon icon={add}/>
                     <IonAlert
                         trigger='triggerPostSave'
@@ -182,38 +183,29 @@ const Forum: React.FC = () => {
                 </IonFabButton>
                 </IonFab>
                 {posts.map((post) => (
-                    <IonCard key={post.id}>
-                        <IonCardHeader style={{ display: "flex", justifyContent: "space-between"}}>
-                            <IonCardSubtitle>{post.authorName}</IonCardSubtitle>
-                            <IonCardSubtitle>{post.created_at}</IonCardSubtitle>
+                    <IonCard key={post.id} className='forumPost'>
+                        <IonCardHeader className='forumHeader' style={{ display: "flex", justifyContent: "space-between"}}>
+                            <IonCardSubtitle className='forumSub'>{post.authorName}</IonCardSubtitle>
+                            <IonCardSubtitle className='forumSub'>{post.created_at}</IonCardSubtitle>
                         </IonCardHeader>
 
-                        <IonCardContent>{post.description}</IonCardContent>
-
-                        <IonRow>
-                            <IonCol>
+                        <IonCardContent className='forumContent'>{post.description}</IonCardContent>
                             {comments.map((comment) => (
                                 comment.forumPost_id === post.id ? (
-                                    <IonCard key={comment.id} color="primary">
-                                        <IonCardHeader style={{ display: "flex", justifyContent: "space-between"}}>
+                                    <IonCard className='forumComment' key={comment.id} color="primary">
+                                        <IonCardHeader className='commentHeader' style={{ display: "flex", justifyContent: "space-between"}}>
                                             <IonCardSubtitle>{comment.authorName}</IonCardSubtitle>
                                             <IonCardSubtitle>{comment.created_at}</IonCardSubtitle>
                                         </IonCardHeader>
 
-                                        <IonCardContent>{comment.description}</IonCardContent>
+                                        <IonCardContent className='commentContent'>{comment.description}</IonCardContent>
                                     </IonCard>
                                 ) : null
                             ))}
-                                <IonRow>
-                                    <IonCol>
-                                        <IonItem>
-                                            <IonIcon aria-hidden='true' icon={send} slot='end' onClick={() => handleCommentSubmit(post.id)}></IonIcon>
-                                            <IonInput label='Write a comment' value={commentDesc} onIonChange={e => setCommentDesc(String(e.detail.value))} type='text' labelPlacement='floating' fill='outline'  required placeholder='Text goes here!'></IonInput>
-                                        </IonItem>
-                                    </IonCol>
-                                </IonRow>
-                            </IonCol>
-                        </IonRow>
+                            <IonItem className='writeComment'>
+                                <IonIcon aria-hidden='true' icon={send} className='sendCommentButton' slot='end' onClick={() => handleCommentSubmit(post.id)}></IonIcon>
+                                <IonInput label='Write a comment' value={commentDesc} onIonChange={e => setCommentDesc(String(e.detail.value))} type='text' labelPlacement='floating' fill='outline'  required placeholder='Text goes here!'></IonInput>
+                            </IonItem>
                     </IonCard>
                 ))}
             </IonContent>

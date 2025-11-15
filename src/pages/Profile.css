@@ -1,3 +1,49 @@
 ion-avatar {
   --border-radius: 6px;
 }
+
+.page{
+    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+    color: #ff0000;
+}
+
+ion-header{
+    padding-top: 20px;
+}
+
+.list{
+  background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+  color: #ff0000;
+  padding: 0;
+  margin: 0;
+}
+
+.page-content ion-avatar{
+    width: 60px;
+    height: 60px;
+    border: 1px solid #ff0000;
+    overflow: hidden;
+}
+
+.list ion-item::part(native), .list ion-select, .list ion-input, .list ion-select{
+  padding: 12px;
+  margin: 0;
+  --inner-padding-start: 0px;
+  --inner-padding-end: 0px;
+  background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+  color: #ff0000;
+}
+
+.friends, .friends ion-item, .friends ion-item ion-avatar, .friends ion-item ion-label{
+  padding: 12px;
+  margin: 0;
+  --inner-padding-start: 0px;
+  --inner-padding-end: 0px;
+  background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+  color: #ff0000;
+}
+
+.friendsContent::part(native){
+  padding: 0;
+  margin: 0;
+}

@@ -1,0 +1,80 @@
+.page{
+    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    color: #ff0000;
+}
+
+ion-header{
+    padding-top: 20px;
+}
+
+.page-content{
+    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --color: #ff0000;
+    align-items: center;
+    font-family:'Times New Roman', Times, serif;
+    font-size: 1.5em;
+    text-transform: none;
+    text-decoration: none;
+    font-variant: normal;
+}
+
+.createButton,
+.deleteButton,
+.addButton,
+.updateButton,
+.cancelButton,
+.saveButton{
+    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --color: black;
+    --box-shadow: 2px 0px 4px black;
+    border-radius: 4px;
+}
+
+.dataRow{
+    padding: 2px;
+    margin: 0;
+    --inner-padding-start: 0px;
+    --inner-padding-end: 0px;
+    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+    color: #ff0000;
+}
+
+.list, .list ion-item, .list ion-input, .dataColumn{
+    padding: 12px;
+    margin: 0;
+    --inner-padding-start: 0px;
+    --inner-padding-end: 0px;
+    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+    color: #ff0000;
+    border-radius: 2%;
+    box-shadow: 2px 0px 4px black;
+}
+
+.outerContainer{
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.innerContainer{
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(700px, auto);
+}
+
+.grid{
+    width: 100%;
+    display: block;
+}
+
+.header{
+    display: flex;
+    border-bottom: 4px solid red !important;
+}
+
+.grid ion-row{
+    display: flex;
+    border-bottom: 1px solid red;
+    border-left: 1px solid red;
+    border-right: 1px solid red;
+}

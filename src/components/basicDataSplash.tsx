@@ -5,6 +5,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
 
+import "./introduction.css";
+
 const basicDataSplash: React.FC = () => {
     const [ age, setAge ] = useState<number | null>(null);
     const [ gender, setGender ] = useState("");
@@ -81,24 +83,24 @@ const basicDataSplash: React.FC = () => {
     }
 
     return (
-        <IonPage>
-            <IonContent>
+        <IonPage className='page'>
+            <IonContent className='page-content'>
                 <IonGrid fixed>
                     <IonRow class='ion-justify-content-center'>
                         <IonCol size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
-                            <Swiper>
-                                <SwiperSlide>
-                                    <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                                        <IonItem>
-                                            <IonInput className='ion-margin-top' type='number' value={age} onIonChange={(e) => setAge(Number(e.detail.value))} label='Age' labelPlacement='floating' fill='outline' required placeholder='123'></IonInput>
+                            <Swiper className='swiper'>
+                                <SwiperSlide className='swiperSlide'>
+                                    <div className='ion-text-center' style={{ marginTop: "100px" }}>
+                                        <IonItem lines='none' className='inputContainer'>
+                                            <IonInput className='input' type='number' value={age} onIonChange={(e) => setAge(Number(e.detail.value))} label='Age' labelPlacement='floating' fill='outline' required placeholder='123'></IonInput>
                                         </IonItem>
                                         <SwiperButtonNext>Next</SwiperButtonNext>
                                     </div>
                                 </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                                        <IonItem>
-                                            <IonSelect label='Gender' onIonChange={(e) => setGender(e.detail.value)} labelPlacement='floating' required>
+                                <SwiperSlide className='swiperSlide'>
+                                    <div className='ion-text-center' style={{ marginTop: "100px" }}>
+                                        <IonItem className='inputContainer'>
+                                            <IonSelect className='input' label='Gender' onIonChange={(e) => setGender(e.detail.value)} labelPlacement='floating' required>
                                                 <IonSelectOption value="male">Male</IonSelectOption>
                                                 <IonSelectOption value="female">Female</IonSelectOption>
                                             </IonSelect>
@@ -106,18 +108,18 @@ const basicDataSplash: React.FC = () => {
                                         <SwiperButtonNext>Next</SwiperButtonNext>
                                     </div>
                                 </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                                        <IonItem>
-                                            <IonInput className='ion-margin-top' label='Weight (kg)' type='number' onIonChange={(e) => setWeight(Number(e.detail.value))} labelPlacement='floating' fill='outline' required placeholder='123'></IonInput>
+                                <SwiperSlide className='swiperSlide'>
+                                    <div className='ion-text-center' style={{ marginTop: "100px" }}>
+                                        <IonItem className='inputContainer'>
+                                            <IonInput className='input' label='Weight (kg)' type='number' onIonChange={(e) => setWeight(Number(e.detail.value))} labelPlacement='floating' fill='outline' required placeholder='123'></IonInput>
                                         </IonItem>
                                         <SwiperButtonNext>Next</SwiperButtonNext>
                                     </div>
                                 </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                                        <IonItem>
-                                            <IonInput className='ion-margin-top' label='Height' type='number' onIonChange={(e) => setHeight(Number(e.detail.value))} labelPlacement='floating' fill='outline' required placeholder='123'></IonInput>
+                                <SwiperSlide className='swiperSlide'>
+                                    <div className='ion-text-center' style={{ marginTop: "100px" }}>
+                                        <IonItem className='inputContainer'>
+                                            <IonInput className='input' label='Height' type='number' onIonChange={(e) => setHeight(Number(e.detail.value))} labelPlacement='floating' fill='outline' required placeholder='123'></IonInput>
                                         </IonItem>
                                         <IonButton onClick={updateUserBasicData} routerLink='/dashboard' color={'secondary'} shape='round' className='ion-margin-top' expand='block'>Finish</IonButton>
                                     </div>

@@ -1,0 +1,132 @@
+.page{
+    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    color: #ff0000;
+}
+
+ion-header{
+    padding-top: 20px;
+}
+
+.page-content{
+    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --color: #ff0000;
+    align-items: center;
+    font-family:'Times New Roman', Times, serif;
+    font-size: 1.5em;
+    text-transform: none;
+    text-decoration: none;
+    font-variant: normal;
+}
+
+.addPostButton{
+    margin-right: 20px;
+}
+
+.addPostButton:hover{
+    transform: scale(1.1);
+}
+
+.sendCommentButton{
+    color: red;
+}
+
+.sendCommentButton:hover{
+    transform: scale(1.2);
+}
+
+.forumPost{
+    padding: 12px;
+    margin-bottom: 30px;
+    --inner-padding-start: 0px;
+    --inner-padding-end: 0px;
+    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+    color: #ff0000;
+    box-shadow: 0px 0px 10px black;
+}
+
+.forumHeader{
+    font-family:'Times New Roman', Times, serif;
+    font-size: 12px;
+    text-transform: none;
+    text-decoration: none;
+    font-variant: normal;
+    border: 2px solid rgb(143, 52, 36);
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px black;
+}
+
+.forumSub{
+    color: red;
+}
+
+.forumContent{
+    font-family:'Times New Roman', Times, serif;
+    font-size: 20px;
+    text-transform: none;
+    text-decoration: none;
+    font-variant: normal;
+    min-height: 50px;
+    border: 2px solid rgb(143, 52, 36);
+    border-top: none;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px black;
+    margin-bottom: 20px;
+    margin-top: 16px;
+}
+
+.forumComment{
+    padding: 6px;
+    margin: 35px;
+    margin-left: 100px;
+    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+    color: #ff0000;
+    box-shadow: 0px 0px 10px black;
+}
+
+.commentHeader{
+    font-family:'Times New Roman', Times, serif;
+    font-size: 12px;
+    text-transform: none;
+    text-decoration: none;
+    font-variant: normal;
+    border: 2px solid rgb(143, 52, 36);
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px black;
+}
+
+.commentContent{
+    font-family:'Times New Roman', Times, serif;
+    font-size: 20px;
+    text-transform: none;
+    text-decoration: none;
+    font-variant: normal;
+    min-height: 50px;
+    border: 2px solid rgb(143, 52, 36);
+    border-top: none;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px black;
+    margin-bottom: 20px;
+    margin-top: 16px;
+}
+
+ion-item.writeComment::part(native){
+    padding: 0;
+    margin: 0;
+    background: transparent !important;
+}
+
+.sendCommentButton{
+    padding: 0;
+    margin-left: 15px;
+}
+
+.writeComment ion-input{
+    --inner-padding-start: 0px;
+    --inner-padding-end: 0px;
+    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+    border: 2px solid rgb(143, 52, 36);
+    border-top: none;
+    border-radius: 10px;
+    color: #ff0000;
+    box-shadow: 0px 0px 10px black;
+}

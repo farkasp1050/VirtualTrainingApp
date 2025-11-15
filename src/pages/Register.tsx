@@ -4,6 +4,8 @@ import registerPicture from '../assets/RegisterPicture.png';
 import { supabase } from '../services/supabaseClient';
 import React, { useState } from 'react';
 
+import "./Register.css";
+
 const Register: React.FC = () => {
     const router = useIonRouter();
     const [ password, setPassword ] = useState("");
@@ -39,11 +41,11 @@ const Register: React.FC = () => {
     };
 
     return (
-        <IonPage>
+        <IonPage className='page'>
             <IonButtons>
                 <IonBackButton defaultHref='/login'/>
             </IonButtons>
-            <IonContent className="ion-padding" style={{ marginTop: "100px" }}>
+            <IonContent className="ion-padding page-content" style={{ marginTop: "100px" }}>
                 <IonGrid fixed>
                     <IonRow class='ion-justify-content-center'>
                         <IonCol size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
@@ -57,7 +59,7 @@ const Register: React.FC = () => {
                             <IonText color="secondary">
                                 <h2>Create an Account</h2>
                             </IonText>
-                            <form onSubmit={handleRgister}>
+                            <form onSubmit={handleRgister} className='form'>
                                 <IonItem>
                                     <IonIcon aria-hidden='true' icon={personCircle} slot='start'></IonIcon>
                                     <IonInput label='Full Name' value={fullName} onIonChange={e => setFullName(String(e.detail.value))} type='text' labelPlacement='floating' fill='outline' required placeholder='John Doe'></IonInput>
@@ -73,17 +75,11 @@ const Register: React.FC = () => {
                                     </IonInput>
                                 </IonItem>
                                     <IonRow>
-                                        <IonCol size='6'>
+                                        <IonCol size='12'>
                                             <IonButton type='submit' color={'primary'} shape='round' className='ion-margin-top' expand='block'>
                                                 Register
                                                 <IonIcon icon={person} style={{ marginLeft: "5px" }}></IonIcon>
                                             </IonButton>
-                                        </IonCol>
-                                        <IonCol size='6'>
-                                            <IonButton routerLink='/login' color={'secondary'} shape='round' className='ion-margin-top' expand='block'>
-                                                Login
-                                                <IonIcon icon={exit} style={{ marginLeft: "5px" }}></IonIcon>
-                                                </IonButton>
                                         </IonCol>
                                     </IonRow>
                             </form>

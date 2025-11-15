@@ -3,6 +3,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
 import { trash, create, add, checkmark, trashBin } from 'ionicons/icons';
+import "./FoodKB.css";
 
 const FoodKB: React.FC = () => {
     const [ foods, setFoods ] = useState<any []>([]);
@@ -128,60 +129,64 @@ const FoodKB: React.FC = () => {
             setAddProcess(false);
         }
     return (
-        <IonPage>
+        <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
                     <IonBackButton defaultHref='/dashboard' />
                     <IonTitle className='ion-text-end'>FoodKB</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding">
+            <IonContent className="ion-padding page-content">
                 { loading ? (
                     <p>Loading...</p>
                 ) : (
-                    <IonGrid>
-                    <IonRow>
-                        <IonCol>Name</IonCol>
-                        <IonCol>Vitamin</IonCol>
-                        <IonCol>Calorie</IonCol>
-                        <IonCol>Update</IonCol>
-                        <IonCol>Delete</IonCol>
-                    </IonRow>
-                    
-                    {foods.map((food) => (
-                        <IonRow key={food.id}>
-                            <IonCol>{food.foodName}</IonCol>
-                            <IonCol>{food.vitamin}</IonCol>
-                            <IonCol>{food.calorie}</IonCol>
-                            <IonCol><IonButton color="primary" onClick={() => { startUpdateFood(), setFoodId(food.id) }}><IonIcon icon={create}/></IonButton>
-                            </IonCol>
-                            <IonCol><IonButton id='triggerDeletion' color="primary"><IonIcon icon={trash}/>
-                                <IonAlert
-                                        trigger='triggerDeletion'
-                                        header='Are you sure?'
-                                        buttons={[
-                                                    {
-                                                        text: 'Cancel',
-                                                        role: 'cancel',
-                                                    },
-                                                    {
-                                                        text: 'Delete Food',
-                                                        role: 'confirm',
-                                                        handler: () => {
-                                                            deleteFood(food.id);
-                                                        },
-                                                    },
-                                                ]}
-                                    ></IonAlert>
-                            </IonButton></IonCol>
-                        </IonRow>
-                    ))}
-                </IonGrid>
+                    <div className='outerContainer'>
+                        <div className='innerContainer'>
+                            <IonGrid className='grid'>
+                                <IonRow className='header'>
+                                    <IonCol>Name</IonCol>
+                                    <IonCol>Vitamin</IonCol>
+                                    <IonCol>Calorie</IonCol>
+                                    <IonCol>Update</IonCol>
+                                    <IonCol>Delete</IonCol>
+                                </IonRow>
+                            
+                            {foods.map((food) => (
+                                <IonRow key={food.id} className='dataRow'>
+                                    <IonCol>{food.foodName}</IonCol>
+                                    <IonCol>{food.vitamin}</IonCol>
+                                    <IonCol>{food.calorie}</IonCol>
+                                    <IonCol><IonButton color="primary" className='createButton' onClick={() => { startUpdateFood(), setFoodId(food.id) }}><IonIcon icon={create}/></IonButton>
+                                    </IonCol>
+                                    <IonCol><IonButton id='triggerDeletion' className='deleteButton' color="primary"><IonIcon icon={trash}/>
+                                        <IonAlert
+                                                trigger='triggerDeletion'
+                                                header='Are you sure?'
+                                                buttons={[
+                                                            {
+                                                                text: 'Cancel',
+                                                                role: 'cancel',
+                                                            },
+                                                            {
+                                                                text: 'Delete Food',
+                                                                role: 'confirm',
+                                                                handler: () => {
+                                                                    deleteFood(food.id);
+                                                                },
+                                                            },
+                                                        ]}
+                                            ></IonAlert>
+                                    </IonButton></IonCol>
+                                </IonRow>
+                            ))}
+                        </IonGrid>
+                        </div>
+                    </div>
                 )}
-                <IonButton color="primary" onClick={addFood}><IonIcon icon={add}></IonIcon></IonButton>
+                <IonButton color="primary" className='addButton' onClick={addFood}><IonIcon icon={add}></IonIcon></IonButton>
                 {updateProcess &&(
                     <div className="ion-padding">
-                        <IonList>
+                        <IonList className='list'>
                             <IonItem className="ion-padding-top">
                                 <IonInput label='Name' value={foodName} type='text' onIonChange={(e) => setFoodName(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Apple'></IonInput>
                             </IonItem>
@@ -192,13 +197,13 @@ const FoodKB: React.FC = () => {
                                 <IonInput label='Calorie' value={calorie} type='number' onIonChange={(e) => setCalorie(Number(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
                             </IonItem>
                         </IonList>
-                        <IonCol><IonButton color="primary" onClick={() => { updateFood(foodId) }}><IonIcon icon={checkmark}/></IonButton></IonCol>
-                        <IonCol><IonButton color="primary" onClick={cancelUpdateFood}><IonIcon icon={trashBin}/></IonButton></IonCol>
+                        <IonCol><IonButton color="primary" className='updateButton' onClick={() => { updateFood(foodId) }}><IonIcon icon={checkmark}/></IonButton></IonCol>
+                        <IonCol><IonButton color="primary" className='cancelButton' onClick={cancelUpdateFood}><IonIcon icon={trashBin}/></IonButton></IonCol>
                     </div>
                 )}
                 {addProcess &&(
                     <div className="ion-padding">
-                        <IonList>
+                        <IonList className='list'>
                             <IonItem className="ion-padding-top">
                                 <IonInput label='Food Name' type='text' onIonChange={(e) => setFoodName(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Apple'></IonInput>
                             </IonItem>
@@ -209,8 +214,8 @@ const FoodKB: React.FC = () => {
                                 <IonInput label='Calorie' type='number' onIonChange={(e) => setCalorie(Number(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
                             </IonItem>
                         </IonList>
-                        <IonCol><IonButton color="primary" onClick={saveFood}><IonIcon icon={checkmark}/></IonButton></IonCol>
-                        <IonCol><IonButton color="primary" onClick={cancelSaveFood}><IonIcon icon={trashBin}/></IonButton></IonCol>
+                        <IonCol><IonButton color="primary" className='saveButton' onClick={saveFood}><IonIcon icon={checkmark}/></IonButton></IonCol>
+                        <IonCol><IonButton color="primary" className='cancelButton' onClick={cancelSaveFood}><IonIcon icon={trashBin}/></IonButton></IonCol>
                     </div>
                 )}
                 <IonToast

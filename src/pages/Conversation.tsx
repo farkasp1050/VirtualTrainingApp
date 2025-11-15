@@ -1,9 +1,12 @@
-import { IonContent, IonHeader, IonInput, IonToast, IonFooter, IonButton, IonPage, IonRouterLink, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
+import { IonContent, IonHeader, IonInput, IonIcon, IonButtons, IonBackButton, IonToast, IonFooter, IonButton, IonPage, IonRouterLink, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import { supabase } from '../services/supabaseClient';
+import { send } from 'ionicons/icons';
+
+import "./Conversation.css";
 
 interface Friendship{
     id: string,
@@ -115,24 +118,21 @@ const Conversation: React.FC = () => {
     }
 
     return (
-        <IonPage>
+        <IonPage className='page'>
             <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Current Chat</IonTitle>
-                </IonToolbar>
+                <IonButtons>
+                    <IonBackButton defaultHref='/dashboard' />
+                    <IonTitle className='ion-text-end'>Current Chat</IonTitle>
+                </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding">
-                <div className='justify-center, flex, items-center, rounded'>
-                    <div className='p-4'>
-                        <p>Signed in as {currentUserName}</p>
-                    </div>
-                    <div>
+            <IonContent className="ion-padding page-content">
+                <div className='chatContent'>
                         {messages.length === 0 ? (
-                            <div>
+                            <div className='empty'>
                                 No message history. Write something now!
                             </div>
                         ) : (
-                            <div>
+                            <div className='messages'>
                                 {messages.map((message) => {
                                     return (
                                         <div key={message.id}>
@@ -145,10 +145,11 @@ const Conversation: React.FC = () => {
                             </div>
                         )}
                     </div>
-                </div>
                 <IonFooter>
-                    <IonInput type='text' onIonChange={(e) => setNewMessage(String(e.detail.value))} placeholder='Type your message...'></IonInput>
-                    <IonButton onClick={handleMessageSend}>Send</IonButton>
+                    <div className='footer'>
+                        <IonInput type='text' onIonChange={(e) => setNewMessage(String(e.detail.value))} placeholder='Type your message...'></IonInput>
+                        <IonIcon icon={send} className='sendButton'></IonIcon>
+                    </div>
                 </IonFooter>
                 <IonToast
                     isOpen={showToast}

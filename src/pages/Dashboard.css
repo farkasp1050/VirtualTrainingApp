@@ -7,3 +7,119 @@ ion-menu::part(container) {
 
   box-shadow: 4px 0px 16px rgb(224, 117, 117);
 }
+
+.list{
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --padding-top: 0px;
+  --padding-bottom: 0px;
+
+  --inner-padding-start: 0px;
+  --inner-padding-end: 0px;
+  --inner-padding-top: 0px;
+  --inner-padding-bottom: 0px;
+}
+
+.page{
+  background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+  color: #ff0000;
+}
+
+.page-content{
+  --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+  --color: #ff0000;
+  align-items: center;
+  font-family:'Times New Roman', Times, serif;
+  font-size: 1.5em;
+  text-transform: none;
+  text-decoration: none;
+  font-variant: normal;
+}
+
+.footer{
+  --background: transparent;
+  background: transparent;
+  display: block;
+  width: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.footerToolbar{
+  --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+  --color: #ff0000;
+  padding: 0;
+  margin: 0;
+}
+
+.footerItem{
+  --background: #a13e33;
+  --background: linear-gradient(90deg,rgba(161, 62, 51, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  width: 100%;
+
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --padding-top: 0px;
+  --padding-bottom: 0px;
+
+  --inner-padding-start: 0px;
+  --inner-padding-end: 0px;
+  --inner-padding-top: 0px;
+  --inner-padding-bottom: 0px;
+}
+
+.logOutButton{
+  --background: #000000;
+  --background: linear-gradient(90deg,rgb(14, 13, 13) 0%, rgb(141, 69, 69) 100%);
+  width: 100%;
+
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --padding-top: 0px;
+  --padding-bottom: 0px;
+
+  --inner-padding-start: 0px;
+  --inner-padding-end: 0px;
+  --inner-padding-top: 0px;
+  --inner-padding-bottom: 0px;
+}
+
+.header{
+  --background: #a13e33;
+  --background: linear-gradient(90deg,rgba(161, 62, 51, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  padding: 0;
+  margin: 0;
+}
+
+.toolbar{
+  --background: #a13e33;
+  --background: linear-gradient(90deg,rgba(161, 62, 51, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  padding: 0;
+  margin: 0;
+}
+
+.divider{
+  --background: #825b56;
+  --background: linear-gradient(90deg,rgb(17, 10, 9) 0%, rgba(0, 0, 0, 1) 100%);
+}
+
+.menuItem{
+  --background: #a13e33;
+  --background: linear-gradient(90deg,rgba(161, 62, 51, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --padding-top: 0px;
+  --padding-bottom: 0px;
+
+  --inner-padding-start: 0px;
+  --inner-padding-end: 0px;
+  --inner-padding-top: 0px;
+  --inner-padding-bottom: 0px;
+}
+
+.icon-black-version{
+  color: black !important;
+  margin-right: 0.5em;
+}

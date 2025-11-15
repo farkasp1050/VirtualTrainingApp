@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonItem, IonToast, IonCard, IonCardTitle, IonCardContent, IonAlert, IonList, IonGrid, IonRow, IonCol, IonSelect, IonSelectOption, IonInput, IonAvatar, IonIcon, IonPage, IonButton, IonButtons, IonBackButton, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
+import { IonContent, IonHeader, IonItem, IonLabel, IonToast, IonCard, IonCardTitle, IonCardContent, IonAlert, IonList, IonGrid, IonRow, IonCol, IonSelect, IonSelectOption, IonInput, IonAvatar, IonIcon, IonPage, IonButton, IonButtons, IonBackButton, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
@@ -9,12 +9,12 @@ import defaultAvatar from "../assets/avatar.jpg";
 import './Profile.css';
 
 interface ProfileData{
-    email: String
-    fullName: String
-    Age: Number
-    Weight: Number
-    Height: Number
-    Gender: String
+    email: String,
+    fullName: String,
+    Age: Number,
+    Weight: Number,
+    Height: Number,
+    Gender: String,
     profilePicture: string
 }
 
@@ -169,7 +169,7 @@ const Profile: React.FC = () => {
     }
 
     return (
-        <IonPage>
+        <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
                     <IonBackButton defaultHref='/dashboard'/>
@@ -180,27 +180,27 @@ const Profile: React.FC = () => {
                 </IonButtons>
                 
             </IonHeader>
-            <IonContent className="ion-padding ion-text-center">
+            <IonContent className="ion-padding ion-text-center page-content">
                 <IonAvatar>
                     <img src={profilePictureFullPath || defaultAvatar} alt="User Profile Picture" />
                 </IonAvatar>
-                <IonList>
-                    <IonItem className="ion-padding-top">
+                <IonList className='list'>
+                    <IonItem>
                         <IonInput label='Full Name' value={String(profileData?.fullName)} type='text' labelPlacement='floating' fill='outline' disabled placeholder='John Doe'></IonInput>
                     </IonItem>
-                    <IonItem className="ion-padding-top">
+                    <IonItem>
                         <IonInput label='Email' value={String(profileData?.email)} type='email' labelPlacement='floating' fill='outline' disabled placeholder='somebody@something.com'></IonInput>
                     </IonItem>
-                    <IonItem className="ion-padding-top">
+                    <IonItem>
                         <IonInput label='Age' value={age} onIonChange={(e) => setAge(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
                     </IonItem>
-                    <IonItem className="ion-padding-top">
+                    <IonItem>
                         <IonInput label='Weight' value={weight} onIonChange={(e) => setWeight(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
                     </IonItem>
-                    <IonItem className="ion-padding-top">
+                    <IonItem>
                         <IonInput label='Height' value={height} onIonChange={(e) => setHeight(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
                     </IonItem>
-                    <IonSelect className="ion-padding-top" label='Gender' value={gender} onIonChange={(e) => setGender(String(e.detail.value))} labelPlacement='floating'>
+                    <IonSelect label='Gender' value={gender} onIonChange={(e) => setGender(String(e.detail.value))} labelPlacement='floating'>
                         <IonSelectOption value="male">Male</IonSelectOption>
                         <IonSelectOption value="female">Female</IonSelectOption>
                     </IonSelect>
@@ -234,8 +234,12 @@ const Profile: React.FC = () => {
                     </IonGrid>
                 </IonList>
                 <IonCard>
-                    <IonCardTitle><IonAvatar></IonAvatar></IonCardTitle>
-                    <IonCardContent>Friends Name goes here.</IonCardContent>
+                    <IonCardContent className='friends'>
+                        <IonItem className='friendsContent'>
+                            <IonAvatar slot='middle'></IonAvatar>
+                            <IonLabel>Friends Name Placeholder</IonLabel>
+                        </IonItem>
+                    </IonCardContent>
                 </IonCard>
 
                 <IonToast

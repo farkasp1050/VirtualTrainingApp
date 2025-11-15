@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
 
+import "./MyChats.css";
+
+import defaultAvatar from "../assets/avatar.jpg";
+
 interface userData{
     id: string,
     fullName: string,
@@ -124,14 +128,14 @@ const MyChats: React.FC = () => {
     }, [currentUserId]);
 
     return (
-        <IonPage>
+        <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
                     <IonBackButton defaultHref='/dashboard' />
                     <IonTitle className='ion-text-end'>My Chats</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding">
+            <IonContent className="ion-padding page-content">
             {friendshipData.length === 0 ? (
                     <p>You have no active conversations yet!</p>
                 ) : (
@@ -146,7 +150,8 @@ const MyChats: React.FC = () => {
                         }
 
                         const friend = friendsUserData.find((f) => String(f.id) === String(friendId));
-
+                        console.log(friend);
+                        
                         if(!friend) {
                             console.log("No available friends.");
                             return null;
@@ -154,11 +159,12 @@ const MyChats: React.FC = () => {
 
                         return (
                             <div key={friendship.id}>
-                                <IonItem routerLink={`/conversation/${friendship.id}`}>
-                                    <IonAvatar></IonAvatar>
-                                    <IonLabel>{friendsUserData.find((f) => String(f.id) === String(friendId))?.fullName}</IonLabel>
-                                    <IonLabel>{friendsUserData.find((f) => String(f.id) === String(friendId))?.profilePicture}</IonLabel>
-                                    <IonLabel>{chatsData.find((f) => String(f.id) === String(friendId))?.created_at}</IonLabel>
+                                <IonItem routerLink={`/conversation/${friendship.id}`} className='profileSnack'>
+                                    <IonAvatar>
+                                        <img src={defaultAvatar} alt="User Picture" className='profilePicture'/>
+                                    </IonAvatar>
+                                    <IonLabel className='Name'>{friendsUserData.find((f) => String(f.id) === String(friendId))?.fullName}</IonLabel>
+                                    <IonLabel className='Date'>{friendship.created_at}</IonLabel>
                                 </IonItem>
                             </div>
                         )
