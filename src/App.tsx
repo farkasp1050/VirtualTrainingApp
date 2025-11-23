@@ -17,6 +17,7 @@ import WorkoutGenerator from './pages/WorkoutGenerator';
 import MyWorkouts from './pages/MyWorkouts';
 import addFriends from './pages/AddFriends';
 import Conversation from './pages/Conversation';
+import MealPlanner from './pages/MealPlanner';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -69,6 +70,7 @@ const App: React.FC = () => (
         <Route component={MyWorkouts} path="/myWorkouts" exact></Route>
         <Route component={addFriends} path="/addFriends" exact></Route>
         <Route component={Conversation} path="/conversation/:friendshipId" exact></Route>
+        <Route component={MealPlanner} path="/mealPlanner" exact></Route>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

@@ -2,6 +2,7 @@ import { IonContent, IonButtons, IonBackButton, IonFabList, IonIcon, IonToast, I
 import { useEffect, useRef, useState } from 'react';
 import { camera, add, analytics, save } from 'ionicons/icons';
 import React from 'react';
+import { supabase } from '../services/supabaseClient';
 
 import "./FoodRecognizer.css";
 
@@ -11,9 +12,16 @@ import * as tensorflowModel from "@tensorflow-models/mobilenet";
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-backend-webgl';
 
+import { fetchFoodData } from "../api";
+
 interface Classified{
     className: string;
     probability: number;
+}
+
+interface Nutrient{
+    nutrientName: string;
+    value: number;
 }
 
 const FoodRecognizer: React.FC = () => {
@@ -23,7 +31,25 @@ const FoodRecognizer: React.FC = () => {
     const [ showToast, setShowToast ] = useState(false);
     const [ message, setMessage ] = useState('');
     const userImageRef = useRef<HTMLImageElement | null>(null);
-    const [ classifyResult, setClassifyResult ] = useState<Classified[]>([]);
+    const [ classifyResult, setClassifyResult ] = useState<Classified>();
+    const [ foodData, setFoodData ] = useState([]);
+    const [ foodNutrients, setFoodNutrients ] = useState<Nutrient[]>([]);
+    const [ protein, setProtein ] = useState<number>();
+    const [ fat, setFat ] = useState<number>();
+    const [ carbonhydrate, setCarbonhydrate ] = useState<number>();
+    const [ kcal, setKcal ] = useState<number>();
+    const [ userId, setUserId ] = useState("");
+
+    const fetchUserData = async () => {
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+            if (userError){
+                console.log(userError);
+                setMessage("User not logged in!");
+                setShowToast(true);
+                return;
+            }
+        setUserId(userData.user.id);
+    }
 
     const loadModel = async () => {
         setLoading(true);
@@ -42,6 +68,7 @@ const FoodRecognizer: React.FC = () => {
 
     useEffect(() => {
         loadModel();
+        fetchUserData();
     }, []);
 
     const takePhoto = async () => {
@@ -64,18 +91,60 @@ const FoodRecognizer: React.FC = () => {
 
     const analyzePhoto = async () => {
         if(model && userImageRef.current){
-            const analyzeResult = await model?.classify(userImageRef.current);
-            setClassifyResult(analyzeResult);
-            console.log(analyzeResult);
+            const analyzeResult = await model.classify(userImageRef.current);
+            setClassifyResult(analyzeResult[0]);
         }
 
         if(classifyResult){
-            //todo.
+            fetchFoodData(classifyResult.className.toUpperCase())
+                .then(data => {
+                    setFoodData(data.data.foods);
+                    setFoodNutrients(data.data.foods.foodNutrients.map((n: any) => ({
+                        name: n.nutrientName,
+                        value: n.value
+                    })));
+
+                    console.log(data.data);
+                    console.log(data.data.foods.foodNutrients);
+                })
+                .catch(error => {
+                    console.error(error);
+                    setMessage("There was an error getting the food data.");
+                    setShowToast(true);
+                })
+        }
+
+        if(foodNutrients != null){
+            setKcal(foodNutrients.find(n => n.nutrientName === 'Energy')?.value);
+            setCarbonhydrate(foodNutrients.find(n => n.nutrientName === 'Carbohydrate, by difference')?.value);
+            setProtein(foodNutrients.find(n => n.nutrientName === 'Protein')?.value);
+            setFat(foodNutrients.find(n => n.nutrientName === 'Total lipid (fat)')?.value);
+
+            console.log(kcal);
+            console.log(carbonhydrate);
+            console.log(protein);
+            console.log(fat);
         }
     }
 
     const savePhotoData = async () => {
-
+        const { error: saveDataError } = await supabase
+        .from("foods")
+        .insert({
+            user_id: userId,
+            quantity: 1,
+            foodName: foodData,
+            calorie: kcal,
+            carbonhydrate: carbonhydrate,
+            fat: fat,
+            protein: protein
+        });
+        
+        if(saveDataError){
+            setMessage("There was an error getting the food data.");
+            setShowToast(true);
+            return;
+        }
     }
 
     return (
@@ -117,14 +186,24 @@ const FoodRecognizer: React.FC = () => {
                             </IonFabButton>
                         </IonFabList>
                     </IonFab>
-                    <IonToast
-                        isOpen={showToast}
-                        message={message}
-                        duration={3000}
-                        onDidDismiss={() => setShowToast(false)}
-                    />
+                    {(foodData) && (
+                        <div className='foodResult'>
+                            <p>{classifyResult?.className}</p>
+                            <p>Kcal: {kcal}</p>
+                            <p>Carbs: {carbonhydrate}</p>
+                            <p>Fat: {fat}</p>
+                            <p>Protein: {protein}</p>
+                        </div>
+                    )}
                 </div>
             )}
+
+            <IonToast
+                isOpen={showToast}
+                message={message}
+                duration={3000}
+                onDidDismiss={() => setShowToast(false)}
+            />
             </IonContent>
         </IonPage>
     );

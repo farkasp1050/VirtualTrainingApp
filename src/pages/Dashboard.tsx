@@ -2,7 +2,7 @@ import { IonContent, IonHeader, IonItemDivider, IonIcon, IonToast, IonMenuToggle
 import React from 'react';
 import { useState } from 'react';
 import { supabase } from '../services/supabaseClient';
-import { settingsSharp, walkSharp, personSharp, barbellSharp, scanSharp, chatbubblesSharp, informationCircleSharp, personAddSharp, chatboxEllipsesSharp } from 'ionicons/icons';
+import { settingsSharp, walkSharp, personSharp, barbellSharp, scanSharp, chatbubblesSharp, informationCircleSharp, personAddSharp, chatboxEllipsesSharp, fastFoodSharp } from 'ionicons/icons';
 
 import './Dashboard.css';
 
@@ -41,6 +41,7 @@ const Dashboard: React.FC = () => {
                         <IonItemDivider className='divider'></IonItemDivider>
                         <IonItem className='menuItem' routerLink='/foodRecognizer'><IonIcon icon={scanSharp} className='icon-black-version'></IonIcon>Food Recognizer</IonItem>
                         <IonItem className='menuItem' routerLink='/foodKB'><IonIcon icon={informationCircleSharp} className='icon-black-version'></IonIcon>FoodKB</IonItem>
+                        <IonItem className='menuItem' routerLink='/mealPlanner'><IonIcon icon={fastFoodSharp} className='icon-black-version'></IonIcon>Meal Planner</IonItem>
                         <IonItemDivider className='divider'></IonItemDivider>
                         <IonItem className='menuItem' routerLink='/forum'><IonIcon icon={chatboxEllipsesSharp} className='icon-black-version'></IonIcon>Forum</IonItem>
                         <IonItem className='menuItem' routerLink='/addFriends'><IonIcon icon={personAddSharp} className='icon-black-version'></IonIcon>Add Friends</IonItem>

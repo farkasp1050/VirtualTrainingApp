@@ -13,8 +13,11 @@ const FoodKB: React.FC = () => {
     const [ addProcess, setAddProcess ] = useState(false);
     const [ updateProcess, setUpdateProcess ] = useState(false);
     const [ foodName, setFoodName ] = useState("");
-    const [ vitamin, setVitamin ] = useState("");
+    const [ fat, setFat ] = useState(0);
     const [ calorie, setCalorie ] = useState(0);
+    const [ carbohydrate, setCarbohydrate ] = useState(0);
+    const [ quantity, setQuantity ] = useState(1);
+    const [ protein, setProtein ] = useState(0);
     const [ userId, setUserId ] = useState("");
     const [ foodId, setFoodId ] = useState("");
 
@@ -30,7 +33,7 @@ const FoodKB: React.FC = () => {
 
             const { data: foodData, error: foodError } = await supabase
             .from("foods")
-            .select("id, foodName, vitamin, calorie")
+            .select("id, quantity, foodName, fat, calorie, carbohydrate, protein")
             .eq('user_id', userData.user.id);
 
             if(!foodData || foodError){
@@ -58,9 +61,12 @@ const FoodKB: React.FC = () => {
         const { error: updateError } = await supabase
         .from("foods")
         .update({
+            quantity: quantity,
             foodName: foodName,
-            vitamin: vitamin,
-            calorie: calorie
+            fat: fat,
+            calorie: calorie,
+            carbohydrate: carbohydrate,
+            protein: protein
         })
         .eq("id", id);
             
@@ -102,9 +108,12 @@ const FoodKB: React.FC = () => {
             .from("foods")
             .insert({
                 user_id: userId,
+                quantity: quantity,
                 foodName: foodName,
-                vitamin: vitamin,
-                calorie: calorie
+                fat: fat,
+                calorie: calorie,
+                carbohydrate: carbohydrate,
+                protein: protein
             });
 
             if(saveError){
@@ -124,7 +133,10 @@ const FoodKB: React.FC = () => {
 
         const cancelSaveFood = async () => {
             setFoodName("");
-            setVitamin("");
+            setQuantity(1);
+            setFat(0);
+            setCarbohydrate(0);
+            setProtein(0);
             setCalorie(0);
             setAddProcess(false);
         }
@@ -145,8 +157,11 @@ const FoodKB: React.FC = () => {
                             <IonGrid className='grid'>
                                 <IonRow className='header'>
                                     <IonCol>Name</IonCol>
-                                    <IonCol>Vitamin</IonCol>
+                                    <IonCol>Quantity</IonCol>
+                                    <IonCol>Fat</IonCol>
                                     <IonCol>Calorie</IonCol>
+                                    <IonCol>Carbohydrate</IonCol>
+                                    <IonCol>Protein</IonCol>
                                     <IonCol>Update</IonCol>
                                     <IonCol>Delete</IonCol>
                                 </IonRow>
@@ -154,8 +169,11 @@ const FoodKB: React.FC = () => {
                             {foods.map((food) => (
                                 <IonRow key={food.id} className='dataRow'>
                                     <IonCol>{food.foodName}</IonCol>
-                                    <IonCol>{food.vitamin}</IonCol>
+                                    <IonCol>{food.quantity}</IonCol>
+                                    <IonCol>{food.fat}</IonCol>
                                     <IonCol>{food.calorie}</IonCol>
+                                    <IonCol>{food.carbohydrate}</IonCol>
+                                    <IonCol>{food.protein}</IonCol>
                                     <IonCol><IonButton color="primary" className='createButton' onClick={() => { startUpdateFood(), setFoodId(food.id) }}><IonIcon icon={create}/></IonButton>
                                     </IonCol>
                                     <IonCol><IonButton id='triggerDeletion' className='deleteButton' color="primary"><IonIcon icon={trash}/>
@@ -191,10 +209,19 @@ const FoodKB: React.FC = () => {
                                 <IonInput label='Name' value={foodName} type='text' onIonChange={(e) => setFoodName(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Apple'></IonInput>
                             </IonItem>
                             <IonItem className="ion-padding-top">
-                                <IonInput label='Vitamin' value={vitamin} type='text' onIonChange={(e) => setVitamin(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Vitamin C'></IonInput>
+                                <IonInput label='Quantity' value={quantity} type='number' min={1} max={100} onIonChange={(e) => setFoodName(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Apple'></IonInput>
+                            </IonItem>
+                            <IonItem className="ion-padding-top">
+                                <IonInput label='Fat' value={fat} type='number' onIonChange={(e) => setFat(Number(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
                             </IonItem>
                             <IonItem className="ion-padding-top">
                                 <IonInput label='Calorie' value={calorie} type='number' onIonChange={(e) => setCalorie(Number(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
+                            </IonItem>
+                            <IonItem className="ion-padding-top">
+                                <IonInput label='Carbohydrate' value={carbohydrate} type='number' onIonChange={(e) => setCarbohydrate(Number(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
+                            </IonItem>
+                            <IonItem className="ion-padding-top">
+                                <IonInput label='Protein' value={protein} type='number' onIonChange={(e) => setProtein(Number(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
                             </IonItem>
                         </IonList>
                         <IonCol><IonButton color="primary" className='updateButton' onClick={() => { updateFood(foodId) }}><IonIcon icon={checkmark}/></IonButton></IonCol>
@@ -208,10 +235,19 @@ const FoodKB: React.FC = () => {
                                 <IonInput label='Food Name' type='text' onIonChange={(e) => setFoodName(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Apple'></IonInput>
                             </IonItem>
                             <IonItem className="ion-padding-top">
-                                <IonInput label='Vitamin' type='text' onIonChange={(e) => setVitamin(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Vitamin C'></IonInput>
+                                <IonInput label='Quantity' value={quantity} type='number' min={1} max={100} onIonChange={(e) => setFoodName(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Apple'></IonInput>
+                            </IonItem>
+                            <IonItem className="ion-padding-top">
+                                <IonInput label='Fat' type='number' onIonChange={(e) => setFat(Number(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
                             </IonItem>
                             <IonItem className="ion-padding-top">
                                 <IonInput label='Calorie' type='number' onIonChange={(e) => setCalorie(Number(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
+                            </IonItem>
+                            <IonItem className="ion-padding-top">
+                                <IonInput label='Carbohydrate' type='number' onIonChange={(e) => setCarbohydrate(Number(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
+                            </IonItem>
+                            <IonItem className="ion-padding-top">
+                                <IonInput label='Protein' type='number' onIonChange={(e) => setProtein(Number(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
                             </IonItem>
                         </IonList>
                         <IonCol><IonButton color="primary" className='saveButton' onClick={saveFood}><IonIcon icon={checkmark}/></IonButton></IonCol>

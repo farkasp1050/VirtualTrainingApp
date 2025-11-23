@@ -75,6 +75,7 @@ ion-header{
     --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
     --color: #ff0000;
     font-size: 15px;
+    text-align: start;
     margin: 0;
     padding: 2px;
 }
