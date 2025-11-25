@@ -6,7 +6,7 @@ export const fetchFoodData = async (classifyResult) => {
             "https://api.nal.usda.gov/fdc/v1/foods/search",
                 {
                     params: {
-                        api_key: process.env.USDA_API_KEY,
+                        api_key: import.meta.env.REACT_APP_USDA_API_KEY,
                         query: classifyResult,
                         pageSize: 1
                     }
@@ -26,14 +26,14 @@ export const fetchMealPlanData = async (calories) => {
             "https://api.spoonacular.com/mealplanner/generate",
             {
                 params: {
-                    api_key: process.env.SPOONACULAR_API_KEY,
+                    api_key: import.meta.env.REACT_APP_SPOONACULAR_API_KEY,
                     timeFrame: "day",
                     targetCalories: {calories}
                 }
             }
         )
         return dataResult;
-    } catch(e){
+    } catch(error){
         console.error('Error while fetching the data: ', error);
         throw error;
     }

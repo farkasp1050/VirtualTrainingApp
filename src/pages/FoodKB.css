@@ -84,3 +84,35 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.nutrients{
+    width: 250px;
+    font-family:'Times New Roman', Times, serif;
+    font-size: 20px;
+    text-transform: none;
+    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+    color: #ff0000;
+    text-decoration: none;
+    font-variant: normal;
+    min-height: 50px;
+    border: 2px solid rgb(143, 52, 36);
+    border-top: none;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px black;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    padding-top: 5px;
+    padding-left: 10px;
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.dateInput{
+    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --color: red;
+    width: 250px;
+    border-color: red;
+    border-radius: 2%;
+    box-shadow: 2px 0px 4px black;
+}

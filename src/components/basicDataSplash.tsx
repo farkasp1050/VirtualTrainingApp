@@ -25,12 +25,13 @@ const basicDataSplash: React.FC = () => {
             return;
         }
 
+        /*
         const { data: existingData, error: dataFetchError } = await supabase
         .from("users")
         .select("Age, Weight, Height, Gender")
         .eq("id", userData.user.id)
         .single();
-
+        
         if(dataFetchError){
             console.log(dataFetchError);
             setMessage(`User not found! ${dataFetchError?.message}`);
@@ -75,6 +76,7 @@ const basicDataSplash: React.FC = () => {
 
             setMessage("");
         }
+        */
     }
 
     const SwiperButtonNext = ({ children }: any) => {

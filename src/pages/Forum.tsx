@@ -4,7 +4,9 @@ import { useState } from 'react';
 import { add } from 'ionicons/icons';
 import { supabase } from '../services/supabaseClient';
 import { send } from 'ionicons/icons';
+
 import "./Forum.css";
+import { incrementForumPostReply, incrementForumPost } from '../badges';
 
 const Forum: React.FC = () => {
     const [ forumDesc, setForumDesc ] = useState("");
@@ -17,6 +19,8 @@ const Forum: React.FC = () => {
     const [ loading, setLoading ] = useState(true);
     const [ commentDesc, setCommentDesc ] = useState("");
     const [ comments, setComments ] = useState<any[]>([]);
+    const [ userPostCounter, setUserPostCounter ] = useState(0);
+    const [ userCommentCounter, setUserCommentCounter ] = useState(0);
  
     const fetchUserData = async () => {
         const { data: userData, error: userError } = await supabase.auth.getUser();
@@ -81,6 +85,66 @@ const Forum: React.FC = () => {
         fetchForumComments();
     }, []);
 
+    useEffect(() => {
+        if (!userId) { return; }
+        const fetchUserPostNumber = async () => {
+            const { count, error: userPostNumberError } = await supabase
+            .from("forumPosts")
+            .select("*", { count: 'exact', head: true})
+            .eq("author_id", userId);
+
+            if(userPostNumberError){
+                console.log(userPostNumberError);
+                setMessage("Something went wrong while fetching the posts data!");
+                setShowToast(true);
+                return;
+            }
+
+            setUserPostCounter(count ?? 0);
+        }
+
+        const fetchUserCommentNumber = async () => {
+            const { count, error: userCommentNumberError } = await supabase
+            .from("forumComments")
+            .select("*", { count: 'exact', head: true})
+            .eq("author_id", userId);
+
+            if(userCommentNumberError){
+                console.log(userCommentNumberError);
+                setMessage("Something went wrong while fetching the comments data!");
+                setShowToast(true);
+                return;
+            }
+
+            setUserCommentCounter(count ?? 0);
+        }
+        
+        fetchUserCommentNumber();
+        fetchUserPostNumber();
+    }, []);
+
+    const updateMilestoneForPost = async (userId: string) => {
+            if( !userId ){ return; }
+            const currentFriendNumber = await incrementForumPost(userPostCounter, userId);
+            if(currentFriendNumber === 5){
+                setMessage("New badge earned! You are famous now!");
+                setShowToast(true);
+            }
+    
+            setUserPostCounter(currentFriendNumber);
+        }
+
+    const updateMilestoneForReply = async (userId: string) => {
+        if( !userId ){ return; }
+        const currentCommentNumber = await incrementForumPostReply(userCommentCounter, userId);
+        if(currentCommentNumber === 10){
+            setMessage("New badge earned! You are a real commenter now!");
+            setShowToast(true);
+        }
+    
+        setUserCommentCounter(currentCommentNumber);
+    }
+
     const handleAddPost = async (data: any) => {
         const { error: forumDataInsertError } = await supabase
         .from("forumPosts")
@@ -97,7 +161,8 @@ const Forum: React.FC = () => {
             setShowToast(true);
             return;
         }
-
+        
+        updateMilestoneForPost(userId);
         setMessage("Post saved successfully!");
         fetchForumPosts();
     }
@@ -120,6 +185,7 @@ const Forum: React.FC = () => {
             return;
         }
 
+        updateMilestoneForReply(userId);
         setMessage("Comment saved successfully!");
         setCommentDesc("");
         fetchForumComments();
@@ -186,7 +252,7 @@ const Forum: React.FC = () => {
                     <IonCard key={post.id} className='forumPost'>
                         <IonCardHeader className='forumHeader' style={{ display: "flex", justifyContent: "space-between"}}>
                             <IonCardSubtitle className='forumSub'>{post.authorName}</IonCardSubtitle>
-                            <IonCardSubtitle className='forumSub'>{post.created_at}</IonCardSubtitle>
+                            <IonCardSubtitle className='forumSub'>{new Date(post.created_at).toLocaleString()}</IonCardSubtitle>
                         </IonCardHeader>
 
                         <IonCardContent className='forumContent'>{post.description}</IonCardContent>
@@ -195,7 +261,7 @@ const Forum: React.FC = () => {
                                     <IonCard className='forumComment' key={comment.id} color="primary">
                                         <IonCardHeader className='commentHeader' style={{ display: "flex", justifyContent: "space-between"}}>
                                             <IonCardSubtitle>{comment.authorName}</IonCardSubtitle>
-                                            <IonCardSubtitle>{comment.created_at}</IonCardSubtitle>
+                                            <IonCardSubtitle>{new Date(comment.created_at).toLocaleString()}</IonCardSubtitle>
                                         </IonCardHeader>
 
                                         <IonCardContent className='commentContent'>{comment.description}</IonCardContent>

@@ -2,11 +2,13 @@ import { IonContent, IonHeader, IonItem, IonLabel, IonToast, IonCard, IonCardTit
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
-import { checkmark } from "ionicons/icons";
+import { checkmark, accessibilitySharp, pizzaSharp, chatbubbleEllipsesSharp, chatboxEllipsesSharp } from "ionicons/icons";
 
 import defaultAvatar from "../assets/avatar.jpg";
 
 import './Profile.css';
+import '../decideBadge.js';
+import { decideFoodBadge, decideForumBadge, decideFriendBadge, decideReplyBadge } from '../decideBadge.js';
 
 interface ProfileData{
     email: String,
@@ -15,6 +17,20 @@ interface ProfileData{
     Weight: Number,
     Height: Number,
     Gender: String,
+    profilePicture: string
+}
+
+interface Friendship{
+    id: string,
+    created_at: string,
+    firstUser: string,
+    secondUser: string,
+    hasChat: boolean
+}
+
+interface friend{
+    id: string,
+    fullName: string,
     profilePicture: string
 }
 
@@ -30,6 +46,12 @@ const Profile: React.FC = () => {
     const [ profilePictureFullPath, setProfilePictureFullPath ] = useState("");
     const [ profilePicture, setProfilePicture ] = useState("");
     const [ userId, setUserId ] = useState("");
+    const [ postBadge, setPostBadge ] = useState(false);
+    const [ friendsBadge, setFriendsBadge ] = useState(false);
+    const [ replyBadge, setReplyBadge ] = useState(false);
+    const [ foodBadge, setFoodBadge ] = useState(false);
+    const [ friendshipData, setFriendshipData ] = useState<Friendship[]>([]);
+    const [ friendsUserData, setFriendsUserData ] = useState<friend[]>([]);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -70,6 +92,58 @@ const Profile: React.FC = () => {
             .getPublicUrl(relativeUrl)
 
             setProfilePictureFullPath(data.publicUrl);
+
+            const { data: badgesData, error: badgesError } = await supabase
+            .from("badges")
+            .select("post, friends, postReply, addedFood")
+            .eq("user_id", userData.user.id)
+            .single();
+
+            if(badgesError){
+                console.log(badgesError);
+                setMessage(`Something went wrong while fetching the badge data! ${badgesError?.message}`);
+                return;
+            }
+
+            const foodBadgeResult = await decideFoodBadge(badgesData.addedFood);
+            const friendBadgeResult = await decideFriendBadge(badgesData.friends);
+            const forumBadgeResult = await decideForumBadge(badgesData.post);
+            const replyBadgeResult = await decideReplyBadge(badgesData.postReply);
+
+            setFoodBadge(foodBadgeResult);
+            setFriendsBadge(friendBadgeResult);
+            setPostBadge(forumBadgeResult);
+            setReplyBadge(replyBadgeResult);
+
+            const { data: friendshipData, error: friendshipDataError } = await supabase
+            .from("friendships")
+            .select("id, created_at, firstUser, secondUser, hasChat")
+            .or(`firstUser.eq.${userData.user.id},secondUser.eq.${userData.user.id}`);
+
+            if(friendshipDataError){
+                console.log(friendshipDataError);
+                setMessage(`Something went wrong while fetching the friendship data! ${friendshipDataError?.message}`);
+                return;
+            }
+
+            setFriendshipData(friendshipData);
+
+           const friendsIds = friendshipData.map((friendship) => {
+                return friendship.firstUser === userId ? friendship.secondUser : friendship.firstUser;
+           });
+
+           const { data: friendsData, error: friendsDataError } = await supabase
+           .from("users")
+           .select("id, fullName, profilePicture")
+           .in("id", friendsIds);
+
+           if(friendsDataError){
+                console.log(friendsDataError);
+                setMessage(`Something went wrong while fetching the friends data! ${friendsDataError?.message}`);
+                return;
+           }
+
+           setFriendsUserData(friendsData);
         }
 
         fetchUserData();
@@ -178,12 +252,20 @@ const Profile: React.FC = () => {
                         <IonButton><IonIcon icon={checkmark}></IonIcon></IonButton>
                     </IonButtons>
                 </IonButtons>
-                
             </IonHeader>
             <IonContent className="ion-padding ion-text-center page-content">
                 <IonAvatar>
                     <img src={profilePictureFullPath || defaultAvatar} alt="User Profile Picture" />
                 </IonAvatar>
+                {friendsBadge ? (
+                    <IonIcon icon={accessibilitySharp}/>
+                ) : foodBadge ? (
+                    <IonIcon icon={pizzaSharp}/>
+                ) : postBadge ? (
+                    <IonIcon icon={chatbubbleEllipsesSharp}/>
+                ) : replyBadge && (
+                    <IonIcon icon={chatboxEllipsesSharp}/>
+                )}
                 <IonList className='list'>
                     <IonItem>
                         <IonInput label='Full Name' value={String(profileData?.fullName)} type='text' labelPlacement='floating' fill='outline' disabled placeholder='John Doe'></IonInput>
@@ -233,15 +315,26 @@ const Profile: React.FC = () => {
                          </IonRow>
                     </IonGrid>
                 </IonList>
-                <IonCard>
-                    <IonCardContent className='friends'>
-                        <IonItem className='friendsContent'>
-                            <IonAvatar slot='middle'></IonAvatar>
-                            <IonLabel>Friends Name Placeholder</IonLabel>
-                        </IonItem>
-                    </IonCardContent>
-                </IonCard>
+                {friendshipData.map((friendship) => {
+                    const friendId = friendship.firstUser === userId ? friendship.secondUser : friendship.firstUser;
 
+                    if (!friendId) {
+                        return null;
+                    }
+
+                    return (
+                        <div key={friendship.id} className='friends'>
+                            <IonItem className='friendsContent'>
+                                <IonAvatar>
+                                    <img src={defaultAvatar} alt="User's profile picture" />
+                                </IonAvatar>
+                                <IonLabel>Name: {friendsUserData.find((f) => String(f.id) === String(friendId))?.fullName}</IonLabel>
+                                <IonLabel>Friends since: {new Date(friendship.created_at).toLocaleString()}</IonLabel>
+                                <IonLabel>{friendship.hasChat ? "Has chat" : "No chat"}</IonLabel>
+                            </IonItem>
+                        </div>
+                    )
+                })}
                 <IonToast
                 isOpen={showToast}
                 message={message}

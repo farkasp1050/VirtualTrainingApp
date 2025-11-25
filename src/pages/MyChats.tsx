@@ -110,7 +110,7 @@ const MyChats: React.FC = () => {
             setFriendsUserData(friendData);
             
             const { data: chatsData, error: chatsDataError } = await supabase
-            .from("chats")
+            .from("friendships")
             .select("id, created_at, firstUser, secondUser")
             .or(`firstUser.eq.${userData.id},secondUser.eq.${userData.id}`);
 
@@ -142,18 +142,7 @@ const MyChats: React.FC = () => {
                     friendshipData.map((friendship) => {
                         const friendId = friendship.firstUser === currentUserId ? friendship.secondUser : friendship.firstUser;
 
-                        console.log(friendsUserData);
-                        console.log(friendId);
-
                         if (!friendsUserData.length || !friendId) {
-                            return null;
-                        }
-
-                        const friend = friendsUserData.find((f) => String(f.id) === String(friendId));
-                        console.log(friend);
-                        
-                        if(!friend) {
-                            console.log("No available friends.");
                             return null;
                         }
 
@@ -164,7 +153,7 @@ const MyChats: React.FC = () => {
                                         <img src={defaultAvatar} alt="User Picture" className='profilePicture'/>
                                     </IonAvatar>
                                     <IonLabel className='Name'>{friendsUserData.find((f) => String(f.id) === String(friendId))?.fullName}</IonLabel>
-                                    <IonLabel className='Date'>{friendship.created_at}</IonLabel>
+                                    <IonLabel className='Date'>{new Date(friendship.created_at).toLocaleString()}</IonLabel>
                                 </IonItem>
                             </div>
                         )

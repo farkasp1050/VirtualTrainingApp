@@ -34,6 +34,22 @@ const Register: React.FC = () => {
                 email: email
             });
         }
+
+        const { error: badgeError } = await supabase
+        .from("badges")
+        .insert({
+            user_id: data.user?.id,
+            post: 0,
+            friends: 0,
+            postReply: 0,
+            addedFood: 0
+        });
+
+        if(badgeError){
+            console.log(badgeError.message);
+            setMessage(`Something went wrong with the registration! ${badgeError.message}`);
+            return;
+        }
         
         setMessage("Registration was successful!");
         setShowToast(true);

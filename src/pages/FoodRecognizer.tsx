@@ -5,6 +5,7 @@ import React from 'react';
 import { supabase } from '../services/supabaseClient';
 
 import "./FoodRecognizer.css";
+import { incrementFoodAdd } from '../badges';
 
 import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 
@@ -39,6 +40,7 @@ const FoodRecognizer: React.FC = () => {
     const [ carbonhydrate, setCarbonhydrate ] = useState<number>();
     const [ kcal, setKcal ] = useState<number>();
     const [ userId, setUserId ] = useState("");
+    const [ sumFoodAdded, setSumFoodAdded ] = useState(0);
 
     const fetchUserData = async () => {
         const { data: userData, error: userError } = await supabase.auth.getUser();
@@ -49,6 +51,20 @@ const FoodRecognizer: React.FC = () => {
                 return;
             }
         setUserId(userData.user.id);
+
+        const { count, error: sumFoodCounterError } = await supabase
+        .from("foods")
+        .select("*", { count: 'exact', head: true })
+        .eq("user_id", userData.user.id);
+
+        if(sumFoodCounterError){
+            console.log(sumFoodCounterError);
+            setMessage("Something went wrong while fetching the food data!");
+            setShowToast(true);
+            return;
+        }
+
+        setSumFoodAdded(count ?? 0);
     }
 
     const loadModel = async () => {
@@ -96,16 +112,15 @@ const FoodRecognizer: React.FC = () => {
         }
 
         if(classifyResult){
+            console.log("Im still alive!");
             fetchFoodData(classifyResult.className.toUpperCase())
                 .then(data => {
+                    console.log(data);
                     setFoodData(data.data.foods);
                     setFoodNutrients(data.data.foods.foodNutrients.map((n: any) => ({
                         name: n.nutrientName,
                         value: n.value
                     })));
-
-                    console.log(data.data);
-                    console.log(data.data.foods.foodNutrients);
                 })
                 .catch(error => {
                     console.error(error);
@@ -114,7 +129,7 @@ const FoodRecognizer: React.FC = () => {
                 })
         }
 
-        if(foodNutrients != null){
+        if(foodNutrients != null || foodNutrients != undefined){
             setKcal(foodNutrients.find(n => n.nutrientName === 'Energy')?.value);
             setCarbonhydrate(foodNutrients.find(n => n.nutrientName === 'Carbohydrate, by difference')?.value);
             setProtein(foodNutrients.find(n => n.nutrientName === 'Protein')?.value);
@@ -145,6 +160,14 @@ const FoodRecognizer: React.FC = () => {
             setShowToast(true);
             return;
         }
+
+        const currentFoodNumber = await incrementFoodAdd(sumFoodAdded);
+        if(currentFoodNumber === 10){
+            setMessage("New badge earned! You are looking out for your health now!");
+            setShowToast(true);
+        }
+                                    
+        setSumFoodAdded(currentFoodNumber);
     }
 
     return (

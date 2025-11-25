@@ -114,6 +114,7 @@ const Conversation: React.FC = () => {
             return;
         }
 
+        setNewMessage("");
         fetchPrevMessages();
     }
 
@@ -137,7 +138,7 @@ const Conversation: React.FC = () => {
                                     return (
                                         <div key={message.id}>
                                             <div>{message.author}</div>
-                                            <div>{message.created_at}</div>
+                                            <div>{new Date(message.created_at).toLocaleString()}</div>
                                             <p>{message.messageValue}</p>
                                         </div>
                                     )
@@ -147,8 +148,8 @@ const Conversation: React.FC = () => {
                     </div>
                 <IonFooter>
                     <div className='footer'>
-                        <IonInput type='text' onIonChange={(e) => setNewMessage(String(e.detail.value))} placeholder='Type your message...'></IonInput>
-                        <IonIcon icon={send} className='sendButton'></IonIcon>
+                        <IonInput type='text' value={newMessage} onIonChange={(e) => setNewMessage(String(e.detail.value))} placeholder='Type your message...'></IonInput>
+                        <IonIcon icon={send} className='sendButton' onClick={handleMessageSend}></IonIcon>
                     </div>
                 </IonFooter>
                 <IonToast

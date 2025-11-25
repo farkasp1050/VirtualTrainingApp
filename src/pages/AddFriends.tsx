@@ -6,6 +6,7 @@ import { supabase } from '../services/supabaseClient';
 import { search, personAdd, personRemove, chatbubbleEllipses } from 'ionicons/icons';
 
 import "./AddFriends.css";
+import { incrementFriends } from '../badges';
 
 import defaultAvatar from "../assets/avatar.jpg";
 
@@ -22,6 +23,7 @@ const addFriends: React.FC = () => {
     const [ message, setMessage ] = useState("");
     const [ showToast, setShowToast ] = useState(false);
     const [ currentUserId, setCurrentUserId ] = useState("");
+    const [ currentFriendCounter, setCurrentFriendCounter ] = useState(0);
 
     useEffect (() => {
         const fetchUserData = async () => {
@@ -33,10 +35,35 @@ const addFriends: React.FC = () => {
             }
 
             setCurrentUserId(userData.user.id);
+
+            const { count, error: friendshipDataError } = await supabase
+            .from("friendships")
+            .select("*", { count: 'exact', head: true })
+            .or(`firstUser.eq.${userData.user.id},secondUser.eq.${userData.user.id}`);
+            
+            if(friendshipDataError){
+                console.log(friendshipDataError);
+                setMessage("Error while fetching the current user's friendship data!");
+                setShowToast(true);
+                return;
+            }
+
+            setCurrentFriendCounter(count ?? 0);
         }
 
         fetchUserData();
     }, []);
+
+    const updateMilestone = async (userId: string) => {
+        if( !currentUserId ){ return; }
+        const currentFriendNumber = await incrementFriends(currentFriendCounter, userId);
+        if(currentFriendNumber === 5){
+            setMessage("New badge earned! You are famous now!");
+            setShowToast(true);
+        }
+
+        setCurrentFriendCounter(currentFriendNumber);
+    }
 
     const handleSearch = async () => {
         const { data: searchData, error: searchError } = await supabase
@@ -69,6 +96,7 @@ const addFriends: React.FC = () => {
             return;
         }
 
+        updateMilestone(currentUserId);
         setMessage("User added as a friend!");
         setShowToast(true);
     }
@@ -139,7 +167,7 @@ const addFriends: React.FC = () => {
                                     </IonItem>
                                     <IonItem className='Date'>
                                         <IonLabel>User created at: </IonLabel>
-                                        <IonText>{result.created_at}</IonText>
+                                        <IonText>{new Date(result.created_at).toLocaleString()}</IonText>
                                     </IonItem>
                                     <IonItem>
                                         <IonIcon className='addIcon' icon={personAdd} slot='start' onClick={ () => { handleAddFriend(result.id) } }></IonIcon>
