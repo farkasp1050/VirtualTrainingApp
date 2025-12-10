@@ -1,0 +1,11 @@
+{
+    "title": "Fórum",
+    "loading": "Betöltés...",
+    "name": "Név",
+    "createdAt": "Létrehozva ekkor",
+    "description": "Tartalom",
+    "placeholderDesc": "A poszt tartalma",
+    "cancel": "Mégse",
+    "save": "Mentés",
+    "commentText": "Írj egy kommentet..."
+}

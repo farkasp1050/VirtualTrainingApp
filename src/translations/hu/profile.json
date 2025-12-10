@@ -1,0 +1,11 @@
+{
+    "title": "Profil",
+    "namePlaceholder": "Kovács Béla",
+    "emailPlaceholder": "valaki@valami.com",
+    "male": "Férfi",
+    "female": "Nő",
+    "deleteAccount": "Fiók törlése",
+    "cancel": "Mégse",
+    "name": "Név",
+    "friendsSince": "Barátság kezdete"
+}

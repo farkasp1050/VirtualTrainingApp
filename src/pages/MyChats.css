@@ -1,6 +1,6 @@
 .page{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
 }
 
 ion-header{
@@ -8,8 +8,8 @@ ion-header{
 }
 
 .page-content{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     align-items: center;
 }
 
@@ -20,8 +20,8 @@ ion-header{
 }
 
 .profileSnack{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     border-radius: 10px;
     box-shadow: 3px 3px 7px black;
     -webkit-transition: width 0.4s ease-in-out;
@@ -30,8 +30,8 @@ ion-header{
 }
 
 .profileSnack:hover{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     width: 90%;
 }
 

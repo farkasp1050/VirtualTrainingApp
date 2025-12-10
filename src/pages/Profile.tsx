@@ -6,7 +6,10 @@ import { checkmark, accessibilitySharp, pizzaSharp, chatbubbleEllipsesSharp, cha
 
 import defaultAvatar from "../assets/avatar.jpg";
 
-import './Profile.css';
+import { useTranslation } from 'react-i18next';
+
+import "./Profile.css";
+
 import '../decideBadge.js';
 import { decideFoodBadge, decideForumBadge, decideFriendBadge, decideReplyBadge } from '../decideBadge.js';
 
@@ -17,7 +20,9 @@ interface ProfileData{
     Weight: Number,
     Height: Number,
     Gender: String,
-    profilePicture: string
+    profilePicture: string,
+    Goal: number,
+    Diet: string
 }
 
 interface Friendship{
@@ -35,11 +40,14 @@ interface friend{
 }
 
 const Profile: React.FC = () => {
+    const { t } = useTranslation("Profile");
     const router = useIonRouter();
     const [ age, setAge ] = useState<number | null>(null);
     const [ gender, setGender ] = useState("");
     const [ weight, setWeight ] = useState<number | null>(null);
     const [ height, setHeight ] = useState<number | null>(null);
+    const [ goal, setGoal ] = useState<number | null>(null);
+    const [ diet, setDiet ] = useState("");
     const [ message, setMessage ] = useState("");
     const [ showToast, setShowToast ] = useState(false);
     const [ profileData, setProfileData ] = useState<ProfileData>();
@@ -66,7 +74,7 @@ const Profile: React.FC = () => {
 
             const { data: profileData, error: dataFetchError } = await supabase
             .from("users")
-            .select("email, fullName, Age, Weight, Height, Gender, profilePicture")
+            .select("email, fullName, Age, Weight, Height, Gender, profilePicture, Goal, Diet")
             .eq("id", userData.user.id)
             .single();
 
@@ -83,6 +91,8 @@ const Profile: React.FC = () => {
                 setWeight(profileData.Weight);
                 setHeight(profileData.Height);
                 setProfilePicture(profileData.profilePicture);
+                setGoal(profileData.Goal);
+                setDiet(profileData.Diet);
             }
 
             const relativeUrl = userData.user.id + "/avatar.png";
@@ -204,7 +214,9 @@ const Profile: React.FC = () => {
             Age: age,
             Weight: weight,
             Height: height,
-            Gender: gender
+            Gender: gender,
+            Goal: goal,
+            Diet: diet
         })
         .eq("id", userData.user.id);
 
@@ -246,16 +258,16 @@ const Profile: React.FC = () => {
         <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton defaultHref='/dashboard'/>
-                    <IonTitle className='ion-text-center'>Profile</IonTitle>
+                    <IonBackButton className='backButton' defaultHref='/dashboard'/>
+                    <IonTitle className='ion-text-center'>{t("title")}</IonTitle>
                     <IonButtons onClick={handleProfileUpdate}>
-                        <IonButton><IonIcon icon={checkmark}></IonIcon></IonButton>
+                        <IonButton><IonIcon icon={checkmark} size='large'></IonIcon></IonButton>
                     </IonButtons>
                 </IonButtons>
             </IonHeader>
             <IonContent className="ion-padding ion-text-center page-content">
                 <IonAvatar>
-                    <img src={profilePictureFullPath || defaultAvatar} alt="User Profile Picture" />
+                    <img src={defaultAvatar} alt="User Profile Picture" />
                 </IonAvatar>
                 {friendsBadge ? (
                     <IonIcon icon={accessibilitySharp}/>
@@ -268,10 +280,10 @@ const Profile: React.FC = () => {
                 )}
                 <IonList className='list'>
                     <IonItem>
-                        <IonInput label='Full Name' value={String(profileData?.fullName)} type='text' labelPlacement='floating' fill='outline' disabled placeholder='John Doe'></IonInput>
+                        <IonInput label='Full Name' value={String(profileData?.fullName)} type='text' labelPlacement='floating' fill='outline' disabled placeholder={t("namePlaceholder")}></IonInput>
                     </IonItem>
                     <IonItem>
-                        <IonInput label='Email' value={String(profileData?.email)} type='email' labelPlacement='floating' fill='outline' disabled placeholder='somebody@something.com'></IonInput>
+                        <IonInput label='Email' value={String(profileData?.email)} type='email' labelPlacement='floating' fill='outline' disabled placeholder={t("emailPlaceholder")}></IonInput>
                     </IonItem>
                     <IonItem>
                         <IonInput label='Age' value={age} onIonChange={(e) => setAge(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
@@ -283,26 +295,32 @@ const Profile: React.FC = () => {
                         <IonInput label='Height' value={height} onIonChange={(e) => setHeight(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
                     </IonItem>
                     <IonSelect label='Gender' value={gender} onIonChange={(e) => setGender(String(e.detail.value))} labelPlacement='floating'>
-                        <IonSelectOption value="male">Male</IonSelectOption>
-                        <IonSelectOption value="female">Female</IonSelectOption>
+                        <IonSelectOption value="male">{t("male")}</IonSelectOption>
+                        <IonSelectOption value="female">{t("female")}</IonSelectOption>
                     </IonSelect>
                     <IonItem>
-                        <input type="file" accept='image/*' onChange={(e) => {handlePictureUpload(e)}}/>
+                        <input type="file" className='fileInput' accept='image/*' onChange={(e) => {handlePictureUpload(e)}}/>
+                    </IonItem>
+                    <IonItem>
+                        <IonInput label='Goal' value={goal} onIonChange={(e) => setGoal(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
+                    </IonItem>
+                    <IonItem>
+                        <IonInput label='Diet' type='text' value={diet} onIonChange={(e) => setDiet(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Diet Type'></IonInput>
                     </IonItem>
                     <IonGrid>
                         <IonRow>
                            <IonCol size='12'>
                                 <IonButton id='triggerDeletion' color={'primary'} shape='round' className='ion-margin-top' expand='block'>
-                                    Delete Account
+                                    {t("deleteAccount")}
                                     <IonAlert
                                     trigger='triggerDeletion'
                                     header='Are you sure?'
                                     buttons={[
                                         {
-                                            text: 'Cancel'
+                                            text: t("cancel")
                                         },
                                         {
-                                            text: 'Delete Account',
+                                            text: t("deleteAccount"),
                                             handler: () => {
                                                 handleAccountDeletion();
                                             },
@@ -328,8 +346,8 @@ const Profile: React.FC = () => {
                                 <IonAvatar>
                                     <img src={defaultAvatar} alt="User's profile picture" />
                                 </IonAvatar>
-                                <IonLabel>Name: {friendsUserData.find((f) => String(f.id) === String(friendId))?.fullName}</IonLabel>
-                                <IonLabel>Friends since: {new Date(friendship.created_at).toLocaleString()}</IonLabel>
+                                <IonLabel>{t("name")}: {friendsUserData.find((f) => String(f.id) === String(friendId))?.fullName}</IonLabel>
+                                <IonLabel>{t("friendsSince")}: {new Date(friendship.created_at).toLocaleString()}</IonLabel>
                                 <IonLabel>{friendship.hasChat ? "Has chat" : "No chat"}</IonLabel>
                             </IonItem>
                         </div>

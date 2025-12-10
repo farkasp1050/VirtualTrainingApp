@@ -14,13 +14,16 @@ import FoodKB from './pages/FoodKB';
 import MyChats from './pages/MyChats';
 import Forum from './pages/Forum';
 import WorkoutGenerator from './pages/WorkoutGenerator';
-import MyWorkouts from './pages/MyWorkouts';
+import MyWorkoutPlans from './pages/MyWorkoutPlans';
 import addFriends from './pages/AddFriends';
 import Conversation from './pages/Conversation';
 import MealPlanner from './pages/MealPlanner';
+import CurrentWorkout from './pages/CurrentWorkout';
+import CurrentWorkoutPlan from './pages/CurrentWorkoutPlan';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
+import './App.css';
 
 /* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
@@ -67,10 +70,12 @@ const App: React.FC = () => (
         <Route component={Forum} path="/forum" exact></Route>
         <Route component={MyChats} path="/myChats" exact></Route>
         <Route component={WorkoutGenerator} path="/workoutGenerator" exact></Route>
-        <Route component={MyWorkouts} path="/myWorkouts" exact></Route>
+        <Route component={MyWorkoutPlans} path="/myWorkoutPlans" exact></Route>
         <Route component={addFriends} path="/addFriends" exact></Route>
         <Route component={Conversation} path="/conversation/:friendshipId" exact></Route>
         <Route component={MealPlanner} path="/mealPlanner" exact></Route>
+        <Route component={CurrentWorkout} path="/currentWorkout/:workoutPlanId/:workoutId" exact></Route>
+        <Route component={CurrentWorkoutPlan} path="/currentWorkoutPlan/:workoutPlanId" exact></Route>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

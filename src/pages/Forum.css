@@ -1,6 +1,6 @@
 .page{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
 }
 
 ion-header{
@@ -8,8 +8,8 @@ ion-header{
 }
 
 .page-content{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     align-items: center;
     font-family:'Times New Roman', Times, serif;
     font-size: 1.5em;
@@ -39,8 +39,8 @@ ion-header{
     margin-bottom: 30px;
     --inner-padding-start: 0px;
     --inner-padding-end: 0px;
-    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     box-shadow: 0px 0px 10px black;
 }
 
@@ -56,7 +56,7 @@ ion-header{
 }
 
 .forumSub{
-    color: red;
+    color: rgb(255, 0, 0);
 }
 
 .forumContent{
@@ -78,8 +78,8 @@ ion-header{
     padding: 6px;
     margin: 35px;
     margin-left: 100px;
-    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
-    color: #ff0000;
+    --ion-background-color: var(--secondaryBase);
+    color: #000000;
     box-shadow: 0px 0px 10px black;
 }
 
@@ -123,10 +123,10 @@ ion-item.writeComment::part(native){
 .writeComment ion-input{
     --inner-padding-start: 0px;
     --inner-padding-end: 0px;
-    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
+    --ion-background-color: var(--secondaryBase);
     border: 2px solid rgb(143, 52, 36);
     border-top: none;
     border-radius: 10px;
-    color: #ff0000;
+    --ion-text-color: var(--baseContent);
     box-shadow: 0px 0px 10px black;
 }

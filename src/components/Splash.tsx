@@ -3,7 +3,12 @@ import React, { useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { arrowBack } from 'ionicons/icons';
 import { Animation } from '@ionic/react';
+
+import "./introduction.css";
+
 import 'swiper/css';
+
+import { useTranslation } from 'react-i18next';
 
 import swiperPic1 from '../assets/swiper1.png';
 import swiperPic2 from '../assets/swiper2.png';
@@ -11,13 +16,12 @@ import swiperPic3 from '../assets/swiper3.png';
 import swiperPic4 from '../assets/swiper4.png';
 import swiperPic5 from '../assets/swiper5.png';
 
-import "./introduction.css";
-
 interface splashContainer {
     onFinish?: () => void;
 }
 
 const Splash: React.FC<splashContainer> = ({ onFinish }) => {
+    const { t } = useTranslation("Splash");
     const animation = useRef<Animation | null>(null);
 
     const arrowRef = useRef<HTMLIonIconElement | null>(null);
@@ -53,14 +57,14 @@ const Splash: React.FC<splashContainer> = ({ onFinish }) => {
     }, [arrowRef, arrowRef2, arrowRef3]);
 
     return (
-        <IonPage className='page'>
-            <IonContent className='page-content'>
+        <IonPage>
+                <IonContent className='page-content'>
                 <Swiper>
                     <SwiperSlide>
-                        <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                            <img src={swiperPic1} alt="swiperPic1"/>
+                        <div className='ion-text-center ion-paddding container' style={{ marginTop: "100px" }}>
+                            <img src={swiperPic1} alt="swiperPic1" className='picture'/>
                             <IonText>
-                                <h4>Workout to get healthier!</h4>
+                                <h4>{t("firstSlide")}</h4>
                                 <h4>
                                     <IonIcon ref={arrowRef} icon={arrowBack}></IonIcon>
                                     <IonIcon ref={arrowRef2} icon={arrowBack}></IonIcon>
@@ -70,36 +74,36 @@ const Splash: React.FC<splashContainer> = ({ onFinish }) => {
                         </div>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                            <img src={swiperPic2} alt="swiperPic1" />
+                        <div className='ion-text-center ion-paddding container' style={{ marginTop: "100px" }}>
+                            <img src={swiperPic2} alt="swiperPic1" className='picture'/>
                             <IonText>
-                                <h4>Share your success with others through our forum!</h4>
+                                <h4>{t("secondSlide")}</h4>
                             </IonText>
                         </div>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                            <img src={swiperPic3} alt="swiperPic1" />
+                        <div className='ion-text-center ion-paddding container' style={{ marginTop: "100px" }}>
+                            <img src={swiperPic3} alt="swiperPic1" className='picture'/>
                             <IonText>
-                                <h4>Get personalized workout plans!</h4>
+                                <h4>{t("thirdSlide")}</h4>
                             </IonText>
                         </div>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                            <img src={swiperPic4} alt="swiperPic1" />
+                        <div className='ion-text-center ion-paddding container' style={{ marginTop: "100px" }}>
+                            <img src={swiperPic4} alt="swiperPic1" className='picture'/>
                             <IonText>
-                                <h4>Use our food recognizer to recognize and store any food you want!</h4>
+                                <h4>{t("fourthSlide")}</h4>
                             </IonText>
                         </div>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <div className='ion-text-center ion-paddding' style={{ marginTop: "100px" }}>
-                            <img src={swiperPic5} alt="swiperPic1" />
+                        <div className='ion-text-center ion-paddding container' style={{ marginTop: "100px" }}>
+                            <img src={swiperPic5} alt="swiperPic1" className='picture'/>
                             <IonText>
-                                <h4>Join us NOW!</h4>
+                                <h4>{t("fifthSlide")}</h4>
                             </IonText>
-                            <IonButton onClick={onFinish}>Lets Get Started</IonButton>
+                            <IonButton onClick={onFinish} className='button'>{t("startButton")}</IonButton>
                         </div>
                     </SwiperSlide>
                 </Swiper>

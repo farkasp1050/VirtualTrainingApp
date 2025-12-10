@@ -1,0 +1,11 @@
+{
+    "title": "Meal Planner",
+    "requiredTime": "Required time",
+    "servings": "Servings",
+    "linkToFood": "Check it out here!",
+    "nutrientSum": "Daily Sum of nutrients",
+    "calorie": "Calorie",
+    "carbohydrate": "Carbohydrate",
+    "fat": "Fat",
+    "protein": "Protein"
+}

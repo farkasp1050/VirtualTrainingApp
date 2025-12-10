@@ -5,8 +5,11 @@ import { useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
 import { search, personAdd, personRemove, chatbubbleEllipses } from 'ionicons/icons';
 
-import "./AddFriends.css";
 import { incrementFriends } from '../badges';
+
+import "./AddFriends.css";
+
+import { useTranslation } from 'react-i18next';
 
 import defaultAvatar from "../assets/avatar.jpg";
 
@@ -18,6 +21,7 @@ interface UserData{
 }
 
 const addFriends: React.FC = () => {
+    const { t } = useTranslation("addFriends");
     const [ searchParam, setSearchParam ] = useState("");
     const [ searchResult, setSearchResult ] = useState<UserData[]>([]);
     const [ message, setMessage ] = useState("");
@@ -141,10 +145,10 @@ const addFriends: React.FC = () => {
         <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton defaultHref='/dashboard'/>
+                    <IonBackButton className='backButton' defaultHref='/dashboard'/>
                     <input type='text' className='search-bar' value={searchParam} placeholder='John Doe' onChange={(e) => setSearchParam(String(e.target.value))}/>
                     <IonIcon className='search-icon' icon={search} size='large' onClick={(e) => { handleSearch(); }}></IonIcon>
-                    <IonTitle className='ion-text-end'>Add Friends</IonTitle>
+                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
             <IonContent fullscreen className="ion-padding page-content">
@@ -158,15 +162,15 @@ const addFriends: React.FC = () => {
                                 </IonAvatar>
                                 <div className='userDetails'>
                                     <IonItem className='Name'>
-                                        <IonLabel>Name: </IonLabel>
+                                        <IonLabel>{t("name")} </IonLabel>
                                         <IonText>{result.fullName}</IonText>
                                     </IonItem>
                                     <IonItem className='Age'>
-                                        <IonLabel>Age: </IonLabel>
+                                        <IonLabel>{t("age")} </IonLabel>
                                         <IonText>{result.Age}</IonText>
                                     </IonItem>
                                     <IonItem className='Date'>
-                                        <IonLabel>User created at: </IonLabel>
+                                        <IonLabel>{t("userCreatedAt")} </IonLabel>
                                         <IonText>{new Date(result.created_at).toLocaleString()}</IonText>
                                     </IonItem>
                                     <IonItem>

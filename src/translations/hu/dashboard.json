@@ -1,0 +1,14 @@
+{
+    "title": "Virtuális Edzés Asszisztens App",
+    "settings": "Beállítások",
+    "profile": "Profil",
+    "foodRecognizer": "Étel Felismerő",
+    "foodKB": "Étel Adatbázis",
+    "mealPlanner": "Étrend készítő",
+    "forum": "Fórum",
+    "addFriends": "Barát hozzáadása",
+    "myChats": "Saját Chatek",
+    "workoutGenerator": "Edzés készítő",
+    "myWorkouts": "Saját edzésterveim",
+    "logout": "Kijelentkezés"
+}

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
 
+import { useTranslation } from 'react-i18next';
+
 import "./MyChats.css";
 
 import defaultAvatar from "../assets/avatar.jpg";
@@ -36,6 +38,7 @@ interface friend{
 }
 
 const MyChats: React.FC = () => {
+    const { t } = useTranslation("MyChats");
     const [ message, setMessage ] = useState("");
     const [ showToast, setShowToast ] = useState(false);
     const [ currentUserId, setCurrentUserId ] = useState("");
@@ -132,12 +135,12 @@ const MyChats: React.FC = () => {
             <IonHeader>
                 <IonButtons>
                     <IonBackButton defaultHref='/dashboard' />
-                    <IonTitle className='ion-text-end'>My Chats</IonTitle>
+                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
             <IonContent className="ion-padding page-content">
             {friendshipData.length === 0 ? (
-                    <p>You have no active conversations yet!</p>
+                    <p>{t("noConv")}</p>
                 ) : (
                     friendshipData.map((friendship) => {
                         const friendId = friendship.firstUser === currentUserId ? friendship.secondUser : friendship.firstUser;

@@ -1,0 +1,14 @@
+{
+    "title": "Virtual Workout Assistant App",
+    "settings": "Settings",
+    "profile": "Profile",
+    "foodRecognizer": "Food Recognizer",
+    "foodKB": "FoodKB",
+    "mealPlanner": "Meal Planner",
+    "forum": "Forum",
+    "addFriends": "Add Friends",
+    "myChats": "My Chats",
+    "workoutGenerator": "Workout Generator",
+    "myWorkouts": "My Workouts",
+    "logout": "Logout"
+}

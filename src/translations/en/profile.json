@@ -1,0 +1,11 @@
+{
+    "title": "Profile",
+    "namePlaceholder": "John Doe",
+    "emailPlaceholder": "somebody@something.com",
+    "male": "Male",
+    "female": "Female",
+    "deleteAccount": "Delete Account",
+    "cancel": "Cancel",
+    "name": "Name",
+    "friendsSince": "Friends since"
+}

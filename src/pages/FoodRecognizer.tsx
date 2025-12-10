@@ -4,8 +4,9 @@ import { camera, add, analytics, save } from 'ionicons/icons';
 import React from 'react';
 import { supabase } from '../services/supabaseClient';
 
-import "./FoodRecognizer.css";
 import { incrementFoodAdd } from '../badges';
+
+import "./FoodRecognizer.css";
 
 import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 
@@ -13,7 +14,9 @@ import * as tensorflowModel from "@tensorflow-models/mobilenet";
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-backend-webgl';
 
-import { fetchFoodData } from "../api";
+import { useTranslation } from 'react-i18next';
+
+import { fetchFoodData } from '../api';
 
 interface Classified{
     className: string;
@@ -21,11 +24,16 @@ interface Classified{
 }
 
 interface Nutrient{
-    nutrientName: string;
+    name: string;
     value: number;
 }
 
+interface Food{
+    nutrients: Nutrient[];
+}
+
 const FoodRecognizer: React.FC = () => {
+    const { t } = useTranslation("FoodRecognizer");
     const [ model, setModel ] = useState<tensorflowModel.MobileNet | null>(null);
     const [ loading, setLoading ] = useState(true);
     const [ newPhoto, setNewPhoto ] = useState<string | undefined>(undefined);
@@ -33,11 +41,11 @@ const FoodRecognizer: React.FC = () => {
     const [ message, setMessage ] = useState('');
     const userImageRef = useRef<HTMLImageElement | null>(null);
     const [ classifyResult, setClassifyResult ] = useState<Classified>();
-    const [ foodData, setFoodData ] = useState([]);
+    const [ foodData, setFoodData ] = useState<Food[]>([]);
     const [ foodNutrients, setFoodNutrients ] = useState<Nutrient[]>([]);
     const [ protein, setProtein ] = useState<number>();
     const [ fat, setFat ] = useState<number>();
-    const [ carbonhydrate, setCarbonhydrate ] = useState<number>();
+    const [ carbohydrate, setCarbohydrate ] = useState<number>(0);
     const [ kcal, setKcal ] = useState<number>();
     const [ userId, setUserId ] = useState("");
     const [ sumFoodAdded, setSumFoodAdded ] = useState(0);
@@ -112,12 +120,11 @@ const FoodRecognizer: React.FC = () => {
         }
 
         if(classifyResult){
-            console.log("Im still alive!");
-            fetchFoodData(classifyResult.className.toUpperCase())
+            await fetchFoodData(classifyResult.className.toUpperCase())
                 .then(data => {
                     console.log(data);
-                    setFoodData(data.data.foods);
-                    setFoodNutrients(data.data.foods.foodNutrients.map((n: any) => ({
+                    setFoodData(data.data.foods[0]);
+                    setFoodNutrients(data.data.foods[0].foodNutrients.map((n: any) => ({
                         name: n.nutrientName,
                         value: n.value
                     })));
@@ -129,16 +136,27 @@ const FoodRecognizer: React.FC = () => {
                 })
         }
 
-        if(foodNutrients != null || foodNutrients != undefined){
-            setKcal(foodNutrients.find(n => n.nutrientName === 'Energy')?.value);
-            setCarbonhydrate(foodNutrients.find(n => n.nutrientName === 'Carbohydrate, by difference')?.value);
-            setProtein(foodNutrients.find(n => n.nutrientName === 'Protein')?.value);
-            setFat(foodNutrients.find(n => n.nutrientName === 'Total lipid (fat)')?.value);
+        if(foodNutrients !== null){
+            console.log(foodNutrients);
 
-            console.log(kcal);
-            console.log(carbonhydrate);
-            console.log(protein);
-            console.log(fat);
+            foodNutrients.forEach((foodNutrient) => {
+                if(foodNutrient.name === 'Energy'){
+                    console.log(foodNutrient.value);
+                    setKcal(foodNutrient.value);
+                }
+                if(foodNutrient.name === 'Carbohydrate, by difference'){
+                    console.log(foodNutrient.value);
+                    setCarbohydrate(foodNutrient.value);
+                }
+                if(foodNutrient.name === 'Protein'){
+                    console.log(foodNutrient.value);
+                    setProtein(foodNutrient.value);
+                }
+                if(foodNutrient.name === 'Total lipid (fat)'){
+                    console.log(foodNutrient.value);
+                    setFat(foodNutrient.value);
+                }
+            });
         }
     }
 
@@ -148,9 +166,9 @@ const FoodRecognizer: React.FC = () => {
         .insert({
             user_id: userId,
             quantity: 1,
-            foodName: foodData,
+            foodName: classifyResult?.className,
             calorie: kcal,
-            carbonhydrate: carbonhydrate,
+            carbohydrate: carbohydrate,
             fat: fat,
             protein: protein
         });
@@ -161,12 +179,14 @@ const FoodRecognizer: React.FC = () => {
             return;
         }
 
-        const currentFoodNumber = await incrementFoodAdd(sumFoodAdded);
+        const currentFoodNumber = await incrementFoodAdd(sumFoodAdded, userId);
         if(currentFoodNumber === 10){
             setMessage("New badge earned! You are looking out for your health now!");
             setShowToast(true);
         }
-                                    
+            
+        setMessage("Food saved in your knowledge base successfully!");
+        setShowToast(true);
         setSumFoodAdded(currentFoodNumber);
     }
 
@@ -174,13 +194,13 @@ const FoodRecognizer: React.FC = () => {
         <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton defaultHref='/dashboard'/>
-                    <IonTitle className='ion-text-end'>Food Recognizer</IonTitle>
+                    <IonBackButton className='backButton' defaultHref='/dashboard'/>
+                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
             <IonContent className='page-content'>
             {loading ? (
-                <h1>Loading...</h1>
+                <h1>{t("loading")}</h1>
             ) : (
                 <div className='data'>
                     { model && newPhoto && (
@@ -212,10 +232,10 @@ const FoodRecognizer: React.FC = () => {
                     {(foodData) && (
                         <div className='foodResult'>
                             <p>{classifyResult?.className}</p>
-                            <p>Kcal: {kcal}</p>
-                            <p>Carbs: {carbonhydrate}</p>
-                            <p>Fat: {fat}</p>
-                            <p>Protein: {protein}</p>
+                            <p>{t("kcal")}: {kcal}</p>
+                            <p>{t("carbohydrate")}: {carbohydrate}</p>
+                            <p>{t("fat")}: {fat}</p>
+                            <p>{t("protein")}: {protein}</p>
                         </div>
                     )}
                 </div>

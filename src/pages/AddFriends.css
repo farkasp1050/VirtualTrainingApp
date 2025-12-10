@@ -1,6 +1,6 @@
 .page{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
 }
 
 ion-header{
@@ -8,19 +8,19 @@ ion-header{
 }
 
 .list{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     border-radius: 5px;
 }
 
 .page-content{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --background: var(--background);
+    --color: var(--primary);
     align-items: center;
 }
 
 .search-bar{
-    width: 100px;
+    width: 150px;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
     border-radius: 5px;
@@ -29,7 +29,7 @@ ion-header{
 }
 
 .search-bar:focus{
-    width: 100%;
+    width: 50%;
 }
 
 .search-icon{
@@ -48,8 +48,8 @@ ion-header{
 }
 
 .userCard{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
 }
 
 .cardContent{
@@ -57,6 +57,10 @@ ion-header{
     text-align: center;
     align-items: center;
     flex-direction: column;
+}
+
+.page .page-content .userCard .cardContent .userDetails .Name{
+    color: var(--baseContent);
 }
 
 .profilePicture{
@@ -71,8 +75,8 @@ ion-header{
 }
 
 .userDetails .Name{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     font-size: 15px;
     text-align: start;
     margin: 0;
@@ -80,16 +84,16 @@ ion-header{
 }
 
 .userDetails .Age{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     font-size: 15px;
     margin: 0;
     padding: 2px;
 }
 
 .userDetails .Date{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     font-size: 15px;
     margin: 0;
     padding: 2px;

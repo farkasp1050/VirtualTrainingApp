@@ -1,0 +1,8 @@
+{
+    "title": "Workout Generator",
+    "savePlan": "Save the plan",
+    "cancel": "Cancel",
+    "generatePlan": "Generate new plan",
+    "noPlan": "You dont have an active plan yet. Create one now!",
+    "createPlan": "Create Workout Plan"
+}

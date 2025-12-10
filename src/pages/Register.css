@@ -1,6 +1,6 @@
 .page{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
 }
 
 ion-header{
@@ -8,14 +8,19 @@ ion-header{
 }
 
 .page-content{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     align-items: center;
 }
 
+.page .backButton{
+    --background: var(--mainBase);
+    --color: var(--baseContent);
+}
+
 .form{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+  --ion-text-color: var(--baseContent);
     align-items: center;
     justify-content: center;
     border-radius: 5px;
@@ -24,23 +29,23 @@ ion-header{
 }
 
 .form ion-item{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+  --ion-text-color: var(--baseContent);
     padding: 5px;
 }
 
 .form ion-item::part(native){
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+  --ion-text-color: var(--baseContent);
 }
 
 .form ion-item ion-icon{
-    color: #ff0000;
+    --ion-text-color: var(--baseContent);
 }
 
 .form ion-input{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+  --ion-text-color: var(--baseContent);
 }
 
 .form ion-button{

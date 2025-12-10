@@ -1,0 +1,11 @@
+{
+    "title": "Étrend Készítő",
+    "requiredTime": "Elkészítéshez szükséges idő",
+    "servings": "Adagok száma",
+    "linkToFood": "Nézd meg a receptet itt!",
+    "nutrientSum": "Napi tápanyag összesítés",
+    "calorie": "Kalória",
+    "carbohydrate": "Szénhidrát",
+    "fat": "Zsír",
+    "protein": "Fehérje"
+}

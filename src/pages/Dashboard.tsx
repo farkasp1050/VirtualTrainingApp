@@ -1,15 +1,98 @@
-import { IonContent, IonHeader, IonItemDivider, IonIcon, IonToast, IonMenuToggle, IonButton, IonMenuButton, IonFooter, IonList, IonItem, IonButtons, IonPage, IonSplitPane, IonRouterOutlet, IonMenu, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
+import { IonContent, IonHeader, IonItemDivider, IonIcon, IonToast, IonMenuToggle, IonButton, IonMenuButton, IonFooter, IonList, IonItem, IonButtons, IonPage, IonSplitPane, IonRouterOutlet, IonMenu, IonTitle, IonToolbar, useIonRouter, IonCard, IonCardTitle, IonCardSubtitle } from '@ionic/react';
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
 import { settingsSharp, walkSharp, personSharp, barbellSharp, scanSharp, chatbubblesSharp, informationCircleSharp, personAddSharp, chatboxEllipsesSharp, fastFoodSharp } from 'ionicons/icons';
 
-import './Dashboard.css';
+import "./Dashboard.css";
+
+import { useTranslation } from 'react-i18next';
+
+interface Exercise{
+    duration: string,
+    equipment: string,
+    name: string,
+    repetitions: string,
+    sets: string
+}
+
+interface ExerciseData{
+    day: string,
+    exercises: Exercise[]
+}
+
+interface Schedule{
+    days_per_week: number,
+    session_duration: number
+}
+
+interface WorkoutPlan{
+    goal: string,
+    fitness_level: string,
+    total_weeks: number,
+    schedule: Schedule,
+    exercises: ExerciseData[];
+    seo_title: string,
+    seo_content: string,
+    seo_keywords: string
+}
 
 const Dashboard: React.FC = () => {
+    const { t } = useTranslation("Dashboard");
     const [ message, setMessage ] = useState("");
     const [ showToast, setShowToast ] = useState(false);
+    const [ userId, setUserId ] = useState("");
     const router = useIonRouter();
+
+    const [ workoutsDone, setWorkoutsDone ] = useState(0);
+    const [ workoutProgression, setWorkoutProgression ] = useState();
+
+    const [ currentWorkoutPlan, setCurrentWorkoutPlan ] = useState<WorkoutPlan | null>(null);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const { data: userData, error: userError } = await supabase.auth.getUser();
+            if(!userData || userError){
+                console.log(userError);
+                setMessage(`User not found! ${userError?.message}`);
+                return;
+            }
+            
+            setUserId(userData.user.id);
+
+            const { data: userWorkoutPlanData,  error: userWorkoutPlanDataError } = await supabase
+            .from("workoutPlans")
+            .select("plan")
+            .eq("user_id", userData.user.id)
+            .single();
+            
+            if(userWorkoutPlanDataError){
+                console.log(userWorkoutPlanDataError);
+                setMessage("Error while fetching the user's workout plan!");
+                return;
+            }
+
+            setCurrentWorkoutPlan(userWorkoutPlanData.plan);
+
+            const { data: workoutsData,  error: workoutsError } = await supabase
+            .from("workouts")
+            .select("workoutFinished")
+            .eq("user_id", userData.user.id)
+            .single();
+            
+            if(workoutsError){
+                console.log(workoutsError);
+                setMessage("Error while fetching the user's workout plan!");
+                return;
+            }
+
+            setWorkoutsDone(workoutsData.workoutFinished);
+
+            
+        }
+
+        fetchUserData();
+    }, []);
 
     const handleLogOut = async () => {
         setMessage("");
@@ -29,33 +112,33 @@ const Dashboard: React.FC = () => {
             <IonHeader className='header'>
                 <IonToolbar className='toolbar'>
                     <IonTitle>
-                        Virtual Workout Assistant App
+                        {t("title")}
                     </IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent className='ion-padding page-content'>
                 <IonList className='list'>
                     <IonMenuToggle>
-                        <IonItem className='menuItem' routerLink='/settings'><IonIcon icon={settingsSharp} className='icon-black-version'></IonIcon>Settings</IonItem>
-                        <IonItem className='menuItem' routerLink='/profile'><IonIcon icon={personSharp} className='icon-black-version'></IonIcon>Profile</IonItem>
+                        <IonItem className='menuItem' routerLink='/settings'><IonIcon icon={settingsSharp} className='icon-black-version'></IonIcon>{t("settings")}</IonItem>
+                        <IonItem className='menuItem' routerLink='/profile'><IonIcon icon={personSharp} className='icon-black-version'></IonIcon>{t("profile")}</IonItem>
                         <IonItemDivider className='divider'></IonItemDivider>
-                        <IonItem className='menuItem' routerLink='/foodRecognizer'><IonIcon icon={scanSharp} className='icon-black-version'></IonIcon>Food Recognizer</IonItem>
-                        <IonItem className='menuItem' routerLink='/foodKB'><IonIcon icon={informationCircleSharp} className='icon-black-version'></IonIcon>FoodKB</IonItem>
-                        <IonItem className='menuItem' routerLink='/mealPlanner'><IonIcon icon={fastFoodSharp} className='icon-black-version'></IonIcon>Meal Planner</IonItem>
+                        <IonItem className='menuItem' routerLink='/foodRecognizer'><IonIcon icon={scanSharp} className='icon-black-version'></IonIcon>{t("foodRecognizer")}</IonItem>
+                        <IonItem className='menuItem' routerLink='/foodKB'><IonIcon icon={informationCircleSharp} className='icon-black-version'></IonIcon>{t("foodKB")}</IonItem>
+                        <IonItem className='menuItem' routerLink='/mealPlanner'><IonIcon icon={fastFoodSharp} className='icon-black-version'></IonIcon>{t("mealPlanner")}</IonItem>
                         <IonItemDivider className='divider'></IonItemDivider>
-                        <IonItem className='menuItem' routerLink='/forum'><IonIcon icon={chatboxEllipsesSharp} className='icon-black-version'></IonIcon>Forum</IonItem>
-                        <IonItem className='menuItem' routerLink='/addFriends'><IonIcon icon={personAddSharp} className='icon-black-version'></IonIcon>Add Friends</IonItem>
-                        <IonItem className='menuItem' routerLink='/myChats'><IonIcon icon={chatbubblesSharp} className='icon-black-version'></IonIcon>My Chats</IonItem>
+                        <IonItem className='menuItem' routerLink='/forum'><IonIcon icon={chatboxEllipsesSharp} className='icon-black-version'></IonIcon>{t("forum")}</IonItem>
+                        <IonItem className='menuItem' routerLink='/addFriends'><IonIcon icon={personAddSharp} className='icon-black-version'></IonIcon>{t("addFriends")}</IonItem>
+                        <IonItem className='menuItem' routerLink='/myChats'><IonIcon icon={chatbubblesSharp} className='icon-black-version'></IonIcon>{t("myChats")}</IonItem>
                         <IonItemDivider className='divider'></IonItemDivider>
-                        <IonItem className='menuItem' routerLink='/workoutGenerator'><IonIcon icon={barbellSharp} className='icon-black-version'></IonIcon>Workout Generator</IonItem>
-                        <IonItem className='menuItem' routerLink='/myWorkouts'><IonIcon icon={walkSharp} className='icon-black-version'></IonIcon>My Workouts</IonItem>
+                        <IonItem className='menuItem' routerLink='/workoutGenerator'><IonIcon icon={barbellSharp} className='icon-black-version'></IonIcon>{t("workoutGenerator")}</IonItem>
+                        <IonItem className='menuItem' routerLink='/myWorkoutPlans'><IonIcon icon={walkSharp} className='icon-black-version'></IonIcon>{t("myWorkouts")}</IonItem>
                     </IonMenuToggle>
                 </IonList>
             </IonContent>
             <IonFooter className='footer'>
                 <IonToolbar className='footerToolbar'>
                     <IonItem className='footerItem'>
-                        <IonButton className='logOutButton' onClick={handleLogOut}>Logout</IonButton>
+                        <IonButton className='logOutButton' onClick={handleLogOut}>{t("logout")}</IonButton>
                     </IonItem>
                 </IonToolbar>
                 <IonToast
@@ -69,10 +152,15 @@ const Dashboard: React.FC = () => {
         <IonPage id='main-content' className='page'>
             <IonHeader>
                 <IonButtons slot="start">
-                    <IonMenuButton></IonMenuButton>
+                    <IonMenuButton className='menuButton'></IonMenuButton>
                 </IonButtons>
             </IonHeader>
-            <IonContent className='ion-padding page-content'>Dashboard UI goes here...</IonContent>
+            <IonContent className='ion-padding page-content'>
+                <IonCard>
+                    <IonCardTitle></IonCardTitle>
+                    <IonCardSubtitle></IonCardSubtitle>
+                </IonCard>
+            </IonContent>
         </IonPage>
        </>
     );

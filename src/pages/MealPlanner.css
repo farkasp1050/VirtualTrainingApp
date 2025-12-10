@@ -1,6 +1,6 @@
 .page{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
 }
 
 ion-header{
@@ -8,8 +8,8 @@ ion-header{
 }
 
 .page-content{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     align-items: center;
     font-family:'Times New Roman', Times, serif;
     font-size: 1.5em;
@@ -36,6 +36,7 @@ ion-header{
     height: 50px;
 }
 
-.mealResult{
-    
+.outer-container{
+    display: flex;
+    gap: 30px;
 }

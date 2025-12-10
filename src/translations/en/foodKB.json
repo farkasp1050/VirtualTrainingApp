@@ -1,0 +1,21 @@
+{
+    "title": "FoodKB",
+    "loading": "Loading...",
+    "name": "Name",
+    "addedAt": "Added at",
+    "quantity": "Quantity",
+    "fat": "Fat",
+    "calorie": "Calorie",
+    "carbohydrate": "Carbohydrate",
+    "protein": "Protein",
+    "update": "Update",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "deleteFood": "Delete Food",
+    "dailyQuantity": "Daily quantity",
+    "dailyCalorie": "Daily Calorie",
+    "dailyFat": "Daily Fat",
+    "dailyProtein": "Daily Protein",
+    "dailyCarbohydrate": "Daily Carbohydrate",
+    "placeholderName": "Apple"
+}

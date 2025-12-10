@@ -1,0 +1,21 @@
+{
+    "title": "Étel Adatbázis",
+    "loading": "Betöltés...",
+    "name": "Név",
+    "addedAt": "Hozzáadva ekkor",
+    "quantity": "Mennyiség",
+    "fat": "Zsír",
+    "calorie": "Kalória",
+    "carbohydrate": "Szénhidrát",
+    "protein": "Fehérje",
+    "update": "Módosítás",
+    "delete": "Törlés",
+    "cancel": "Mégse",
+    "deleteFood": "Étel törlése",
+    "dailyQuantity": "Napi mennyiség",
+    "dailyCalorie": "Napi kalória",
+    "dailyFat": "Napi zsír",
+    "dailyProtein": "Napi fehérje",
+    "dailyCarbohydrate": "Napi szénhidrát",
+    "placeholderName": "Alma"
+}

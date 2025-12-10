@@ -1,6 +1,6 @@
 .page{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
 }
 
 ion-header{
@@ -8,8 +8,8 @@ ion-header{
 }
 
 .page-content{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     align-items: center;
     font-family:'Times New Roman', Times, serif;
     font-size: 1.5em;
@@ -24,19 +24,20 @@ ion-header{
 .updateButton,
 .cancelButton,
 .saveButton{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: black;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     --box-shadow: 2px 0px 4px black;
     border-radius: 4px;
 }
 
 .dataRow{
-    padding: 2px;
+    padding: 5px;
     margin: 0;
     --inner-padding-start: 0px;
     --inner-padding-end: 0px;
-    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
+    width: max-content;
 }
 
 .list, .list ion-item, .list ion-input, .dataColumn{
@@ -44,8 +45,8 @@ ion-header{
     margin: 0;
     --inner-padding-start: 0px;
     --inner-padding-end: 0px;
-    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     border-radius: 2%;
     box-shadow: 2px 0px 4px black;
 }
@@ -60,6 +61,7 @@ ion-header{
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: minmax(700px, auto);
+    overflow-x: auto;
 }
 
 .grid{
@@ -69,6 +71,8 @@ ion-header{
 
 .header{
     display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
     border-bottom: 4px solid red !important;
 }
 
@@ -90,8 +94,8 @@ input[type=number]::-webkit-outer-spin-button {
     font-family:'Times New Roman', Times, serif;
     font-size: 20px;
     text-transform: none;
-    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     text-decoration: none;
     font-variant: normal;
     min-height: 50px;
@@ -109,7 +113,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dateInput{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
+    --ion-background-color: var(--mainBase);
     --color: red;
     width: 250px;
     border-color: red;

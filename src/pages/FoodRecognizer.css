@@ -1,6 +1,6 @@
 .page{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
 }
 
 ion-header{
@@ -8,8 +8,8 @@ ion-header{
 }
 
 .page-content{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     align-items: center;
     font-family:'Times New Roman', Times, serif;
     font-size: 1.5em;
@@ -23,8 +23,8 @@ ion-header{
 }
 
 .photo{
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     border-radius: 5%;
     border-radius: 20px 20px 20px 20px;
     box-shadow: 0px 0px 10px rgb(220, 57, 57);

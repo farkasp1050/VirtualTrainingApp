@@ -6,7 +6,10 @@ import React, { useState } from 'react';
 
 import "./Register.css";
 
+import { useTranslation } from 'react-i18next';
+
 const Register: React.FC = () => {
+    const { t } = useTranslation("Register");
     const router = useIonRouter();
     const [ password, setPassword ] = useState("");
     const [ fullName, setFullName ] = useState("");
@@ -59,7 +62,7 @@ const Register: React.FC = () => {
     return (
         <IonPage className='page'>
             <IonButtons>
-                <IonBackButton defaultHref='/login'/>
+                <IonBackButton className='backButton' defaultHref='/login'/>
             </IonButtons>
             <IonContent className="ion-padding page-content" style={{ marginTop: "100px" }}>
                 <IonGrid fixed>
@@ -73,16 +76,16 @@ const Register: React.FC = () => {
                     <IonRow class='ion-justify-content-center'>
                         <IonCol size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
                             <IonText color="secondary">
-                                <h2>Create an Account</h2>
+                                <h2>{t("createAccount")}</h2>
                             </IonText>
                             <form onSubmit={handleRgister} className='form'>
                                 <IonItem>
                                     <IonIcon aria-hidden='true' icon={personCircle} slot='start'></IonIcon>
-                                    <IonInput label='Full Name' value={fullName} onIonChange={e => setFullName(String(e.detail.value))} type='text' labelPlacement='floating' fill='outline' required placeholder='John Doe'></IonInput>
+                                    <IonInput label='Full Name' value={fullName} onIonChange={e => setFullName(String(e.detail.value))} type='text' labelPlacement='floating' fill='outline' required placeholder={t("namePlaceholder")}></IonInput>
                                 </IonItem>
                                 <IonItem>
                                     <IonIcon aria-hidden='true' icon={mail} slot='start'></IonIcon>
-                                    <IonInput label='Email' onIonChange={e => setEmail(String(e.detail.value))} value={email} type='email' labelPlacement='floating' fill='outline' required placeholder='somebody@something.com'></IonInput>
+                                    <IonInput label='Email' onIonChange={e => setEmail(String(e.detail.value))} value={email} type='email' labelPlacement='floating' fill='outline' required placeholder={t("emailPlaceholder")}></IonInput>
                                 </IonItem>
                                 <IonItem>
                                     <IonIcon aria-hidden='true' icon={lockClosed} slot='start'></IonIcon>
@@ -93,7 +96,7 @@ const Register: React.FC = () => {
                                     <IonRow>
                                         <IonCol size='12'>
                                             <IonButton type='submit' color={'primary'} shape='round' className='ion-margin-top' expand='block'>
-                                                Register
+                                                {t("register")}
                                                 <IonIcon icon={person} style={{ marginLeft: "5px" }}></IonIcon>
                                             </IonButton>
                                         </IonCol>

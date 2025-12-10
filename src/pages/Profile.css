@@ -3,8 +3,8 @@ ion-avatar {
 }
 
 .page{
-    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
 }
 
 ion-header{
@@ -12,10 +12,15 @@ ion-header{
 }
 
 .list{
-  background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
-  color: #ff0000;
+  background-color: var(--neutralBackground);
+  --ion-text-color: var(--baseContent);
+  width: 80%;
   padding: 0;
   margin: 0;
+}
+
+.fileInput{
+  --background-color: var(--neutralBackground);
 }
 
 .page-content ion-avatar{
@@ -23,6 +28,7 @@ ion-header{
     height: 60px;
     border: 1px solid #ff0000;
     overflow: hidden;
+    padding: 50px auto;
 }
 
 .list ion-item::part(native), .list ion-select, .list ion-input, .list ion-select{
@@ -30,8 +36,8 @@ ion-header{
   margin: 0;
   --inner-padding-start: 0px;
   --inner-padding-end: 0px;
-  background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
-  color: #ff0000;
+  --ion-background-color: var(--mainBase);
+  --ion-text-color: var(--baseContent);
 }
 
 .friends, .friends ion-item, .friends ion-item ion-avatar, .friends ion-item ion-label{
@@ -39,11 +45,14 @@ ion-header{
   margin: 0;
   --inner-padding-start: 0px;
   --inner-padding-end: 0px;
-  background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
-  color: #ff0000;
+  --ion-background-color: var(--mainBase);
+  --ion-text-color: var(--baseContent);
 }
 
 .friendsContent::part(native){
+  background-color: var(--mainBase);
+  --ion-text-color: var(--baseContent);
   padding: 0;
   margin: 0;
+  width: 80%;
 }

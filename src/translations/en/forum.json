@@ -1,0 +1,11 @@
+{
+    "title": "Forum",
+    "loading": "Loading...",
+    "name": "Name",
+    "createdAt": "Created At",
+    "description": "Description",
+    "placeholderDesc": "Description of the post",
+    "cancel": "Cancel",
+    "save": "Save",
+    "commentText": "Write a comment..."
+}

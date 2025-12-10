@@ -1,0 +1,59 @@
+:root{
+    --mainBase: #f8f8f8;
+    --secondaryBase: #f2f2f2;
+    --backupBase: #e4e4e7;
+    --baseContent: #18181b;
+
+    --primaryBackground: #e50006;
+    --primaryContent: #fef2f2;
+
+    --secondaryBackground: #ea003e;
+    --secondaryContent: #fceeef;
+
+    --importantBackground: #000000;
+    --importantContent: #ffffff;
+    --neutralBackground: #3f3f46;
+    --neutralContent: #f8f8f8;
+
+    --infoBackground: #0090b5;
+    --infoContent: #ebfdfe;
+
+    --successBackground: #00a43b;
+    --successContent: #effcf3;
+
+    --warningBackground: #f34700;
+    --warningContent: #fff7ed;
+
+    --errorBackground: #e50006;
+    --errorContent: #fef2f2;
+}
+
+.darkMode{
+    --mainBase: #1d232a;
+    --secondaryBase: #191e24;
+    --backupBase: #15191e;
+    --baseContent: #ecf9ff;
+
+    --primaryBackground: #605dff;
+    --primaryContent: #edf1fe;
+
+    --secondaryBackground: #f43098;
+    --secondaryContent: #f9e4f0;
+
+    --importantBackground: #00d3bb;
+    --importantContent: #084d49;
+    --neutralBackground: #09090b;
+    --neutralContent: #e4e4e7;
+
+    --infoBackground: #00bafe;
+    --infoContent: #042e49;
+
+    --successBackground: #00d390;
+    --successContent: #004c39;
+
+    --warningBackground: #fcb700;
+    --warningContent: #793205;
+
+    --errorBackground: #ff627d;
+    --errorContent: #4d0218;
+}

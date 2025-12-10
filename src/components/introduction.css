@@ -1,22 +1,12 @@
 .page{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    background-color: var(--mainBase);
+    color: var(--baseContent);
 }
 
 .page-content{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    background-color: var(--secondaryBase);
+    color: var(--baseContent);
     align-items: center;
-}
-
-.swiper{
-    margin: 0;
-    padding: 0;
-}
-
-.swiperSlide{
-    margin: 0;
-    padding: 0;
 }
 
 .inputContainer{
@@ -32,6 +22,11 @@
 }
 
 .input{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    background-color: var(--mainBase);
+    color: var(--baseContent);
+}
+
+.button{
+    --background: var(--neutralBackground);
+    --color: var(--neutralContent);
 }

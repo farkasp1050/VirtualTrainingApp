@@ -1,6 +1,6 @@
 .page{
-    background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    color: #ff0000;
+    --ion-background-color: var(--mainBase);
+  --ion-text-color: var(--baseContent);
 }
 
 ion-header{
@@ -8,8 +8,8 @@ ion-header{
 }
 
 .page-content{
-    --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-    --color: #ff0000;
+    --ion-background-color: var(--mainBase);
+    --ion-text-color: var(--baseContent);
     align-items: center;
     display: flex;
     justify-content: center;
@@ -33,13 +33,17 @@ ion-header{
     min-height: 300px;
     max-height: 1200px;
     
-    background: linear-gradient(90deg,rgb(35, 11, 11) 30%, rgb(5, 0, 0) 88%);
-    border-color: #e09393;
+    background: var(--neutralBackground);
     border-radius: 10px;
     padding: 2em;
     box-shadow: 0 3em 10em rgba(0, 0, 0, 0.7);
 }
 
-ion-select{
-    margin-bottom: 40px;
+ion-input{
+    background-color: var(--mainBase);
+}
+
+.version{
+    background: var(--neutralBackground);
+    color: var(--baseContent);
 }

@@ -6,9 +6,13 @@ import { supabase } from '../services/supabaseClient';
 import { send } from 'ionicons/icons';
 
 import "./Forum.css";
+
+import { useTranslation } from 'react-i18next';
+
 import { incrementForumPostReply, incrementForumPost } from '../badges';
 
 const Forum: React.FC = () => {
+    const { t } = useTranslation("Forum");
     const [ forumDesc, setForumDesc ] = useState("");
     const [ authorName, setAuthorName ] = useState("");
     const [ postDate, setPostDate ] = useState(Date);
@@ -195,14 +199,14 @@ const Forum: React.FC = () => {
         <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton defaultHref='/dashboard' />
-                    <IonTitle className='ion-text-end'>Forum</IonTitle>
+                    <IonBackButton className='backButton' defaultHref='/dashboard' />
+                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
             
             { loading ? (
                 <IonContent className='page-content'>
-                    <p>Loading...</p>
+                    <p>{t("loading")}</p>
                 </IonContent>
             ) : (
             <IonContent className="ion-padding page-content">
@@ -214,31 +218,31 @@ const Forum: React.FC = () => {
                         header='Create Post'
                         inputs={[
                             {
-                                name: "authorName",
+                                name: t("name"),
                                 type: "text",
                                 disabled: true,
                                 value: String(authorName),
                             },
                             {
-                                name: "created_at",
+                                name: t("createdAt"),
                                 type: "datetime-local",
                                 disabled: true,
                                 value: new Date().toISOString().slice(0, 16),
                             },
                             {
-                                name: "description",
+                                name: t("description"),
                                 type: "text",
                                 disabled: false,
-                                placeholder: "Post description"
+                                placeholder: t("placeholderDesc")
                             },
                         ]}
                         buttons={[
                             {
-                                text: 'Cancel',
+                                text: t("cancel"),
                                 role: 'cancel',
                             },
                             {
-                                text: 'Save',
+                                text: t("save"),
                                 role: 'confirm',
                                 handler: (data) => {
                                     handleAddPost(data);
@@ -270,7 +274,7 @@ const Forum: React.FC = () => {
                             ))}
                             <IonItem className='writeComment'>
                                 <IonIcon aria-hidden='true' icon={send} className='sendCommentButton' slot='end' onClick={() => handleCommentSubmit(post.id)}></IonIcon>
-                                <IonInput label='Write a comment' value={commentDesc} onIonChange={e => setCommentDesc(String(e.detail.value))} type='text' labelPlacement='floating' fill='outline'  required placeholder='Text goes here!'></IonInput>
+                                <IonInput label='Write a comment' value={commentDesc} onIonChange={e => setCommentDesc(String(e.detail.value))} type='text' labelPlacement='floating' fill='outline'  required placeholder={t("commentText")}></IonInput>
                             </IonItem>
                     </IonCard>
                 ))}

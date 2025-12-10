@@ -1,5 +1,5 @@
 ion-menu::part(backdrop) {
-  background-color: rgba(150, 54, 54, 0.4);
+  --ion-background-color: var(--secondaryBase);
 }
 
 ion-menu::part(container) {
@@ -21,13 +21,18 @@ ion-menu::part(container) {
 }
 
 .page{
-  background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-  color: #ff0000;
+  --ion-background-color: var(--mainBase);
+  --ion-text-color: var(--baseContent);
+}
+
+.page .menuButton{
+    --background: var(--mainBase);
+    --color: var(--baseContent);
 }
 
 .page-content{
-  --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-  --color: #ff0000;
+  background-color: var(--mainBase);
+  color: var(--baseContent);
   align-items: center;
   font-family:'Times New Roman', Times, serif;
   font-size: 1.5em;
@@ -47,15 +52,14 @@ ion-menu::part(container) {
 }
 
 .footerToolbar{
-  --background: linear-gradient(20deg, #121212 39%, #4d4d4d 93%);
-  --color: #ff0000;
+  --ion-background-color: var(--backupBase);
+  --ion-text-color: var(--baseContent);
   padding: 0;
   margin: 0;
 }
 
 .footerItem{
-  --background: #a13e33;
-  --background: linear-gradient(90deg,rgba(161, 62, 51, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  --ion-background-color: var(--secondaryBase);
   width: 100%;
 
   --padding-start: 0px;
@@ -70,9 +74,10 @@ ion-menu::part(container) {
 }
 
 .logOutButton{
-  --background: #000000;
-  --background: linear-gradient(90deg,rgb(14, 13, 13) 0%, rgb(141, 69, 69) 100%);
-  width: 100%;
+  --background: var(--secondaryBase);
+  --color: var(--baseContent);
+  width: 50%;
+  margin-left: 25%;
 
   --padding-start: 0px;
   --padding-end: 0px;
@@ -86,27 +91,24 @@ ion-menu::part(container) {
 }
 
 .header{
-  --background: #a13e33;
-  --background: linear-gradient(90deg,rgba(161, 62, 51, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  --background: var(--secondaryBase);
   padding: 0;
   margin: 0;
 }
 
 .toolbar{
-  --background: #a13e33;
-  --background: linear-gradient(90deg,rgba(161, 62, 51, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  --background: var(--secondaryBase);
+  --color: var(--baseContent);
   padding: 0;
   margin: 0;
 }
 
 .divider{
-  --background: #825b56;
-  --background: linear-gradient(90deg,rgb(17, 10, 9) 0%, rgba(0, 0, 0, 1) 100%);
+  --background: var(--secondaryBase);
 }
 
 .menuItem{
-  --background: #a13e33;
-  --background: linear-gradient(90deg,rgba(161, 62, 51, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  --background: var(--secondaryBase);
   
   --padding-start: 0px;
   --padding-end: 0px;

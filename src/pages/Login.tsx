@@ -1,5 +1,5 @@
 import { IonContent, IonHeader, IonGrid, IonToast, IonRow, IonCol, IonIcon, IonAvatar, IonButton, IonList, IonInputPasswordToggle, IonPage, IonTitle, IonToolbar, IonInput, IonText, IonItem, IonLabel, useIonRouter } from '@ionic/react';
-import { mail, lockClosed, person, exit } from 'ionicons/icons';
+import { mail, lockClosed, person, exit, logoGoogle } from 'ionicons/icons';
 import loginPicture from '../assets/loginPicture.png';
 import React, { useState, useEffect } from 'react';
 import Splash from '../components/Splash';
@@ -7,11 +7,14 @@ import { Preferences } from '@capacitor/preferences';
 
 import { supabase } from '../services/supabaseClient';
 
+import { useTranslation } from 'react-i18next';
+
 import "./Login.css";
 
 const PREF_KEY = 'splashActive';
 
-const Login: React.FC = () => { 
+const Login: React.FC = () => {
+	const { t } = useTranslation("Login");
 	const router = useIonRouter();
 	const [ splashActive, setSplashActive ] = useState(true);
 	const [ email, setEmail ] = useState('');
@@ -59,6 +62,12 @@ const Login: React.FC = () => {
 		router.push("/Splash");
 	}
 
+	const signInWithProvider = async () => {
+		await supabase.auth.signInWithOAuth({
+			provider: "google",
+		});
+	};
+
 	return (
 	<>
 	{splashActive ? (
@@ -77,13 +86,13 @@ const Login: React.FC = () => {
 
 					<IonRow class='ion-justify-content-center'>
 						<IonCol size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
-							<IonText color="secondary">
-								<h2>Login</h2>
+							<IonText color="primary">
+								<h2>{t("title")}</h2>
 							</IonText>
 							<form onSubmit={handleLogin} className='form'>
 								<IonItem>
 									<IonIcon aria-hidden='true' icon={mail} slot='start'></IonIcon>
-									<IonInput label='Email' value={email} onIonChange={e => setEmail(String(e.detail.value))} type='email' labelPlacement='floating' fill='outline'  required placeholder='somebody@something.com'></IonInput>
+									<IonInput label='Email' value={email} onIonChange={e => setEmail(String(e.detail.value))} type='email' labelPlacement='floating' fill='outline'  required placeholder={t("emailPlaceholder")}></IonInput>
 								</IonItem>
 								<IonItem>
 									<IonIcon aria-hidden='true' icon={lockClosed} slot='start'></IonIcon>
@@ -93,19 +102,25 @@ const Login: React.FC = () => {
 								</IonItem>
 									<IonRow>
 										<IonCol size='6'>
-											<IonButton type='submit' size='default' color={'primary'} shape='round' className='ion-margin-top' expand='block'>
-												Login
+											<IonButton type='submit' size='default' shape='round' className='ion-margin-top button' expand='block'>
+												{t("login")}
 												<IonIcon icon={exit} style={{ marginLeft: "5px" }}></IonIcon>
 											</IonButton>
 										</IonCol>
 										<IonCol size='6'>
-											<IonButton routerLink='/register' size='default' color={'secondary'} shape='round' className='ion-margin-top' expand='block'>
-												Register
+											<IonButton routerLink='/register' size='default' shape='round' className='ion-margin-top button' expand='block'>
+												{t("register")}
 												<IonIcon icon={person} style={{ marginLeft: "5px" }}></IonIcon>
 												</IonButton>
 										</IonCol>
+										<IonCol size='6'>
+											<IonButton type='submit' onClick={signInWithProvider} shape='round' className='ion-margin-top button' expand='block'>
+												
+												<IonIcon icon={logoGoogle} style={{ marginLeft: "5px" }}></IonIcon>
+											</IonButton>
+										</IonCol>
 									</IonRow>
-								<IonButton color={'secondary'} className='introAgainButton' onClick={introAgain} type='button' shape='round'>Watch Intro Again</IonButton>
+								<IonButton className='button' onClick={introAgain} type='button' shape='round'>{t("introAgain")}</IonButton>
 							</form>
 							<IonToast
 								isOpen={showToast}

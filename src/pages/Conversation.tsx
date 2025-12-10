@@ -8,6 +8,8 @@ import { send } from 'ionicons/icons';
 
 import "./Conversation.css";
 
+import { useTranslation } from 'react-i18next';
+
 interface Friendship{
     id: string,
     created_at: string,
@@ -26,6 +28,7 @@ interface Message{
 }
 
 const Conversation: React.FC = () => {
+    const { t } = useTranslation("Conversation");
     const { friendshipId } = useParams<{ friendshipId: string }>();
     const [ message, setMessage ] = useState("");
     const [ showToast, setShowToast ] = useState(false);
@@ -122,15 +125,15 @@ const Conversation: React.FC = () => {
         <IonPage className='page'>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton defaultHref='/dashboard' />
-                    <IonTitle className='ion-text-end'>Current Chat</IonTitle>
+                    <IonBackButton className='backButton' defaultHref='/dashboard' />
+                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
             <IonContent className="ion-padding page-content">
                 <div className='chatContent'>
                         {messages.length === 0 ? (
                             <div className='empty'>
-                                No message history. Write something now!
+                                {t("noChats")}
                             </div>
                         ) : (
                             <div className='messages'>
