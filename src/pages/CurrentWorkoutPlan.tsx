@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 import { Check } from "lucide-react";
 
-import "./CurrentWorkoutPlan.css";
+import styles from "./CurrentWorkoutPlan.module.css";
 
 import { useTranslation } from 'react-i18next';
 
@@ -30,8 +30,7 @@ interface workouts{
     user_id: string,
     workoutPlan_id: string,
     exercise: ExerciseData[],
-    workoutFinished: number,
-    finished: boolean
+    workoutFinished: number
 }
 
 const CurrentWorkoutPlan: React.FC = () => {
@@ -55,7 +54,7 @@ const CurrentWorkoutPlan: React.FC = () => {
     
             const { data: workoutData, error: workoutDataError } = await supabase
             .from("workouts")
-            .select("id, created_at, user_id, workoutPlan_id, exercise, workoutFinished, finished")
+            .select("id, created_at, user_id, workoutPlan_id, exercise, workoutFinished")
             .eq("workoutPlan_id", workoutPlanId)
             .eq("user_id", userData.user.id)
             .single();
@@ -73,23 +72,23 @@ const CurrentWorkoutPlan: React.FC = () => {
     }, []);
     
     return (
-        <IonPage className='page'>
+        <IonPage className={styles.page}>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton className='backButton' defaultHref='/myWorkoutPlans'/>
-                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref='/myWorkoutPlans'/>
+                    <IonTitle className={styles.title}>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding page-content">
+            <IonContent className={styles.content}>
                 {!workouts && (
-                    <p>You dont have a workout plan yet. Create one now!</p>
+                    <p className={styles.loading}>You dont have a workout plan yet. Create one now!</p>
                 )}
                 {workouts && workouts.exercise.map((workout, index) => (
-                    <IonCard key={index} routerLink={`/currentWorkout/${workoutPlanId}/${index}`}>
-                        <IonCardHeader>
-                            <IonCardTitle>{index + 1}# workout</IonCardTitle>
+                    <IonCard className={styles.card} key={index} routerLink={`/currentWorkout/${workoutPlanId}/${index}`}>
+                        <IonCardHeader className={styles.header}>
+                            <IonCardTitle className={styles.title}>{index + 1}# workout</IonCardTitle>
                         </IonCardHeader>
-                        <IonCardContent>{workout.day}</IonCardContent>
+                        <IonCardContent className={styles.content}>{workout.day}</IonCardContent>
                     </IonCard>
                 ))}
             <IonToast

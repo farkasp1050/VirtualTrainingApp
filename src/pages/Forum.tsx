@@ -1,11 +1,11 @@
-import { IonContent, IonHeader, IonFab, IonToast, IonAlert, IonItemDivider, IonRow, IonCol, IonIcon, IonFabButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonButtons, IonList, IonInput, IonItem, IonBackButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonFab, IonToast, IonAlert, IonItemDivider, IonRow, IonCol, IonIcon, IonFabButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonButtons, IonList, IonInput, IonItem, IonBackButton, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { add } from 'ionicons/icons';
+import { add, heartOutline, chatbubbleOutline } from 'ionicons/icons';
 import { supabase } from '../services/supabaseClient';
 import { send } from 'ionicons/icons';
 
-import "./Forum.css";
+import styles from "./Forum.module.css";
 
 import { useTranslation } from 'react-i18next';
 
@@ -55,7 +55,7 @@ const Forum: React.FC = () => {
     const fetchForumPosts = async () => {
         const { data: forumData, error: forumError } = await supabase
         .from("forumPosts")
-        .select("id, created_at, authorName, description")
+        .select("id, created_at, authorName, description, forumLike, forumComment")
         
         if(forumError){
             console.log(forumError);
@@ -149,6 +149,21 @@ const Forum: React.FC = () => {
         setUserCommentCounter(currentCommentNumber);
     }
 
+    const handleIncrementLike = async (postId: string) => {
+        const { data: getLike } = await supabase
+        .from("forumPosts")
+        .select("forumLike")
+        .eq("id", postId)
+        .single();
+
+        const { error: incrementLikeError } = await supabase
+        .from("forumPosts")
+        .update({
+            forumLike: getLike?.forumLike + 1
+        })
+        .eq("id", postId);
+    }
+
     const handleAddPost = async (data: any) => {
         const { error: forumDataInsertError } = await supabase
         .from("forumPosts")
@@ -189,6 +204,19 @@ const Forum: React.FC = () => {
             return;
         }
 
+        const { data: getComment } = await supabase
+        .from("forumPosts")
+        .select("forumComment")
+        .eq("id", data)
+        .single();
+
+        const { error: incrementLikeError } = await supabase
+        .from("forumPosts")
+        .update({
+            forumComment: getComment?.forumComment + 1
+        })
+        .eq("id", data);
+
         updateMilestoneForReply(userId);
         setMessage("Comment saved successfully!");
         setCommentDesc("");
@@ -196,23 +224,23 @@ const Forum: React.FC = () => {
     }
 
     return (
-        <IonPage className='page'>
+        <IonPage className={styles.page}>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton className='backButton' defaultHref='/dashboard' />
-                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref='/dashboard' />
+                    <IonTitle className={styles.title}>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
             
             { loading ? (
-                <IonContent className='page-content'>
-                    <p>{t("loading")}</p>
+                <IonContent className={styles.content}>
+                    <p className={styles.loading}>{t("loading")}</p>
                 </IonContent>
             ) : (
-            <IonContent className="ion-padding page-content">
+            <IonContent className={styles.content}>
                 <IonFab vertical='top' horizontal='end' slot='fixed'>
-                <IonFabButton id='triggerPostSave' color="primary" className='addPostButton'>
-                    <IonIcon icon={add}/>
+                <IonFabButton id='triggerPostSave' color="primary">
+                    <IonIcon icon={add} className={styles.icon}/>
                     <IonAlert
                         trigger='triggerPostSave'
                         header='Create Post'
@@ -253,28 +281,28 @@ const Forum: React.FC = () => {
                 </IonFabButton>
                 </IonFab>
                 {posts.map((post) => (
-                    <IonCard key={post.id} className='forumPost'>
-                        <IonCardHeader className='forumHeader' style={{ display: "flex", justifyContent: "space-between"}}>
-                            <IonCardSubtitle className='forumSub'>{post.authorName}</IonCardSubtitle>
-                            <IonCardSubtitle className='forumSub'>{new Date(post.created_at).toLocaleString()}</IonCardSubtitle>
+                    <IonCard key={post.id} className={styles.forumCard}>
+                        <IonCardHeader className={styles.forumHeader}>
+                            <IonCardSubtitle className={styles.forumSubtitle}>{post.authorName}</IonCardSubtitle>
+                            <IonCardSubtitle className={styles.forumSubtitle}>{new Date(post.created_at).toLocaleString()}</IonCardSubtitle>
                         </IonCardHeader>
 
-                        <IonCardContent className='forumContent'>{post.description}</IonCardContent>
+                        <IonCardContent className={styles.forumContent}>{post.description}</IonCardContent>
                             {comments.map((comment) => (
                                 comment.forumPost_id === post.id ? (
-                                    <IonCard className='forumComment' key={comment.id} color="primary">
-                                        <IonCardHeader className='commentHeader' style={{ display: "flex", justifyContent: "space-between"}}>
-                                            <IonCardSubtitle>{comment.authorName}</IonCardSubtitle>
-                                            <IonCardSubtitle>{new Date(comment.created_at).toLocaleString()}</IonCardSubtitle>
+                                    <IonCard className={styles.forumContentContainer} key={comment.id} color="primary">
+                                        <IonCardHeader className={styles.forumContentHeader} style={{ display: "flex", justifyContent: "space-between"}}>
+                                            <IonCardSubtitle className={styles.forumContentSubtitle}>{comment.authorName}</IonCardSubtitle>
+                                            <IonCardSubtitle className={styles.forumContentSubtitle}>{new Date(comment.created_at).toLocaleString()}</IonCardSubtitle>
                                         </IonCardHeader>
 
-                                        <IonCardContent className='commentContent'>{comment.description}</IonCardContent>
+                                        <IonCardContent className={styles.forumContent}>{comment.description}</IonCardContent>
                                     </IonCard>
                                 ) : null
                             ))}
-                            <IonItem className='writeComment'>
-                                <IonIcon aria-hidden='true' icon={send} className='sendCommentButton' slot='end' onClick={() => handleCommentSubmit(post.id)}></IonIcon>
-                                <IonInput label='Write a comment' value={commentDesc} onIonChange={e => setCommentDesc(String(e.detail.value))} type='text' labelPlacement='floating' fill='outline'  required placeholder={t("commentText")}></IonInput>
+                            <IonItem className={styles.forumComment}>
+                                <IonIcon className={styles.icon} aria-hidden='true' icon={send} slot='end' onClick={() => handleCommentSubmit(post.id)}></IonIcon>
+                                <IonInput className={styles.input} label='Write a comment' value={commentDesc} onIonChange={e => setCommentDesc(String(e.detail.value))} type='text' labelPlacement='floating' fill='outline'  required placeholder={t("commentText")}></IonInput>
                             </IonItem>
                     </IonCard>
                 ))}

@@ -3,7 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
 
-import "./introduction.css";
+import styles from "./basicDataSplash.module.css";
 
 import { barbellOutline, accessibilityOutline, calendarNumberOutline, maleFemaleOutline, fastFoodOutline, happyOutline } from 'ionicons/icons';
 
@@ -91,70 +91,72 @@ const basicDataSplash: React.FC = () => {
     }
 
     return (
-        <IonPage className='page'>
-            <IonContent className='page-content'>
-                <IonGrid fixed>
-					<IonRow class='ion-justify-content-center'>
-						<IonCol size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
-							<IonText color="primary">
-								<h2>Give some more information</h2>
-							</IonText>
-							<form className='form'>
-                                <IonItem>
-                                    <IonIcon aria-hidden='true' icon={barbellOutline} slot='start'></IonIcon>
-                                    <IonInput label='Weight' value={weight} onIonChange={e => { setWeight(Number(e.detail.value)); setIsWeightSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
-                                </IonItem>
-                                {isWeightSet && (
-                                    <IonItem>
-                                        <IonIcon aria-hidden='true' icon={accessibilityOutline} slot='start'></IonIcon>
-                                        <IonInput label='Height' value={height} onIonChange={e => { setHeight(Number(e.detail.value)); setIsHeightSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+        <IonPage className={styles.page}>
+            <IonContent className={styles.content}>
+                <div className={styles.grid}>
+                    <IonGrid>
+                        <IonRow className={styles.mainRow}>
+                            <IonCol className={styles.mainCol} size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
+                                <IonText className={styles.titleContainer}>
+                                    <h2 className={styles.title}>Give some more information</h2>
+                                </IonText>
+                                <form className={styles.form}>
+                                    <IonItem className={styles.item}>
+                                        <IonIcon aria-hidden='true' icon={barbellOutline} slot='start' className={styles.icon}></IonIcon>
+                                        <IonInput className={styles.input} label='Weight' value={weight} onIonChange={e => { setWeight(Number(e.detail.value)); setIsWeightSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
                                     </IonItem>
-                                )}
+                                    {isWeightSet && (
+                                        <IonItem className={styles.item}>
+                                            <IonIcon aria-hidden='true' icon={accessibilityOutline} slot='start' className={styles.icon}></IonIcon>
+                                            <IonInput className={styles.input} label='Height' value={height} onIonChange={e => { setHeight(Number(e.detail.value)); setIsHeightSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+                                        </IonItem>
+                                    )}
 
-                                {isHeightSet && (
-                                    <IonItem>
-                                        <IonIcon aria-hidden='true' icon={calendarNumberOutline} slot='start'></IonIcon>
-                                        <IonInput label='Age' value={age} onIonChange={e => { setAge(Number(e.detail.value)); setIsAgeSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
-                                    </IonItem>
-                                )}
+                                    {isHeightSet && (
+                                        <IonItem className={styles.item}>
+                                            <IonIcon aria-hidden='true' icon={calendarNumberOutline} slot='start' className={styles.icon}></IonIcon>
+                                            <IonInput className={styles.input} label='Age' value={age} onIonChange={e => { setAge(Number(e.detail.value)); setIsAgeSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+                                        </IonItem>
+                                    )}
 
-                                {isAgeSet && (
-                                    <IonItem>
-                                        <IonIcon aria-hidden='true' icon={maleFemaleOutline} slot='start'></IonIcon>
-                                        <IonSelect label='Gender' value={gender} onIonChange={(e) => { setGender(String(e.detail.value)); setIsGenderSet(true); }} labelPlacement='floating' placeholder='---Please choose an option---'>
-                                            <IonSelectOption value="male">Male</IonSelectOption>
-                                            <IonSelectOption value="female">Female</IonSelectOption>
-                                        </IonSelect>
-                                    </IonItem>
-                                )}
+                                    {isAgeSet && (
+                                        <IonItem className={styles.item}>
+                                            <IonIcon aria-hidden='true' icon={maleFemaleOutline} slot='start' className={styles.icon}></IonIcon>
+                                            <IonSelect className={styles.input} label='Gender' value={gender} onIonChange={(e) => { setGender(String(e.detail.value)); setIsGenderSet(true); }} labelPlacement='floating' placeholder='---Please choose an option---'>
+                                                <IonSelectOption value="male">Male</IonSelectOption>
+                                                <IonSelectOption value="female">Female</IonSelectOption>
+                                            </IonSelect>
+                                        </IonItem>
+                                    )}
 
-                                {isGenderSet && (
-                                    <IonItem>
-                                        <IonIcon aria-hidden='true' icon={fastFoodOutline} slot='start'></IonIcon>
-                                        <IonInput label='Diet' value={diet} onIonChange={e => { setDiet(String(e.detail.value)); setIsDietSet(true); }} type='text' labelPlacement='floating' fill='outline'  required placeholder="vegan"></IonInput>
-                                    </IonItem>
-                                )}
+                                    {isGenderSet && (
+                                        <IonItem className={styles.item}>
+                                            <IonIcon aria-hidden='true' icon={fastFoodOutline} slot='start' className={styles.icon}></IonIcon>
+                                            <IonInput className={styles.input} label='Diet' value={diet} onIonChange={e => { setDiet(String(e.detail.value)); setIsDietSet(true); }} type='text' labelPlacement='floating' fill='outline'  required placeholder="vegan"></IonInput>
+                                        </IonItem>
+                                    )}
 
-                                {isDietSet && (
-                                    <IonItem>
-                                        <IonIcon aria-hidden='true' icon={happyOutline} slot='start'></IonIcon>
-                                        <IonInput label='Calorie Goal' value={goal} onIonChange={e => { setGoal(Number(e.detail.value)); setIsGoalSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
-                                    </IonItem>
-                                )}
+                                    {isDietSet && (
+                                        <IonItem className={styles.item}>
+                                            <IonIcon aria-hidden='true' icon={happyOutline} slot='start' className={styles.icon}></IonIcon>
+                                            <IonInput className={styles.input} label='Calorie Goal' value={goal} onIonChange={e => { setGoal(Number(e.detail.value)); setIsGoalSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+                                        </IonItem>
+                                    )}
 
-                                {isGoalSet && (
-                                    <IonButton className='button' onClick={updateUserBasicData} routerLink="/dashboard" routerDirection='root' shape='round'>Save</IonButton>
-                                )}
-                            </form>
-							<IonToast
-								isOpen={showToast}
-								message={message}
-								duration={3000}
-								onDidDismiss={() => setShowToast(false)}
-							/>
-						</IonCol>
-					</IonRow>
-				</IonGrid>
+                                    {isGoalSet && (
+                                        <IonButton className={styles.updateButton} onClick={updateUserBasicData} routerLink="/dashboard" routerDirection='root' shape='round'>Save</IonButton>
+                                    )}
+                                </form>
+                                <IonToast
+                                    isOpen={showToast}
+                                    message={message}
+                                    duration={3000}
+                                    onDidDismiss={() => setShowToast(false)}
+                                />
+                            </IonCol>
+                        </IonRow>
+                    </IonGrid>
+                </div>
             </IonContent>
         </IonPage>
          

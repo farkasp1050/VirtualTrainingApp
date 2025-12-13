@@ -12,7 +12,7 @@ import Webcam from "react-webcam";
 
 import { useTranslation } from 'react-i18next';
 
-import "./CurrentWorkout.css";
+import styles from "./CurrentWorkout.module.css";
 
 import { supabase } from '../services/supabaseClient';
 
@@ -58,28 +58,55 @@ const CurrentWorkout: React.FC = () => {
     const [ exercises, setExercises ] = useState<exercise[] | null>(null);
     const [ currentExerciseId, setCurrentExerciseId ] = useState(0);
 
-    const modelSetup = async () => {
-        const model = await poseNetModel.load({
-            inputResolution: { width: 560., height: 420 },
-            architecture: 'MobileNetV1',
-            outputStride: 16
-        })
+    const exercisesRef = useRef<exercise[] | null>(exercises);
+    const currentExerciseIdRef = useRef<number>(currentExerciseId);
+    const repCooldownRef = useRef(false);
 
-        setInterval(() => {
-            poseDetection(model);
-        }, 100);
+    const [ currentRepsDone, setCurrentRepsDone ] = useState(0);
+    const [ currentSetsDone, setCurrentSetsDone ] = useState(0);
+
+    interface Position{
+        x: number;
+        y: number
     }
 
-    const poseDetection = async (model: poseNetModel.PoseNet) => {
-        if(webcamRef !== null && webcamRef.current !== null && model !== null && webcamRef.current.video !== null){
-            const video = webcamRef.current.video;
+    interface Joint{
+        position: Position,
+        score: number,
+        part: string
+    }
 
-            webcamRef.current.video.height = webcamRef.current.video?.videoHeight;
-            webcamRef.current.video.width = webcamRef.current.video?.videoWidth;
+    function calculatingJointAngle (joint1: Joint, joint2: Joint, joint3: Joint){
+        const calculatedAngle = Math.atan2(joint3.position.y - joint1.position.y, joint3.position.x - joint1.position.x) - Math.atan2(joint2.position.y - joint1.position.y, joint2.position.x - joint1.position.x);
 
-            const detection = await model.estimateSinglePose(video);
-            console.log(detection);
+        const degree = Math.abs(calculatedAngle * (180 / Math.PI));
+
+        if(degree > 180){
+            console.log(360-degree);
+            return 360 - degree;
+        } else {
+            console.log(degree);
+            return degree;
         }
+    }
+
+    function repChecker(degree: number, max: number, min: number){
+        let halfRep = false;
+
+        if(degree <= min){
+            halfRep = true;
+        }
+
+        if(halfRep && degree >= max && !repCooldownRef.current){
+            halfRep = false;
+            return true;
+        }
+
+        if(degree <= max){
+            repCooldownRef.current = false;
+        }
+
+        return false;
     }
 
     useEffect(() => {
@@ -92,21 +119,6 @@ const CurrentWorkout: React.FC = () => {
             }
                     
             setUserId(userData.user.id);
-
-            const { data: workoutsData, error: workoutsDataError } = await supabase
-            .from("workouts")
-            .select("workoutFinished")
-            .eq("workoutPlan_id", workoutPlanId)
-            .eq("user_id", userData.user.id)
-            .single();
-
-            if(workoutsDataError){
-                console.log(workoutsDataError);
-                setMessage("Workout not found!");
-                return;
-            }
-
-            setWorkoutsDone(workoutsData.workoutFinished);
             
             const { data: workoutData, error: workoutDataError } = await supabase
             .from("workout")
@@ -140,10 +152,118 @@ const CurrentWorkout: React.FC = () => {
             setMaxWorkouts(workoutPlanData.plan.schedule.days_per_week);
         }
             
-        modelSetup();
         fetchUserData();
-        modelSetup();
     }, []);
+
+    useEffect(() => {
+        if (!exercises || exercises.length === 0) return;
+
+        const setupModel = async () => {
+            const model = await poseNetModel.load({
+                inputResolution: { width: 560, height: 420 },
+                architecture: 'MobileNetV1',
+                outputStride: 16
+            });
+
+            const intervalId = setInterval(() => {
+                poseDetection(model);
+            }, 300);
+
+            return () => clearInterval(intervalId);
+        };
+
+        setupModel();
+    }, [exercises]);
+
+    useEffect(() => {
+        exercisesRef.current = exercises;
+    }, [exercises]);
+
+    useEffect(() => {
+        currentExerciseIdRef.current = currentExerciseId;
+    }, [currentExerciseId]);
+
+    const poseDetection = async (model: poseNetModel.PoseNet) => {
+        if(webcamRef !== null && webcamRef.current !== null && model !== null && webcamRef.current.video !== null){
+            const video = webcamRef.current.video;
+
+            webcamRef.current.video.height = webcamRef.current.video?.videoHeight;
+            webcamRef.current.video.width = webcamRef.current.video?.videoWidth;
+
+            const detection = await model.estimateSinglePose(video);
+            console.log(detection);
+
+            if(exercisesRef.current && currentExerciseIdRef.current != null){
+                const currentExercise = exercisesRef.current[currentExerciseIdRef.current]?.name;
+                
+                if(currentExercise.toLowerCase().includes("squat")){
+                    const degreeResult = calculatingJointAngle(detection.keypoints[13], detection.keypoints[11], detection.keypoints[15]);
+                    const fullRep = repChecker(degreeResult, 160, 140);
+                    if(fullRep === true){
+                        setCurrentRepsDone(currentRepsDone => currentRepsDone + 1);
+                    }
+                }
+                else if(currentExercise.toLowerCase().includes("plank")){
+                    const degreeResult = calculatingJointAngle(detection.keypoints[11], detection.keypoints[5], detection.keypoints[15]);
+                    const fullRep = repChecker(degreeResult, 170, 180);
+                    if(fullRep === true){
+                        setCurrentRepsDone(currentRepsDone => currentRepsDone + 1);
+                    }
+                }
+                else if(currentExercise.toLowerCase().includes("bench press")){
+                    const degreeResult = calculatingJointAngle(detection.keypoints[7], detection.keypoints[5], detection.keypoints[9]);
+                    const fullRep = repChecker(degreeResult, 120, 150);
+                    if(fullRep === true){
+                        setCurrentRepsDone(currentRepsDone => currentRepsDone + 1);
+                    }
+                }
+                else if(currentExercise.toLowerCase().includes("bent-over")){
+                    const degreeResult = calculatingJointAngle(detection.keypoints[7], detection.keypoints[5], detection.keypoints[9]);
+                    const fullRep = repChecker(degreeResult, 120, 150);
+                    if(fullRep === true){
+                        setCurrentRepsDone(currentRepsDone => currentRepsDone + 1);
+                    }
+                }
+                else if(currentExercise.toLowerCase().includes("shoulder press")){
+                    const degreeResult = calculatingJointAngle(detection.keypoints[7], detection.keypoints[5], detection.keypoints[9]);
+                    const fullRep = repChecker(degreeResult, 130, 160);
+                    if(fullRep === true){
+                        setCurrentRepsDone(currentRepsDone => currentRepsDone + 1);
+                    }
+                }
+                else if(currentExercise.toLowerCase().includes("deadlift")){
+                    const degreeResult = calculatingJointAngle(detection.keypoints[11], detection.keypoints[5], detection.keypoints[13]);
+                    const fullRep = repChecker(degreeResult, 150, 170);
+                    if(fullRep === true){
+                        setCurrentRepsDone(currentRepsDone => currentRepsDone + 1);
+                    }
+                }
+                else if(currentExercise.toLowerCase().includes("pull-up")){
+                    const degreeResult = calculatingJointAngle(detection.keypoints[7], detection.keypoints[5], detection.keypoints[9]);
+                    const fullRep = repChecker(degreeResult, 120, 150);
+                    if(fullRep === true){
+                        setCurrentRepsDone(currentRepsDone => currentRepsDone + 1);
+                    }
+                }
+                else if(currentExercise.toLowerCase().includes("jumping")){
+                    const degreeResult = calculatingJointAngle(detection.keypoints[5], detection.keypoints[7], detection.keypoints[9]);
+                    const fullRep = repChecker(degreeResult, 160, 170);
+                    if(fullRep === true){
+                        setCurrentRepsDone(currentRepsDone => currentRepsDone + 1);
+                    }
+                }
+                else if(currentExercise.toLowerCase().includes("bicycle")){
+                    const degreeResult = calculatingJointAngle(detection.keypoints[5], detection.keypoints[7], detection.keypoints[13]);
+                    const fullRep = repChecker(degreeResult, 100, 150);
+                    if(fullRep === true){
+                        setCurrentRepsDone(currentRepsDone => currentRepsDone + 1);
+                    }
+                }
+            } else{
+                return;
+            }
+        }
+    }
 
     const handleWorkoutChange = async (currentExerciseId: number) => {
         if(finishedWorkouts !== maxWorkouts - 3){
@@ -159,7 +279,6 @@ const CurrentWorkout: React.FC = () => {
         const { error: closingWorkoutError } = await supabase
         .from("workouts")
         .update({
-            finished: true,
             workoutFinished: workoutsDone + 1
         })
         .eq("user_id", userId)
@@ -172,48 +291,47 @@ const CurrentWorkout: React.FC = () => {
     }
 
     return (
-        <IonPage className='page'>
+        <IonPage className={styles.page}>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton className='backButton' defaultHref={`/currentWorkout/:${workoutPlanId}`}/>
-                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref={`/currentWorkout/:${workoutPlanId}`}/>
+                    <IonTitle className={styles.title}>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding page-content">
+            <IonContent className={styles.content}>
                 {finishedWorkouts < maxWorkouts && (
-                    <div>
-                        <div className='model'>
+                    <div className={styles.container}>
+                        <div className={styles.webcamContainer}>
                             <Webcam
-                            ref={webcamRef}>
+                            ref={webcamRef} className={styles.webcam}>
                             </Webcam>
                         </div>
-
                         <div>
                             {exercises && !finished ? (
-                                <div>
-                                    <p>Name: {exercises[currentExerciseId].name}</p>
-                                    <p>Duration: {exercises[currentExerciseId].duration}</p>
-                                    <p>Required equipment: {exercises[currentExerciseId].equipment}</p>
-                                    <p>Repetitions: {exercises[currentExerciseId].repetitions}</p>
-                                    <p>Sets: {exercises[currentExerciseId].sets}</p>
+                                <div className={styles.resultContainer}>
+                                    <p className={styles.data}>Name: {exercises[currentExerciseId].name}</p>
+                                    <p className={styles.data}>Duration: {exercises[currentExerciseId].duration}</p>
+                                    <p className={styles.data}>Required equipment: {exercises[currentExerciseId].equipment}</p>
+                                    <p className={styles.data}>Repetitions: {exercises[currentExerciseId].repetitions}</p>
+                                    <p className={styles.data}>Sets: {exercises[currentExerciseId].sets}</p>
 
-                                <p>Model response: </p>
+                                <h2 className={styles.data}>Repetitions completed so far: {currentRepsDone}</h2>
 
-                                    <IonButton onClick={() => handleWorkoutChange(currentExerciseId)}>Next workout</IonButton>
+                                    <IonButton className={styles.button} onClick={() => handleWorkoutChange(currentExerciseId)}>Next workout</IonButton>
                                 </div>
                             ) : (
-                                <IonButton onClick={() => finishingWorkout()} routerLink="/dashboard" routerDirection='root'>Finish workout</IonButton>
+                                <div className={styles.finishContainer}>
+                                    <IonButton className={styles.finishButton} onClick={() => finishingWorkout()} routerLink="/dashboard" routerDirection='root'>Finish workout</IonButton>
+                                </div>
                             )}
-
-                            
                         </div>
                     </div>
                 )}
 
                 {finishedWorkouts === maxWorkouts && (
-                    <div>
-                        <p>You finished your workout!</p>
-                        <IonButton onClick={finishingWorkout}>Back to my workout plan</IonButton>
+                    <div className={styles.resultContainer}>
+                        <p className={styles.data}>You finished your workout!</p>
+                        <IonButton className={styles.button} onClick={finishingWorkout}>Back to my workout plan</IonButton>
                     </div>
                 )}
                 <IonToast

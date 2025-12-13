@@ -8,7 +8,7 @@ import defaultAvatar from "../assets/avatar.jpg";
 
 import { useTranslation } from 'react-i18next';
 
-import "./Profile.css";
+import styles from "./Profile.module.css";
 
 import '../decideBadge.js';
 import { decideFoodBadge, decideForumBadge, decideFriendBadge, decideReplyBadge } from '../decideBadge.js';
@@ -255,84 +255,88 @@ const Profile: React.FC = () => {
     }
 
     return (
-        <IonPage className='page'>
-            <IonHeader>
+        <IonPage className={styles.page}>
+            <IonHeader className={styles.header}>
                 <IonButtons>
-                    <IonBackButton className='backButton' defaultHref='/dashboard'/>
-                    <IonTitle className='ion-text-center'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref='/dashboard'/>
+                    <IonTitle className={styles.title}>{t("title")}</IonTitle>
                     <IonButtons onClick={handleProfileUpdate}>
-                        <IonButton><IonIcon icon={checkmark} size='large'></IonIcon></IonButton>
+                        <IonButton><IonIcon className={styles.checkMark} icon={checkmark} size='large'></IonIcon></IonButton>
                     </IonButtons>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding ion-text-center page-content">
-                <IonAvatar>
-                    <img src={defaultAvatar} alt="User Profile Picture" />
-                </IonAvatar>
-                {friendsBadge ? (
-                    <IonIcon icon={accessibilitySharp}/>
-                ) : foodBadge ? (
-                    <IonIcon icon={pizzaSharp}/>
-                ) : postBadge ? (
-                    <IonIcon icon={chatbubbleEllipsesSharp}/>
-                ) : replyBadge && (
-                    <IonIcon icon={chatboxEllipsesSharp}/>
-                )}
-                <IonList className='list'>
-                    <IonItem>
-                        <IonInput label='Full Name' value={String(profileData?.fullName)} type='text' labelPlacement='floating' fill='outline' disabled placeholder={t("namePlaceholder")}></IonInput>
-                    </IonItem>
-                    <IonItem>
-                        <IonInput label='Email' value={String(profileData?.email)} type='email' labelPlacement='floating' fill='outline' disabled placeholder={t("emailPlaceholder")}></IonInput>
-                    </IonItem>
-                    <IonItem>
-                        <IonInput label='Age' value={age} onIonChange={(e) => setAge(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
-                    </IonItem>
-                    <IonItem>
-                        <IonInput label='Weight' value={weight} onIonChange={(e) => setWeight(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
-                    </IonItem>
-                    <IonItem>
-                        <IonInput label='Height' value={height} onIonChange={(e) => setHeight(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
-                    </IonItem>
-                    <IonSelect label='Gender' value={gender} onIonChange={(e) => setGender(String(e.detail.value))} labelPlacement='floating'>
-                        <IonSelectOption value="male">{t("male")}</IonSelectOption>
-                        <IonSelectOption value="female">{t("female")}</IonSelectOption>
-                    </IonSelect>
-                    <IonItem>
-                        <input type="file" className='fileInput' accept='image/*' onChange={(e) => {handlePictureUpload(e)}}/>
-                    </IonItem>
-                    <IonItem>
-                        <IonInput label='Goal' value={goal} onIonChange={(e) => setGoal(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
-                    </IonItem>
-                    <IonItem>
-                        <IonInput label='Diet' type='text' value={diet} onIonChange={(e) => setDiet(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Diet Type'></IonInput>
-                    </IonItem>
-                    <IonGrid>
-                        <IonRow>
-                           <IonCol size='12'>
-                                <IonButton id='triggerDeletion' color={'primary'} shape='round' className='ion-margin-top' expand='block'>
-                                    {t("deleteAccount")}
-                                    <IonAlert
-                                    trigger='triggerDeletion'
-                                    header='Are you sure?'
-                                    buttons={[
-                                        {
-                                            text: t("cancel")
-                                        },
-                                        {
-                                            text: t("deleteAccount"),
-                                            handler: () => {
-                                                handleAccountDeletion();
+            <IonContent className={styles.content}>
+                <div className={styles.listContainer}>
+                    <IonAvatar className={styles.avatar}>
+                        <img src={defaultAvatar} alt="User Profile Picture" className={styles.image}/>
+                    </IonAvatar>
+                    <div className={styles.badgeContainer}>
+                        {friendsBadge ? (
+                            <IonIcon icon={accessibilitySharp} className={styles.icon}/>
+                        ) : foodBadge ? (
+                            <IonIcon icon={pizzaSharp} className={styles.icon}/>
+                        ) : postBadge ? (
+                            <IonIcon icon={chatbubbleEllipsesSharp} className={styles.icon}/>
+                        ) : replyBadge && (
+                            <IonIcon icon={chatboxEllipsesSharp} className={styles.icon}/>
+                        )}
+                    </div>
+                    <IonList className={styles.list}>
+                        <IonItem className={styles.listItem}>
+                            <IonInput className={styles.listInput} label='Full Name' value={String(profileData?.fullName)} type='text' labelPlacement='floating' fill='outline' disabled placeholder={t("namePlaceholder")}></IonInput>
+                        </IonItem>
+                        <IonItem className={styles.listItem}>
+                            <IonInput className={styles.listInput} label='Email' value={String(profileData?.email)} type='email' labelPlacement='floating' fill='outline' disabled placeholder={t("emailPlaceholder")}></IonInput>
+                        </IonItem>
+                        <IonItem className={styles.listItem}>
+                            <IonInput className={styles.listInput} label='Age' value={age} onIonChange={(e) => setAge(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
+                        </IonItem>
+                        <IonItem className={styles.listItem}>
+                            <IonInput className={styles.listInput} label='Weight' value={weight} onIonChange={(e) => setWeight(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
+                        </IonItem>
+                        <IonItem className={styles.listItem}>
+                            <IonInput className={styles.listInput} label='Height' value={height} onIonChange={(e) => setHeight(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
+                        </IonItem>
+                        <IonSelect className={styles.listItem} label='Gender' value={gender} onIonChange={(e) => setGender(String(e.detail.value))} labelPlacement='floating'>
+                            <IonSelectOption value="male">{t("male")}</IonSelectOption>
+                            <IonSelectOption value="female">{t("female")}</IonSelectOption>
+                        </IonSelect>
+                        <IonItem className={styles.listItem}>
+                            <input className={styles.listInput} type="file" accept='image/*' onChange={(e) => {handlePictureUpload(e)}}/>
+                        </IonItem>
+                        <IonItem className={styles.listItem}>
+                            <IonInput className={styles.listInput} label='Goal' value={goal} onIonChange={(e) => setGoal(Number(e.detail.value))} type='number' labelPlacement='floating' fill='outline' placeholder='123'></IonInput>
+                        </IonItem>
+                        <IonItem className={styles.listItem}>
+                            <IonInput className={styles.listInput} label='Diet' type='text' value={diet} onIonChange={(e) => setDiet(String(e.detail.value))} labelPlacement='floating' fill='outline' placeholder='Diet Type'></IonInput>
+                        </IonItem>
+                        <IonGrid className={styles.grid}>
+                            <IonRow className={styles.gridRow}>
+                                <IonCol className={styles.gridCol} size='12'>
+                                    <IonButton id='triggerDeletion' color={'primary'} shape='round' expand='block'>
+                                        {t("deleteAccount")}
+                                        <IonAlert
+                                        trigger='triggerDeletion'
+                                        header='Are you sure?'
+                                        buttons={[
+                                            {
+                                                text: t("cancel")
                                             },
-                                        },
-                                    ]}
-                                    ></IonAlert>
-                                  <IonIcon style={{ marginLeft: "5px" }}></IonIcon>
-                                  </IonButton>
-                            </IonCol>
-                         </IonRow>
-                    </IonGrid>
-                </IonList>
+                                            {
+                                                text: t("deleteAccount"),
+                                                handler: () => {
+                                                    handleAccountDeletion();
+                                                },
+                                            },
+                                        ]}
+                                        ></IonAlert>
+                                    <IonIcon style={{ marginLeft: "5px" }}></IonIcon>
+                                    </IonButton>
+                                </IonCol>
+                            </IonRow>
+                        </IonGrid>
+                    </IonList>
+                </div>
                 {friendshipData.map((friendship) => {
                     const friendId = friendship.firstUser === userId ? friendship.secondUser : friendship.firstUser;
 
@@ -341,14 +345,14 @@ const Profile: React.FC = () => {
                     }
 
                     return (
-                        <div key={friendship.id} className='friends'>
-                            <IonItem className='friendsContent'>
-                                <IonAvatar>
-                                    <img src={defaultAvatar} alt="User's profile picture" />
+                        <div key={friendship.id} className={styles.friendshipContainer}>
+                            <IonItem className={styles.friendshipItem}>
+                                <IonAvatar className={styles.friendshipAvatar}>
+                                    <img src={defaultAvatar} alt="User's profile picture" className={styles.friendshipImage}/>
                                 </IonAvatar>
-                                <IonLabel>{t("name")}: {friendsUserData.find((f) => String(f.id) === String(friendId))?.fullName}</IonLabel>
-                                <IonLabel>{t("friendsSince")}: {new Date(friendship.created_at).toLocaleString()}</IonLabel>
-                                <IonLabel>{friendship.hasChat ? "Has chat" : "No chat"}</IonLabel>
+                                <IonLabel className={styles.friendshipLabel}>{t("name")}: {friendsUserData.find((f) => String(f.id) === String(friendId))?.fullName}</IonLabel>
+                                <IonLabel className={styles.friendshipLabel}>{t("friendsSince")}: {new Date(friendship.created_at).toLocaleString()}</IonLabel>
+                                <IonLabel className={styles.friendshipLabel}>{friendship.hasChat ? "Has chat" : "No chat"}</IonLabel>
                             </IonItem>
                         </div>
                     )

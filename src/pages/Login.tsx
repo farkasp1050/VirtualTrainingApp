@@ -9,7 +9,7 @@ import { supabase } from '../services/supabaseClient';
 
 import { useTranslation } from 'react-i18next';
 
-import "./Login.css";
+import styles from "./Login.module.css";
 
 const PREF_KEY = 'splashActive';
 
@@ -73,64 +73,57 @@ const Login: React.FC = () => {
 	{splashActive ? (
 		<Splash onFinish={finishedSplash}/>
 	) : (
-		<IonPage className='page'>
-			<IonContent className="ion-padding page-content" style={{ marginTop: "100px" }}>
-				<IonGrid fixed>
-					<IonRow class='ion-justify-content-center'>
-						<IonCol size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
-							<div className="ion-text-center ion-padding">
-								<img src={loginPicture} alt="LoginPicture" />
-							</div>
-						</IonCol>
-					</IonRow>
+		<IonPage className={styles.page}>
+			<IonContent className={styles.content}>
+				<div className={styles.grid}>
+					<IonGrid>
+						<IonRow className={styles.mainRow}>
+							<IonCol className={styles.mainCol} size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
+								<div className={styles.imageContainer}>
+									<img src={loginPicture} alt="LoginPicture" className={styles.image}/>
+								</div>
+							</IonCol>
+						</IonRow>
 
-					<IonRow class='ion-justify-content-center'>
-						<IonCol size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
-							<IonText color="primary">
-								<h2>{t("title")}</h2>
-							</IonText>
-							<form onSubmit={handleLogin} className='form'>
-								<IonItem>
-									<IonIcon aria-hidden='true' icon={mail} slot='start'></IonIcon>
-									<IonInput label='Email' value={email} onIonChange={e => setEmail(String(e.detail.value))} type='email' labelPlacement='floating' fill='outline'  required placeholder={t("emailPlaceholder")}></IonInput>
-								</IonItem>
-								<IonItem>
-									<IonIcon aria-hidden='true' icon={lockClosed} slot='start'></IonIcon>
-									<IonInput className='ion-margin-top' value={password} onIonChange={e => setPassword(String(e.detail.value))} label='Password' type='password' required labelPlacement='floating' fill='outline' placeholder='***********'>
-										<IonInputPasswordToggle slot='end'></IonInputPasswordToggle>
-									</IonInput>
-								</IonItem>
-									<IonRow>
-										<IonCol size='6'>
-											<IonButton type='submit' size='default' shape='round' className='ion-margin-top button' expand='block'>
-												{t("login")}
-												<IonIcon icon={exit} style={{ marginLeft: "5px" }}></IonIcon>
-											</IonButton>
-										</IonCol>
-										<IonCol size='6'>
-											<IonButton routerLink='/register' size='default' shape='round' className='ion-margin-top button' expand='block'>
-												{t("register")}
-												<IonIcon icon={person} style={{ marginLeft: "5px" }}></IonIcon>
-												</IonButton>
-										</IonCol>
-										<IonCol size='6'>
-											<IonButton type='submit' onClick={signInWithProvider} shape='round' className='ion-margin-top button' expand='block'>
-												
-												<IonIcon icon={logoGoogle} style={{ marginLeft: "5px" }}></IonIcon>
-											</IonButton>
-										</IonCol>
-									</IonRow>
-								<IonButton className='button' onClick={introAgain} type='button' shape='round'>{t("introAgain")}</IonButton>
-							</form>
-							<IonToast
-								isOpen={showToast}
-								message={message}
-								duration={3000}
-								onDidDismiss={() => setShowToast(false)}
-							/>
-						</IonCol>
-					</IonRow>
-				</IonGrid>
+						<IonRow className={styles.subRow}>
+							<IonCol className={styles.subCol} size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
+								<IonText color="primary" className={styles.titleContainer}>
+									<h2 className={styles.title}>{t("title")}</h2>
+								</IonText>
+								<form onSubmit={handleLogin} className={styles.form}>
+									<IonItem className={styles.item}>
+										<IonIcon aria-hidden='true' icon={mail} slot='start' className={styles.icon}></IonIcon>
+										<IonInput className={styles.input} label='Email' value={email} onIonChange={e => setEmail(String(e.detail.value))} type='email' labelPlacement='floating' fill='outline'  required placeholder={t("emailPlaceholder")}></IonInput>
+									</IonItem>
+									<IonItem className={styles.item}>
+										<IonIcon aria-hidden='true' icon={lockClosed} slot='start' className={styles.icon}></IonIcon>
+										<IonInput className={styles.input} value={password} onIonChange={e => setPassword(String(e.detail.value))} label='Password' type='password' required labelPlacement='floating' fill='outline' placeholder='***********'>
+											<IonInputPasswordToggle slot='end'></IonInputPasswordToggle>
+										</IonInput>
+									</IonItem>
+									<IonButton className={styles.button} type='submit' size='default' shape='round' expand='block'>
+											{t("login")}
+											<IonIcon icon={exit} className={styles.icon}></IonIcon>
+									</IonButton>
+									<IonButton className={styles.button} routerLink='/register' size='default' shape='round' expand='block'>
+										{t("register")}
+										<IonIcon icon={person} className={styles.icon}></IonIcon>
+									</IonButton>
+									<IonButton className={styles.button} type='submit' onClick={signInWithProvider} shape='round' expand='block'>
+										<IonIcon icon={logoGoogle} className={styles.icon}></IonIcon>
+									</IonButton>
+									<IonButton className={styles.button} onClick={introAgain} type='button' shape='round'>{t("introAgain")}</IonButton>
+								</form>
+								<IonToast
+									isOpen={showToast}
+									message={message}
+									duration={3000}
+									onDidDismiss={() => setShowToast(false)}
+								/>
+							</IonCol>
+						</IonRow>
+					</IonGrid>
+				</div>
 			</IonContent>
 		</IonPage>
 		)}

@@ -6,7 +6,7 @@ import { useParams } from 'react-router';
 import { supabase } from '../services/supabaseClient';
 import { send } from 'ionicons/icons';
 
-import "./Conversation.css";
+import styles from "./Conversation.module.css";
 
 import { useTranslation } from 'react-i18next';
 
@@ -122,27 +122,27 @@ const Conversation: React.FC = () => {
     }
 
     return (
-        <IonPage className='page'>
+        <IonPage className={styles.page}>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton className='backButton' defaultHref='/dashboard' />
-                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref='/dashboard' />
+                    <IonTitle className={styles.title}>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding page-content">
-                <div className='chatContent'>
+            <IonContent className={styles.content}>
+                <div>
                         {messages.length === 0 ? (
-                            <div className='empty'>
+                            <div className={styles.loading}>
                                 {t("noChats")}
                             </div>
                         ) : (
-                            <div className='messages'>
+                            <div>
                                 {messages.map((message) => {
                                     return (
-                                        <div key={message.id}>
-                                            <div>{message.author}</div>
-                                            <div>{new Date(message.created_at).toLocaleString()}</div>
-                                            <p>{message.messageValue}</p>
+                                        <div className={styles.dataContainer} key={message.id}>
+                                            <div className={styles.data}>{message.author}</div>
+                                            <div className={styles.data}>{new Date(message.created_at).toLocaleString()}</div>
+                                            <p className={styles.messageData}>{message.messageValue}</p>
                                         </div>
                                     )
                                 })}
@@ -150,9 +150,9 @@ const Conversation: React.FC = () => {
                         )}
                     </div>
                 <IonFooter>
-                    <div className='footer'>
-                        <IonInput type='text' value={newMessage} onIonChange={(e) => setNewMessage(String(e.detail.value))} placeholder='Type your message...'></IonInput>
-                        <IonIcon icon={send} className='sendButton' onClick={handleMessageSend}></IonIcon>
+                    <div className={styles.footer}>
+                        <IonInput className={styles.input} type='text' value={newMessage} onIonChange={(e) => setNewMessage(String(e.detail.value))} placeholder='Type your message...'></IonInput>
+                        <IonIcon className={styles.icon} icon={send} onClick={handleMessageSend}></IonIcon>
                     </div>
                 </IonFooter>
                 <IonToast

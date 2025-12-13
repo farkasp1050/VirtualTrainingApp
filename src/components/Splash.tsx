@@ -4,9 +4,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { arrowBack } from 'ionicons/icons';
 import { Animation } from '@ionic/react';
 
-import "./introduction.css";
+import styles from "./introduction.module.css";
 
 import 'swiper/css';
+import 'swiper/css/pagination';
 
 import { useTranslation } from 'react-i18next';
 
@@ -57,53 +58,53 @@ const Splash: React.FC<splashContainer> = ({ onFinish }) => {
     }, [arrowRef, arrowRef2, arrowRef3]);
 
     return (
-        <IonPage>
-                <IonContent className='page-content'>
-                <Swiper>
-                    <SwiperSlide>
-                        <div className='ion-text-center ion-paddding container' style={{ marginTop: "100px" }}>
-                            <img src={swiperPic1} alt="swiperPic1" className='picture'/>
-                            <IonText>
-                                <h4>{t("firstSlide")}</h4>
+        <IonPage className={styles.page}>
+            <IonContent className={styles.content}>
+                <Swiper className={styles.swiperContainer}>
+                    <SwiperSlide className={styles.swiperSlide}>
+                        <div className={styles.contentContainer}>
+                            <img src={swiperPic1} alt="swiperPic1" className={styles.slideImage}/>
+                            <IonText className={styles.slideContentContainer}>
+                                <h4 className={styles.slideTitle}>{t("firstSlide")}</h4>
                                 <h4>
-                                    <IonIcon ref={arrowRef} icon={arrowBack}></IonIcon>
-                                    <IonIcon ref={arrowRef2} icon={arrowBack}></IonIcon>
-                                    <IonIcon ref={arrowRef3} icon={arrowBack}></IonIcon>
+                                    <IonIcon ref={arrowRef} icon={arrowBack} className={styles.slideArrows}></IonIcon>
+                                    <IonIcon ref={arrowRef2} icon={arrowBack} className={styles.slideArrows}></IonIcon>
+                                    <IonIcon ref={arrowRef3} icon={arrowBack} className={styles.slideArrows}></IonIcon>
                                 </h4>
                             </IonText>
                         </div>
                     </SwiperSlide>
-                    <SwiperSlide>
-                        <div className='ion-text-center ion-paddding container' style={{ marginTop: "100px" }}>
-                            <img src={swiperPic2} alt="swiperPic1" className='picture'/>
-                            <IonText>
-                                <h4>{t("secondSlide")}</h4>
+                    <SwiperSlide className={styles.swiperSlide}>
+                        <div className={styles.contentContainer}>
+                            <img src={swiperPic2} alt="swiperPic1" className={styles.slideImage}/>
+                            <IonText className={styles.slideContentContainer}>
+                                <h4 className={styles.slideTitle}>{t("secondSlide")}</h4>
                             </IonText>
                         </div>
                     </SwiperSlide>
-                    <SwiperSlide>
-                        <div className='ion-text-center ion-paddding container' style={{ marginTop: "100px" }}>
-                            <img src={swiperPic3} alt="swiperPic1" className='picture'/>
-                            <IonText>
-                                <h4>{t("thirdSlide")}</h4>
+                    <SwiperSlide className={styles.swiperSlide}>
+                        <div className={styles.contentContainer}>
+                            <img src={swiperPic3} alt="swiperPic1" className={styles.slideImage}/>
+                            <IonText className={styles.slideContentContainer}>
+                                <h4 className={styles.slideTitle}>{t("thirdSlide")}</h4>
                             </IonText>
                         </div>
                     </SwiperSlide>
-                    <SwiperSlide>
-                        <div className='ion-text-center ion-paddding container' style={{ marginTop: "100px" }}>
-                            <img src={swiperPic4} alt="swiperPic1" className='picture'/>
-                            <IonText>
-                                <h4>{t("fourthSlide")}</h4>
+                    <SwiperSlide className={styles.swiperSlide}>
+                        <div className={styles.contentContainer}>
+                            <img src={swiperPic4} alt="swiperPic1" className={styles.slideImage}/>
+                            <IonText className={styles.slideContentContainer}>
+                                <h4 className={styles.slideTitle}>{t("fourthSlide")}</h4>
                             </IonText>
                         </div>
                     </SwiperSlide>
-                    <SwiperSlide>
-                        <div className='ion-text-center ion-paddding container' style={{ marginTop: "100px" }}>
-                            <img src={swiperPic5} alt="swiperPic1" className='picture'/>
-                            <IonText>
-                                <h4>{t("fifthSlide")}</h4>
+                    <SwiperSlide className={styles.swiperSlide}>
+                        <div className={styles.contentContainer}>
+                            <img src={swiperPic5} alt="swiperPic1" className={styles.slideImage}/>
+                            <IonText className={styles.slideContentContainer}>
+                                <h4 className={styles.slideTitle}>{t("fifthSlide")}</h4>
                             </IonText>
-                            <IonButton onClick={onFinish} className='button'>{t("startButton")}</IonButton>
+                            <IonButton onClick={onFinish} className={styles.button}>{t("startButton")}</IonButton>
                         </div>
                     </SwiperSlide>
                 </Swiper>

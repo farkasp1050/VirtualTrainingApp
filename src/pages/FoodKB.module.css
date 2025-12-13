@@ -1,0 +1,147 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+.backButton{
+
+}
+
+.title{
+    font-weight: 900;
+    color: aliceblue;
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.content{
+    display: flex;
+    padding: 2rem 1rem;
+    align-items: center;
+    justify-content: center;
+    --background: transparent;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.loading{
+    font-weight: 900;
+    color: aliceblue;
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.contentContainer{
+
+}
+
+.input{
+    width: 40%;
+    border-radius: 10px;
+    background-color: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: aliceblue;
+    font-size: 1rem;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
+
+.gridContainer{
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 1rem;
+    grid-auto-flow: column;
+    scroll-behavior: smooth;
+}
+
+.grid{
+
+}
+
+.headerRow{
+    flex: 0 0 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4a8af7 0%, #5f249f 100%);
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    border-bottom: 2px solid #000000;
+}
+
+.gridcol{
+    padding: 10px;
+    margin-top: 2px;
+    
+}
+
+.dataRow{
+    border-bottom: 1px solid #000000;
+}
+
+.button{
+    --background: linear-gradient(135deg, #9d1cff 0%, #5e75f9 100%);
+    --background-hover: linear-gradient(135deg, #ffffff, #242628);
+    font-size: 0.6rem;
+    color: aliceblue;
+    font-weight: 800;
+}
+
+.icon{
+    font-size: 20px;
+}
+
+.sumDataContainer{
+    width: 20%;
+    margin-top: 50px;
+    background: linear-gradient(105deg, #9d1cff 30%, #5e75f9 70%);
+    border-radius: 20px;
+}
+
+.sumData{
+    padding: 1rem 0;
+    margin: 1rem 1rem;
+    color: aliceblue;
+    font-weight: 700;
+}
+
+.modifyContainer{
+    width: 90%;
+    padding: 1rem 0;
+    margin: 1rem 1rem;
+    color: aliceblue;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #9d1cff 0%, #5e75f9 100%);
+}
+
+.listItem{
+   --background: linear-gradient(135deg, #9d1cff 0%, #5e75f9 100%);
+    --inner-border-width: 0;
+    --highlight-height: 0;
+
+    --padding-start: 1rem;
+    --inner-padding-end: 1rem;
+}
+
+.listInput{
+     --background: rgba(48, 48, 46, 0.7);
+    color: aliceblue;
+    padding: 0.4rem 0.8rem;
+    gap: 1rem;
+    margin-top: 10px;
+}
+
+.listInput::part(native){
+   padding: 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.listButtons{
+    margin-top: 2px;
+}
+

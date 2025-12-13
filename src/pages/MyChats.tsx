@@ -6,7 +6,7 @@ import { supabase } from '../services/supabaseClient';
 
 import { useTranslation } from 'react-i18next';
 
-import "./MyChats.css";
+import styles from "./MyChats.module.css";
 
 import defaultAvatar from "../assets/avatar.jpg";
 
@@ -131,16 +131,16 @@ const MyChats: React.FC = () => {
     }, [currentUserId]);
 
     return (
-        <IonPage className='page'>
+        <IonPage className={styles.page}>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton defaultHref='/dashboard' />
-                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref='/dashboard' />
+                    <IonTitle className={styles.title}>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding page-content">
+            <IonContent className={styles.content}>
             {friendshipData.length === 0 ? (
-                    <p>{t("noConv")}</p>
+                    <p className={styles.loading}>{t("noConv")}</p>
                 ) : (
                     friendshipData.map((friendship) => {
                         const friendId = friendship.firstUser === currentUserId ? friendship.secondUser : friendship.firstUser;
@@ -150,13 +150,13 @@ const MyChats: React.FC = () => {
                         }
 
                         return (
-                            <div key={friendship.id}>
-                                <IonItem routerLink={`/conversation/${friendship.id}`} className='profileSnack'>
-                                    <IonAvatar>
-                                        <img src={defaultAvatar} alt="User Picture" className='profilePicture'/>
+                            <div className={styles.data} key={friendship.id}>
+                                <IonItem className={styles.dataContainer} routerLink={`/conversation/${friendship.id}`}>
+                                    <IonAvatar className={styles.avatar}>
+                                        <img src={defaultAvatar} alt="User Picture" className={styles.image}/>
                                     </IonAvatar>
-                                    <IonLabel className='Name'>{friendsUserData.find((f) => String(f.id) === String(friendId))?.fullName}</IonLabel>
-                                    <IonLabel className='Date'>{new Date(friendship.created_at).toLocaleString()}</IonLabel>
+                                    <IonLabel className={styles.label}>{friendsUserData.find((f) => String(f.id) === String(friendId))?.fullName}</IonLabel>
+                                    <IonLabel className={styles.label} slot='end'>{new Date(friendship.created_at).toLocaleString()}</IonLabel>
                                 </IonItem>
                             </div>
                         )

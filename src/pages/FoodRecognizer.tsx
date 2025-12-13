@@ -6,7 +6,7 @@ import { supabase } from '../services/supabaseClient';
 
 import { incrementFoodAdd } from '../badges';
 
-import "./FoodRecognizer.css";
+import styles from "./FoodRecognizer.module.css";
 
 import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 
@@ -119,6 +119,7 @@ const FoodRecognizer: React.FC = () => {
             setClassifyResult(analyzeResult[0]);
         }
 
+        
         if(classifyResult){
             await fetchFoodData(classifyResult.className.toUpperCase())
                 .then(data => {
@@ -191,53 +192,52 @@ const FoodRecognizer: React.FC = () => {
     }
 
     return (
-        <IonPage className='page'>
+        <IonPage className={styles.page}>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton className='backButton' defaultHref='/dashboard'/>
-                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref='/dashboard'/>
+                    <IonTitle className={styles.title}>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className='page-content'>
+            <IonContent className={styles.content}>
             {loading ? (
-                <h1>{t("loading")}</h1>
+                <h1 className={styles.loading}>{t("loading")}</h1>
             ) : (
-                <div className='data'>
+                <div className={styles.contentContainer}>
                     { model && newPhoto && (
-                        <img className='photo'
-                        src={newPhoto} 
+                        <img src={newPhoto} 
                         alt="User Image"
-                        ref={userImageRef} />
+                        ref={userImageRef} className={styles.image} />
                     )}
-                    <IonFab slot='fixed' horizontal='center' vertical='bottom' className='magic-button'>
-                        <IonFabButton color="primary">
-                            <IonIcon icon={add}/>
+                    {(foodData) && (
+                        <div className={styles.dataContainer}>
+                            <p className={styles.data}>{classifyResult?.className}</p>
+                            <p className={styles.data}>{t("kcal")}: {kcal}</p>
+                            <p className={styles.data}>{t("carbohydrate")}: {carbohydrate}</p>
+                            <p className={styles.data}>{t("fat")}: {fat}</p>
+                            <p className={styles.data}>{t("protein")}: {protein}</p>
+                        </div>
+                    )}
+                    <IonFab className={styles.fabContainer} slot='fixed' horizontal='center' vertical='bottom'>
+                        <IonFabButton className={styles.fabButton} color="primary">
+                            <IonIcon icon={add} className={styles.icon}/>
                         </IonFabButton>
-                        <IonFabList side='end'>
-                            <IonFabButton color="primary" onClick={takePhoto}>
-                                <IonIcon icon={camera}></IonIcon>
+                        <IonFabList side='end' className={styles.fabList}>
+                            <IonFabButton className={styles.fabButton} color="primary" onClick={takePhoto}>
+                                <IonIcon icon={camera} className={styles.icon}></IonIcon>
                             </IonFabButton>
                         </IonFabList>
-                        <IonFabList side='start'>
-                            <IonFabButton color="primary" onClick={analyzePhoto}>
-                                <IonIcon icon={analytics}></IonIcon>
+                        <IonFabList side='start' className={styles.fabList}>
+                            <IonFabButton className={styles.fabButton} color="primary" onClick={analyzePhoto}>
+                                <IonIcon icon={analytics} className={styles.icon} ></IonIcon>
                             </IonFabButton>
                         </IonFabList>
-                        <IonFabList side='top'>
-                            <IonFabButton color="primary" onClick={savePhotoData}>
-                                <IonIcon icon={save}></IonIcon>
+                        <IonFabList side='top' className={styles.fabList}>
+                            <IonFabButton className={styles.fabButton} color="primary" onClick={savePhotoData}>
+                                <IonIcon icon={save} className={styles.icon}></IonIcon>
                             </IonFabButton>
                         </IonFabList>
                     </IonFab>
-                    {(foodData) && (
-                        <div className='foodResult'>
-                            <p>{classifyResult?.className}</p>
-                            <p>{t("kcal")}: {kcal}</p>
-                            <p>{t("carbohydrate")}: {carbohydrate}</p>
-                            <p>{t("fat")}: {fat}</p>
-                            <p>{t("protein")}: {protein}</p>
-                        </div>
-                    )}
                 </div>
             )}
 

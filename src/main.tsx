@@ -4,6 +4,8 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import App from './App';
 import "./i18n";
 
+import "./App.css";
+
 const actualTheme = localStorage.getItem("theme");
 
 if(actualTheme === "dark"){

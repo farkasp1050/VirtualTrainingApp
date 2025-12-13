@@ -8,7 +8,7 @@ import { createSharp, closeCircleOutline, saveOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useIonRouter } from '@ionic/react';
 
-import "./MealPlanner.css";
+import styles from "./MealPlanner.module.css";
 
 import { fetchMealPlanData} from '../api';
 import { supabase } from '../services/supabaseClient';
@@ -159,77 +159,81 @@ const MealPlanner: React.FC = () => {
     }
 
     return (
-        <IonPage className='page'>
+        <IonPage className={styles.page}>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton className='backButton' defaultHref='/dashboard' />
-                        <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref='/dashboard' />
+                        <IonTitle className={styles.title}>{t("title")}</IonTitle>
                     </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding page-content">
+            <IonContent className={styles.content}>
                 {!existingPlan && (
-                    <IonItem>
-                        <IonButton className='createMealPlan' color="primary" onClick={createMealPlan}><IonIcon icon={createSharp}/>Create a new plan</IonButton>
+                    <IonItem className={styles.createButtonContainer}>
+                        <IonButton className={styles.createButton} onClick={createMealPlan}><IonIcon icon={createSharp}/>Create a new plan</IonButton>
                     </IonItem>
                 )}
                 <div>
                     {existingPlan ? (
-                        <div className='outer-container'>
-                            {generatedPlan && Object.entries(generatedPlan).map(([key, day], index) => {
-                                return (
-                                    <div key={key}>
-                                        <p>{days[index]}</p>
-                                        {day.meals.map((food: Meals, index: number) => (
-                                            <div key={index}>
-                                                <p>{foodType[index]}</p>
-                                                <p>{food.title}</p>
-                                                <p>{food.readyIn}</p>
-                                                <p>{food.servings}</p>
-                                                <a href={food.sourceUrl}>Check the recipe out here!</a>
+                        <div className={styles.dataContainer}>
+                            <div className={styles.contentContainer}>
+                                {generatedPlan && Object.entries(generatedPlan).map(([key, day], index) => {
+                                    return (
+                                        <div key={key} className={styles.planContainer}>
+                                            <p className={styles.day}>{days[index]}</p>
+                                            {day.meals.map((food: Meals, index: number) => (
+                                                <div className={styles.planDataContainer} key={index}>
+                                                    <p className={styles.planDataType}>{foodType[index]}</p>
+                                                    <p className={styles.planData}>Name: {food.title}</p>
+                                                    <p className={styles.planData}>Ready in: {food.readyIn}</p>
+                                                    <p className={styles.planData}>Servings: {food.servings}</p>
+                                                    <a href={food.sourceUrl} className={styles.planData}>Check the recipe out here!</a>
+                                                </div>
+                                            ))}
+
+                                            <div className={styles.planNutrientDataContainer}>
+                                                {generatedPlan && Object.entries(day.nutrients).map(([nutrient, value], index) => (
+                                                    <p className={styles.planNutrientData} key={index}>
+                                                        {nutrient}: {Number(value)}
+                                                    </p>
+                                                ))}
                                             </div>
-                                        ))}
+                                        </div>
+                                    )
+                                })}
 
-                                        {generatedPlan && Object.entries(day.nutrients).map(([nutrient, value], index) => (
-                                            <p key={index}>
-                                                {nutrient}: {Number(value)}
-                                            </p>
-                                        ))}
-                                    </div>
-                                )
-                            })}
+                                {currentMealPlan && Object.entries(currentMealPlan).map(([key, day], index) => {
+                                    return (
+                                        <div key={key} className={styles.planContainer}>
+                                            <p className={styles.day}>{days[index]}</p>
+                                            {day.meals.map((food: Meals, index: number) => (
+                                                <div className={styles.planDataContainer} key={index}>
+                                                    <p className={styles.planData}>{foodType[index]}</p>
+                                                    <p className={styles.planData}>Name: {food.title}</p>
+                                                    <p className={styles.planData}>Ready in: {food.readyIn}</p>
+                                                    <p className={styles.planData}>Servings: {food.servings}</p>
+                                                    <a href={food.sourceUrl} className={styles.planData}>Check the recipe out here!</a>
+                                                </div>
+                                            ))}
 
-                            {currentMealPlan && Object.entries(currentMealPlan).map(([key, day], index) => {
-                                return (
-                                    <div key={key}>
-                                        <p>{days[index]}</p>
-                                        {day.meals.map((food: Meals, index: number) => (
-                                            <div key={index}>
-                                                <p>{foodType[index]}</p>
-                                                <p>{food.title}</p>
-                                                <p>{food.readyIn}</p>
-                                                <p>{food.servings}</p>
-                                                <a href={food.sourceUrl}>Check the recipe out here!</a>
-                                            </div>
-                                        ))}
-
-                                        {generatedPlan && Object.entries(day.nutrients).map(([nutrient, value], index) => (
-                                            <p key={index}>
-                                                {nutrient}: {Number(value)}
-                                            </p>
-                                        ))}
-                                    </div>
-                                )
-                            })}
-                            <IonButton color="primary" onClick={deleteMealPlan}><IonIcon icon={closeCircleOutline}/>Delete plan</IonButton>
-                            {createPhase && (
-                                <IonButton color="primary" onClick={saveMealPlan}><IonIcon icon={saveOutline}/>Save plan</IonButton>
-                            )}
+                                            {generatedPlan && Object.entries(day.nutrients).map(([nutrient, value], index) => (
+                                                <p className={styles.planNutrientData} key={index}>
+                                                    {nutrient}: {Number(value)}
+                                                </p>
+                                            ))}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                                <IonButton className={styles.button} onClick={deleteMealPlan}><IonIcon icon={closeCircleOutline}/>Delete plan</IonButton>
+                                {createPhase && (
+                                    <IonButton className={styles.button} onClick={saveMealPlan}><IonIcon icon={saveOutline}/>Save plan</IonButton>
+                                )}
                         </div>
                     ) : (
-                        <div>
-                            <p>You dont have any meal plans yet. Create one now!</p>
-                            <p>Diet Type: {diet}</p>
-                            <p>Calorie goal: {goal}</p>
+                        <div className={styles.noMealDataContainer}>
+                            <p className={styles.planData}>You dont have any meal plans yet. Create one now!</p>
+                            <p className={styles.planData}>Diet Type: {diet}</p>
+                            <p className={styles.planData}>Calorie goal: {goal}</p>
                         </div>
                     )}
                 </div>

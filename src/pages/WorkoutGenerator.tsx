@@ -7,13 +7,12 @@ import { createSharp, closeCircleOutline } from 'ionicons/icons';
 
 import { v4 as uuidv4 } from "uuid";
 
-import "./WorkoutGenerator.css";
+import styles from "./WorkoutGenerator.module.css";
 
 import { useTranslation } from 'react-i18next';
 
 import { fetchWorkoutPlanData } from '../api';
 import { supabase } from '../services/supabaseClient';
-import { forceUpdate } from '@ionic/pwa-elements/dist/types/stencil-public-runtime';
 
 interface Exercise{
     duration: string,
@@ -78,6 +77,7 @@ const WorkoutGenerator: React.FC = () => {
     const [ isSessionDuration, setIsSessionDuration ] = useState(false);
     const [ planDuration, setPlanDuration ] = useState(0);
     const [ isPlanDurationSet, setIsPlanDurationSet ] = useState(false);
+    const [ currentWorkoutPlanId, setCurrentWorkoutPlanId ] = useState("");
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -92,7 +92,7 @@ const WorkoutGenerator: React.FC = () => {
 
             const { data: userWorkoutPlanData,  error: userWorkoutPlanDataError } = await supabase
             .from("workoutPlans")
-            .select("plan")
+            .select("id, plan")
             .eq("user_id", userData.user.id)
             .single();
 
@@ -106,6 +106,7 @@ const WorkoutGenerator: React.FC = () => {
                 return;
             }
 
+            setCurrentWorkoutPlanId(userWorkoutPlanData.id);
             setCurrentWorkoutPlan(userWorkoutPlanData.plan);
         }
 
@@ -146,7 +147,9 @@ const WorkoutGenerator: React.FC = () => {
         .insert({
             id: workoutPlanId,
             user_id: currentUserId,
-            plan: generatedWorkoutPlan
+            plan: generatedWorkoutPlan,
+            maxWorkouts: daysPerWeek * planDuration,
+
         })
 
         if(workoutPlanSaveError){
@@ -162,7 +165,6 @@ const WorkoutGenerator: React.FC = () => {
             workoutPlan_id: workoutPlanId,
             exercise: generatedWorkoutPlan?.exercises,
             workoutFinished: 0,
-            finished: false
         })
 
         if(workoutsSaveError){
@@ -200,14 +202,26 @@ const WorkoutGenerator: React.FC = () => {
         setPlanMakeProcess(false);
         setIsPlanGenerated(true);
         setGeneratedWorkoutPlan(null);
-        router.push("/dashboard");
     }
 
     const handleDeleteWorkoutPlan = async () => {
+        const { error: exerciseDeleteError } = await supabase
+        .from("workout")
+        .delete()
+        .eq("user_id", currentUserId)
+        .eq("workoutPlanId", currentWorkoutPlanId)
+
+        if(exerciseDeleteError){
+            console.log(exerciseDeleteError);
+            setMessage(`Error while deleting the current workout plan! ${exerciseDeleteError?.message}`);
+            return;
+        }
+
         const { error: workoutDeleteError } = await supabase
         .from("workouts")
         .delete()
-        .eq("workoutPlan_id", generatedWorkoutPlan)
+        .eq("user_id", currentUserId)
+        .eq("workoutPlan_id", currentWorkoutPlanId)
 
         if(workoutDeleteError){
             console.log(workoutDeleteError);
@@ -219,6 +233,7 @@ const WorkoutGenerator: React.FC = () => {
         .from("workoutPlans")
         .delete()
         .eq("user_id", currentUserId)
+        .eq("id", currentWorkoutPlanId)
 
         if(workoutPlanDeleteError){
             console.log(workoutPlanDeleteError);
@@ -269,37 +284,37 @@ const WorkoutGenerator: React.FC = () => {
     }
 
     return (
-        <IonPage className='page'>
+        <IonPage className={styles.page}>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton className='backButton' defaultHref='/dashboard'/>
-                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref='/dashboard'/>
+                    <IonTitle className={styles.title}>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding page-content">
+            <IonContent className={styles.content}>
                 {!currentWorkoutPlan && !planMakeProcess && (
-                    <IonItem>
-                        <IonButton className='createWorkoutPlan' color="primary" onClick={() => setPlanMakeProcess(true)}><IonIcon icon={createSharp}/>Create a new workout plan</IonButton>
+                    <IonItem className={styles.createButtonContainer}>
+                        <IonButton className={styles.button} onClick={() => setPlanMakeProcess(true)}><IonIcon icon={createSharp}/>Create a new workout plan</IonButton>
                     </IonItem>
                 )}
                 
                 {planMakeProcess && (
-                    <IonGrid fixed class='grid'>
-                        <IonRow class='ion-justify-content-center'>
-                            <IonCol size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
-                                <IonText color="primary">
-                                    <h2>Give some more information</h2>
+                    <IonGrid className={styles.grid}>
+                        <IonRow className={styles.row}>
+                            <IonCol className={styles.col} size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
+                                <IonText>
+                                    <h2 className={styles.info}>Give some more information</h2>
                                 </IonText>
-                                <IonItem>
-                                        <IonSelect label='Fitness Goal' value={fitnessGoal} onIonChange={(e) => { setFitnessGoal(String(e.detail.value)); setIsFitnessGoalSet(true); }} labelPlacement='floating' placeholder='---Please choose an option---'>
+                                <IonItem className={styles.dataSection}>
+                                        <IonSelect className={styles.input} label='Fitness Goal' value={fitnessGoal} onIonChange={(e) => { setFitnessGoal(String(e.detail.value)); setIsFitnessGoalSet(true); }} labelPlacement='floating' placeholder='---Please choose an option---'>
                                             <IonSelectOption value="Build muscle">Build Muscle</IonSelectOption>
                                             <IonSelectOption value="Lose Weight">Lose Weight</IonSelectOption>
                                         </IonSelect>
                                     </IonItem>
                                     {isFitnessGoalSet && (
-                                        <IonItem>
+                                        <IonItem className={styles.dataSection}>
                                             
-                                            <IonSelect label='Fitness Level' value={fitnessLevel} onIonChange={(e) => { setFitnessLevel(String(e.detail.value)); setIsFitnessLevelSet(true); }} labelPlacement='floating' placeholder='---Please choose an option---'>
+                                            <IonSelect className={styles.input} label='Fitness Level' value={fitnessLevel} onIonChange={(e) => { setFitnessLevel(String(e.detail.value)); setIsFitnessLevelSet(true); }} labelPlacement='floating' placeholder='---Please choose an option---'>
                                                 <IonSelectOption value="Beginner">Beginner</IonSelectOption>
                                                 <IonSelectOption value="Intermediate">Intermediate</IonSelectOption>
                                                 <IonSelectOption value="Advanced">Advanced</IonSelectOption>
@@ -309,45 +324,45 @@ const WorkoutGenerator: React.FC = () => {
                     
                                     {isFitnessGoalSet && (
                                         preferenceOptions.map(preference => (
-                                            <IonItem key={preference}>
-                                                <IonLabel>{preference}</IonLabel>
-                                                <IonCheckbox value={preference} checked={preferences.includes(preference)} onIonChange={(e) => { handleCheckBoxStateForPreferences(e)}} labelPlacement="end"/>
+                                            <IonItem className={styles.dataSection} key={preference}>
+                                                <IonLabel className={styles.data}>{preference}</IonLabel>
+                                                <IonCheckbox className={styles.input} value={preference} checked={preferences.includes(preference)} onIonChange={(e) => { handleCheckBoxStateForPreferences(e)}} labelPlacement="end"/>
                                             </IonItem>
                                     )))}
                     
                                     {isFitnessGoalSet && (
                                         healthConditionsOptions.map(condition => (
-                                            <IonItem key={condition}>
-                                                <IonLabel>{condition}</IonLabel>
-                                                <IonCheckbox value={condition} checked={healthConditions.includes(condition)} onIonChange={(e) => { handleCheckBoxStateForHealth(e)}} labelPlacement="end"/>
+                                            <IonItem className={styles.dataSection} key={condition}>
+                                                <IonLabel className={styles.data}>{condition}</IonLabel>
+                                                <IonCheckbox className={styles.input} value={condition} checked={healthConditions.includes(condition)} onIonChange={(e) => { handleCheckBoxStateForHealth(e)}} labelPlacement="end"/>
                                             </IonItem>
                                     )))}
                     
                                     {isFitnessGoalSet && (
-                                        <IonItem>
+                                        <IonItem className={styles.dataSection}>
                                             
-                                            <IonInput label='Workout frequency' value={daysPerWeek} onIonChange={e => { setDaysPerWeek(Number(e.detail.value)); setIsDaysPerWeekSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+                                            <IonInput className={styles.input} label='Workout frequency' value={daysPerWeek} onIonChange={e => { setDaysPerWeek(Number(e.detail.value)); setIsDaysPerWeekSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
                                         </IonItem>
                                     )}
 
                                     {isDaysPerWeekSet && (
-                                        <IonItem>
+                                        <IonItem className={styles.dataSection}>
                                             
-                                            <IonInput label='Session duration' value={sessionDuration} onIonChange={e => { setSessionDuration(Number(e.detail.value)); setIsSessionDuration(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+                                            <IonInput className={styles.input} label='Session duration' value={sessionDuration} onIonChange={e => { setSessionDuration(Number(e.detail.value)); setIsSessionDuration(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
                                         </IonItem>
                                     )}
                     
                                     {isSessionDuration && (
-                                        <IonItem>
+                                        <IonItem className={styles.dataSection}>
                                             
-                                            <IonInput label='Plan duration' value={planDuration} onIonChange={e => { setPlanDuration(Number(e.detail.value)); setIsPlanDurationSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+                                            <IonInput className={styles.input} label='Plan duration' value={planDuration} onIonChange={e => { setPlanDuration(Number(e.detail.value)); setIsPlanDurationSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
                                         </IonItem>
                                     )}
                     
                                     {isPlanDurationSet && (
-                                        <div>
-                                            <IonButton className='button' onClick={() => handleCreatePlan()} shape='round'>Create</IonButton>
-                                            <IonButton className='button' onClick={() => handleAbortPlan()} shape='round'>Cancel</IonButton>
+                                        <div className={styles.dataSection}>
+                                            <IonButton className={styles.button} onClick={() => handleCreatePlan()} shape='round'>Create</IonButton>
+                                            <IonButton className={styles.button} onClick={() => handleAbortPlan()} shape='round'>Cancel</IonButton>
                                         </div>
                                     )}
                             </IonCol>
@@ -356,76 +371,76 @@ const WorkoutGenerator: React.FC = () => {
                 )}
 
                 {isPlanGenerated && generatedWorkoutPlan !== null &&(
-                    <div>
-                        <h2>{generatedWorkoutPlan.goal}</h2>
-                            <h3>Fitness Level: {generatedWorkoutPlan.fitness_level}</h3>
-                                <div>
-                                    <h4>Workout days per week: {generatedWorkoutPlan.schedule.days_per_week}</h4>
-                                    <h4>Workout length: {generatedWorkoutPlan.schedule.session_duration}</h4>
+                    <div className={styles.dataContainer}>
+                        <h2 className={styles.data}>{generatedWorkoutPlan.goal}</h2>
+                            <h3 className={styles.data}>Fitness Level: {generatedWorkoutPlan.fitness_level}</h3>
+                                <div className={styles.dataSection}>
+                                    <h4 className={styles.data}>Workout days per week: {generatedWorkoutPlan.schedule.days_per_week}</h4>
+                                    <h4 className={styles.data}>Workout length: {generatedWorkoutPlan.schedule.session_duration}</h4>
                                 </div>
 
-                                <div>
+                                <div className={styles.dataSection}>
                                     {generatedWorkoutPlan?.exercises?.map((exercise, exerciseIndex) => (
                                         <div key={exerciseIndex}>
-                                            <h3>{exercise.day}</h3>
+                                            <h3 className={styles.data}>{exercise.day}</h3>
                                             {exercise?.exercises?.map((currentData, index) => (
-                                                <div key={index}>
-                                                    <h4>Duration: {currentData.duration}</h4>
-                                                    <h4>Equipment: {currentData.equipment}</h4>
-                                                    <h4>Exercise name: {currentData.name}</h4>
-                                                    <h4>Repetition: {currentData.repetitions}</h4>
-                                                    <h4>Sets: {currentData.sets}</h4>
+                                                <div className={styles.dataSection} key={index}>
+                                                    <h4 className={styles.data}>Duration: {currentData.duration}</h4>
+                                                    <h4 className={styles.data}>Equipment: {currentData.equipment}</h4>
+                                                    <h4 className={styles.data}>Exercise name: {currentData.name}</h4>
+                                                    <h4 className={styles.data}>Repetition: {currentData.repetitions}</h4>
+                                                    <h4 className={styles.data}>Sets: {currentData.sets}</h4>
                                                 </div>
                                             ))}
                                         </div>
                                     ))}
                                 </div>
                                 <div>
-                                    <p>{generatedWorkoutPlan.seo_title}</p>
-                                    <p>Workout description: {generatedWorkoutPlan.seo_content}</p>
-                                    <p>Keywords: {generatedWorkoutPlan.seo_keywords}</p>
+                                    <p className={styles.data}>{generatedWorkoutPlan.seo_title}</p>
+                                    <p className={styles.data}>Workout description: {generatedWorkoutPlan.seo_content}</p>
+                                    <p className={styles.data}>Keywords: {generatedWorkoutPlan.seo_keywords}</p>
                                 </div>
 
-                                <div>
-                                    <IonButton className='button' onClick={() => handleSavePlan()} shape='round'>Save</IonButton>
-                                    <IonButton className='button' onClick={() => handleAbortPlan()} shape='round'>Cancel</IonButton>
+                                <div className={styles.dataSection}>
+                                    <IonButton className={styles.button} onClick={() => handleSavePlan()} shape='round' routerDirection='root'>Save</IonButton>
+                                    <IonButton className={styles.button} onClick={() => handleAbortPlan()} shape='round'>Cancel</IonButton>
                                 </div>
                     </div>
                 )}
 
                 {currentWorkoutPlan &&(
-                    <div>
-                        <h2>{currentWorkoutPlan.goal}</h2>
-                            <h3>Fitness Level: {currentWorkoutPlan.fitness_level}</h3>
-                                <div>
-                                    <h4>Workout days per week: {currentWorkoutPlan.schedule.days_per_week}</h4>
-                                    <h4>Workout length: {currentWorkoutPlan.schedule.session_duration}</h4>
+                    <div className={styles.dataContainer}>
+                        <h2 className={styles.data}>{currentWorkoutPlan.goal}</h2>
+                            <h3 className={styles.data}>Fitness Level: {currentWorkoutPlan.fitness_level}</h3>
+                                <div className={styles.dataSection}>
+                                    <h4 className={styles.data}>Workout days per week: {currentWorkoutPlan.schedule.days_per_week}</h4>
+                                    <h4 className={styles.data}>Workout length: {currentWorkoutPlan.schedule.session_duration}</h4>
                                 </div>
 
-                                <div>
+                                <div className={styles.dataSection}>
                                     {currentWorkoutPlan?.exercises?.map((exercise, exerciseIndex) => (
-                                        <div key={exerciseIndex}>
-                                            <h3>{exercise.day}</h3>
+                                        <div className={styles.cardMain} key={exerciseIndex}>
+                                            <h3 className={styles.cardMainDay}>{exercise.day}</h3>
                                             {exercise?.exercises?.map((currentData, index) => (
-                                                <div key={index}>
-                                                    <h4>Duration: {currentData.duration}</h4>
-                                                    <h4>Equipment: {currentData.equipment}</h4>
-                                                    <h4>Exercise name: {currentData.name}</h4>
-                                                    <h4>Repetition: {currentData.repetitions}</h4>
-                                                    <h4>Sets: {currentData.sets}</h4>
+                                                <div className={styles.dataSection} key={index}>
+                                                    <h4 className={styles.data}>Duration: {currentData.duration}</h4>
+                                                    <h4 className={styles.data}>Equipment: {currentData.equipment}</h4>
+                                                    <h4 className={styles.data}>Exercise name: {currentData.name}</h4>
+                                                    <h4 className={styles.data}>Repetition: {currentData.repetitions}</h4>
+                                                    <h4 className={styles.data}>Sets: {currentData.sets}</h4>
                                                 </div>
                                             ))}
                                         </div>
                                     ))}
                                 </div>
-                                <div>
-                                    <p>{currentWorkoutPlan.seo_title}</p>
-                                    <p>Workout description: {currentWorkoutPlan.seo_content}</p>
-                                    <p>Keywords: {currentWorkoutPlan.seo_keywords}</p>
+                                <div className={styles.dataSectionFooter}>
+                                    <p className={styles.dataFooter}>{currentWorkoutPlan.seo_title}</p>
+                                    <p className={styles.dataFooter}>Workout description: {currentWorkoutPlan.seo_content}</p>
+                                    <p className={styles.dataFooter}>Keywords: {currentWorkoutPlan.seo_keywords}</p>
                                 </div>
 
-                                <div>
-                                    <IonButton color="primary" onClick={handleDeleteWorkoutPlan}><IonIcon icon={closeCircleOutline}/>Delete workout plan</IonButton>
+                                <div className={styles.deleteButton}>
+                                    <IonButton className={styles.button} onClick={handleDeleteWorkoutPlan}><IonIcon icon={closeCircleOutline}/>Delete workout plan</IonButton>
                                 </div>
                     </div>
                 )}

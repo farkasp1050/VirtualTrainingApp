@@ -7,7 +7,7 @@ import { search, personAdd, personRemove, chatbubbleEllipses } from 'ionicons/ic
 
 import { incrementFriends } from '../badges';
 
-import "./AddFriends.css";
+import styles from "./AddFriends.module.css";
 
 import { useTranslation } from 'react-i18next';
 
@@ -142,47 +142,49 @@ const addFriends: React.FC = () => {
     }
 
     return (
-        <IonPage className='page'>
+        <IonPage className={styles.page}>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton className='backButton' defaultHref='/dashboard'/>
-                    <input type='text' className='search-bar' value={searchParam} placeholder='John Doe' onChange={(e) => setSearchParam(String(e.target.value))}/>
-                    <IonIcon className='search-icon' icon={search} size='large' onClick={(e) => { handleSearch(); }}></IonIcon>
-                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref='/dashboard'/>
+                    <input className={styles.input} type='text' value={searchParam} placeholder='John Doe' onChange={(e) => setSearchParam(String(e.target.value))}/>
+                    <IonIcon className={styles.icon} icon={search} onClick={(e) => { handleSearch(); }}></IonIcon>
+                    <IonTitle className={styles.title}>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent fullscreen className="ion-padding page-content">
+            <IonContent className={styles.content}>
             {searchResult && (
-                <IonList className='list'>
-                    {searchResult.map((result) => (
-                        <IonItem key={result.id} className='userCard'>
-                            <div className='cardContent'>
-                                <IonAvatar slot='start'>
-                                <img src={defaultAvatar} alt="User Picture" className='profilePicture'/>
-                                </IonAvatar>
-                                <div className='userDetails'>
-                                    <IonItem className='Name'>
-                                        <IonLabel>{t("name")} </IonLabel>
-                                        <IonText>{result.fullName}</IonText>
-                                    </IonItem>
-                                    <IonItem className='Age'>
-                                        <IonLabel>{t("age")} </IonLabel>
-                                        <IonText>{result.Age}</IonText>
-                                    </IonItem>
-                                    <IonItem className='Date'>
-                                        <IonLabel>{t("userCreatedAt")} </IonLabel>
-                                        <IonText>{new Date(result.created_at).toLocaleString()}</IonText>
-                                    </IonItem>
-                                    <IonItem>
-                                        <IonIcon className='addIcon' icon={personAdd} slot='start' onClick={ () => { handleAddFriend(result.id) } }></IonIcon>
-                                        <IonIcon className='removeIcon' icon={personRemove} onClick={ () => { handleRemoveFriend(result.id) } }></IonIcon>
-                                        <IonIcon className='createChatIcon' icon={chatbubbleEllipses} slot='end' onClick={ () => { handleCreateChat(result.id) } }></IonIcon>
-                                    </IonItem>
+                <div className={styles.listContainer}>
+                    <IonList className={styles.list}>
+                        {searchResult.map((result) => (
+                            <IonItem className={styles.result} key={result.id}>
+                                <div className={styles.resultDataContainer}>
+                                    <IonAvatar className={styles.avatar} slot='start'>
+                                        <img src={defaultAvatar} alt="User Picture" className={styles.image}/>
+                                    </IonAvatar>
+                                    <div className={styles.dataContainer}>
+                                        <IonItem className={styles.data}>
+                                            <IonLabel className={styles.label}>{t("name")} </IonLabel>
+                                            <IonText className={styles.text}>{result.fullName}</IonText>
+                                        </IonItem>
+                                        <IonItem className={styles.data}>
+                                            <IonLabel className={styles.label}>{t("age")} </IonLabel>
+                                            <IonText className={styles.text}>{result.Age}</IonText>
+                                        </IonItem>
+                                        <IonItem className={styles.data}>
+                                            <IonLabel className={styles.label}>{t("userCreatedAt")} </IonLabel>
+                                            <IonText className={styles.text}>{result.created_at.toLocaleString().split("T")[0]}</IonText>
+                                        </IonItem>
+                                        <IonItem className={styles.data}>
+                                            <IonIcon className={styles.icon} icon={personAdd} slot='start' onClick={ () => { handleAddFriend(result.id) } }></IonIcon>
+                                            <IonIcon className={styles.icon} icon={personRemove} onClick={ () => { handleRemoveFriend(result.id) } }></IonIcon>
+                                            <IonIcon className={styles.icon} icon={chatbubbleEllipses} slot='end' onClick={ () => { handleCreateChat(result.id) } }></IonIcon>
+                                        </IonItem>
+                                    </div>
                                 </div>
-                            </div>
-                        </IonItem>
-                    ))}
-                </IonList>
+                            </IonItem>
+                        ))}
+                    </IonList>
+                </div>
             )}
             <IonToast
                 isOpen={showToast}

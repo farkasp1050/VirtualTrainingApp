@@ -1,0 +1,117 @@
+.menuContainer{
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: aliceblue;
+}
+
+.menuHeader{
+    background: transparent;
+    --background: transparent;
+}
+
+.ionHeaderToolBar{
+    --background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.menuContent{
+    --background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.menuTitle{
+    font-size: 1rem;
+    font-weight: 800;
+    color: aliceblue;
+}
+
+.menuList{
+    padding-top: 1rem;
+    margin: 0;
+    background: transparent;
+}
+
+.menuItem{
+    --background: transparent;
+    color: aliceblue;
+    --border-radius: 10px;
+    margin: 0.35rem 0.85rem;
+    padding: 0.5rem;
+    --background: transparent;
+    --border-color: transparent;
+    --inner-border-width: 0;
+    --highlight-height: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    --inner-padding-end: 0;
+}
+
+.menuIcon{
+    font-size: 1.3rem;
+    color: aliceblue;
+    margin-right: 20px;
+}
+
+.menuFooter{
+    padding: 1.2rem;
+    background: transparent;
+}
+
+.divider{
+    --background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.logoutButton{
+    color: aliceblue;
+    --background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    width: 100%;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 0;
+    margin: 0;
+}
+
+.menuButton{
+    color: aliceblue;
+    --background: transparent;
+    font-size: 2rem;
+}
+
+.page{
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.content{
+    --background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.greetings{
+    font-weight: 900;
+    color: aliceblue;
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+    text-align: center;
+}
+
+.grid{
+    padding: 1.5rem;
+    margin: 1.5rem;
+}
+
+.gridItem{
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+    --background: linear-gradient(50deg, #6a11cb 0%, #2575fc 100%);
+    border-radius: 20px;
+    box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+}
+
+.gridItemIcon{
+    font-size: 2rem;
+    margin-right: 1rem;
+    color: aliceblue;
+}
+
+.gridItemLabel{
+    color: aliceblue;
+    font-size: 1rem;
+    font-weight: 900;
+}

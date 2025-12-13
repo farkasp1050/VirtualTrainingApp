@@ -1,10 +1,10 @@
-import { IonContent, IonHeader, IonItemDivider, IonIcon, IonToast, IonMenuToggle, IonButton, IonMenuButton, IonFooter, IonList, IonItem, IonButtons, IonPage, IonSplitPane, IonRouterOutlet, IonMenu, IonTitle, IonToolbar, useIonRouter, IonCard, IonCardTitle, IonCardSubtitle } from '@ionic/react';
+import { IonContent, IonHeader, IonItemDivider, IonIcon, IonToast, IonMenuToggle, IonButton, IonMenuButton, IonFooter, IonList, IonItem, IonButtons, IonPage, IonSplitPane, IonRouterOutlet, IonMenu, IonTitle, IonToolbar, useIonRouter, IonCard, IonCardTitle, IonCardSubtitle, IonLabel, IonGrid, IonRow, IonCol } from '@ionic/react';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
 import { settingsSharp, walkSharp, personSharp, barbellSharp, scanSharp, chatbubblesSharp, informationCircleSharp, personAddSharp, chatboxEllipsesSharp, fastFoodSharp } from 'ionicons/icons';
 
-import "./Dashboard.css";
+import styles from "./Dashboard.module.css";
 
 import { useTranslation } from 'react-i18next';
 
@@ -44,6 +44,8 @@ const Dashboard: React.FC = () => {
     const [ userId, setUserId ] = useState("");
     const router = useIonRouter();
 
+    const [ userName, setUserName ] = useState("");
+
     const [ workoutsDone, setWorkoutsDone ] = useState(0);
     const [ workoutProgression, setWorkoutProgression ] = useState();
 
@@ -59,6 +61,20 @@ const Dashboard: React.FC = () => {
             }
             
             setUserId(userData.user.id);
+
+            const { data: userNameData, error: userNameDataError } = await supabase
+            .from("users")
+            .select("fullName")
+            .eq("id", userData.user.id)
+            .single();
+
+            if(userNameDataError){
+                console.log(userNameDataError);
+                setMessage(`User not found! ${userNameDataError?.message}`);
+                return;
+            }
+
+            setUserName(userNameData.fullName);
 
             const { data: userWorkoutPlanData,  error: userWorkoutPlanDataError } = await supabase
             .from("workoutPlans")
@@ -108,59 +124,93 @@ const Dashboard: React.FC = () => {
 
     return (
        <>
-        <IonMenu type={"push"} contentId='main-content'>
-            <IonHeader className='header'>
-                <IonToolbar className='toolbar'>
-                    <IonTitle>
+        <IonMenu type={"push"} contentId='main-content' className={styles.menuContainer}>
+            <IonHeader className={styles.menuHeader}>
+                <IonToolbar className={styles.ionHeaderToolBar}>
+                    <IonTitle className={styles.menuTitle}>
                         {t("title")}
                     </IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent className='ion-padding page-content'>
-                <IonList className='list'>
+            <IonContent className={styles.menuContent}>
+                <IonList className={styles.menuList}>
                     <IonMenuToggle>
-                        <IonItem className='menuItem' routerLink='/settings'><IonIcon icon={settingsSharp} className='icon-black-version'></IonIcon>{t("settings")}</IonItem>
-                        <IonItem className='menuItem' routerLink='/profile'><IonIcon icon={personSharp} className='icon-black-version'></IonIcon>{t("profile")}</IonItem>
-                        <IonItemDivider className='divider'></IonItemDivider>
-                        <IonItem className='menuItem' routerLink='/foodRecognizer'><IonIcon icon={scanSharp} className='icon-black-version'></IonIcon>{t("foodRecognizer")}</IonItem>
-                        <IonItem className='menuItem' routerLink='/foodKB'><IonIcon icon={informationCircleSharp} className='icon-black-version'></IonIcon>{t("foodKB")}</IonItem>
-                        <IonItem className='menuItem' routerLink='/mealPlanner'><IonIcon icon={fastFoodSharp} className='icon-black-version'></IonIcon>{t("mealPlanner")}</IonItem>
-                        <IonItemDivider className='divider'></IonItemDivider>
-                        <IonItem className='menuItem' routerLink='/forum'><IonIcon icon={chatboxEllipsesSharp} className='icon-black-version'></IonIcon>{t("forum")}</IonItem>
-                        <IonItem className='menuItem' routerLink='/addFriends'><IonIcon icon={personAddSharp} className='icon-black-version'></IonIcon>{t("addFriends")}</IonItem>
-                        <IonItem className='menuItem' routerLink='/myChats'><IonIcon icon={chatbubblesSharp} className='icon-black-version'></IonIcon>{t("myChats")}</IonItem>
-                        <IonItemDivider className='divider'></IonItemDivider>
-                        <IonItem className='menuItem' routerLink='/workoutGenerator'><IonIcon icon={barbellSharp} className='icon-black-version'></IonIcon>{t("workoutGenerator")}</IonItem>
-                        <IonItem className='menuItem' routerLink='/myWorkoutPlans'><IonIcon icon={walkSharp} className='icon-black-version'></IonIcon>{t("myWorkouts")}</IonItem>
+                        <IonItem routerLink='/settings' className={styles.menuItem} lines='none'>
+                            <IonIcon icon={settingsSharp} slot='start' className={styles.menuIcon}/>
+                            <IonLabel>{t("settings")}</IonLabel>
+                        </IonItem>
+                        <IonItem routerLink='/profile' className={styles.menuItem} lines='none'>
+                            <IonIcon icon={personSharp} className={styles.menuIcon} slot='start'/>
+                            <IonLabel>{t("profile")}</IonLabel>
+                        </IonItem>
+                        <IonItemDivider className={styles.divider}></IonItemDivider>
+                        <IonItem routerLink='/foodKB' className={styles.menuItem} lines='none'>
+                            <IonIcon icon={informationCircleSharp} className={styles.menuIcon} slot='start'/>
+                            <IonLabel>{t("foodKB")}</IonLabel>
+                        </IonItem>
+                        <IonItem routerLink='/addFriends' className={styles.menuItem} lines='none'>
+                            <IonIcon icon={personAddSharp} className={styles.menuIcon} slot='start'/>
+                            <IonLabel>{t("addFriends")}</IonLabel>
+                        </IonItem>
+                        <IonItemDivider className={styles.divider}></IonItemDivider>
+                        <IonItem routerLink='/workoutGenerator' className={styles.menuItem} lines='none'>
+                            <IonIcon icon={barbellSharp} className={styles.menuIcon} slot='start'/>
+                            <IonLabel>{t("workoutGenerator")}</IonLabel>
+                        </IonItem>
+                        <IonItem routerLink='/myWorkoutPlans' className={styles.menuItem} lines='none'>
+                            <IonIcon icon={walkSharp} className={styles.menuIcon} slot='start'/>
+                            <IonLabel>{t("myWorkouts")}</IonLabel>
+                        </IonItem>
                     </IonMenuToggle>
                 </IonList>
             </IonContent>
-            <IonFooter className='footer'>
-                <IonToolbar className='footerToolbar'>
-                    <IonItem className='footerItem'>
-                        <IonButton className='logOutButton' onClick={handleLogOut}>{t("logout")}</IonButton>
-                    </IonItem>
-                </IonToolbar>
-                <IonToast
-                    isOpen={showToast}
-                    message={message}
-                    duration={3000}
-                    onDidDismiss={() => setShowToast(false)}
-                />
-            </IonFooter>
+            <IonButton className={styles.logoutButton} onClick={handleLogOut}>{t("logout")}</IonButton>
         </IonMenu>
-        <IonPage id='main-content' className='page'>
+        <IonPage id='main-content' className={styles.page}>
             <IonHeader>
                 <IonButtons slot="start">
-                    <IonMenuButton className='menuButton'></IonMenuButton>
+                    <IonMenuButton className={styles.menuButton}></IonMenuButton>
                 </IonButtons>
             </IonHeader>
-            <IonContent className='ion-padding page-content'>
-                <IonCard>
-                    <IonCardTitle></IonCardTitle>
-                    <IonCardSubtitle></IonCardSubtitle>
-                </IonCard>
+            <IonContent className={styles.content}>
+                <h1 className={styles.greetings}>Welcome {userName}!</h1>
+
+                <IonGrid className={styles.grid}>
+                    <IonRow>
+                        <IonCol size='6'>
+                            <IonItem routerLink='/foodRecognizer' className={styles.gridItem} lines='none'>
+                                <IonIcon icon={scanSharp} className={styles.gridItemIcon} slot='start'/>
+                                <IonLabel className={styles.gridItemLabel}>{t("foodRecognizer")}</IonLabel>
+                            </IonItem>
+                        </IonCol>
+                        <IonCol size='6'>
+                            <IonItem routerLink='/forum' className={styles.gridItem} lines='none'>
+                                <IonIcon icon={chatboxEllipsesSharp} className={styles.gridItemIcon} slot='start'/>
+                                <IonLabel className={styles.gridItemLabel}>{t("forum")}</IonLabel>
+                            </IonItem>
+                        </IonCol>
+                        <IonCol size='6'>
+                            <IonItem routerLink='/myChats' className={styles.gridItem} lines='none'>
+                                <IonIcon icon={chatbubblesSharp} className={styles.gridItemIcon} slot='start'/>
+                                <IonLabel className={styles.gridItemLabel}>{t("myChats")}</IonLabel>
+                            </IonItem>
+                        </IonCol>
+                        <IonCol size='6'>
+                            <IonItem routerLink='/mealPlanner' className={styles.gridItem} lines='none'>
+                                <IonIcon icon={fastFoodSharp} className={styles.gridItemIcon} slot='start'/>
+                                <IonLabel className={styles.gridItemLabel}>{t("mealPlanner")}</IonLabel>
+                            </IonItem>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
             </IonContent>
+
+            <IonToast
+                isOpen={showToast}
+                message={message}
+                duration={3000}
+                onDidDismiss={() => setShowToast(false)}
+            />
         </IonPage>
        </>
     );

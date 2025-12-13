@@ -1,11 +1,13 @@
-import { IonContent, IonHeader, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButtons, IonItem, IonLabel, IonBackButton, IonToast, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButtons, IonItem, IonLabel, IonBackButton, IonToast, IonPage, IonTitle, IonToolbar, IonIcon } from '@ionic/react';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useIonRouter } from '@ionic/react';
 
 import { useTranslation } from 'react-i18next';
 
-import "./MyWorkoutPlans.css";
+import { checkmarkOutline } from 'ionicons/icons';
+
+import styles from "./MyWorkoutPlans.module.css";
 
 import { supabase } from '../services/supabaseClient';
 
@@ -35,6 +37,9 @@ const MyWorkouts: React.FC = () => {
     const [ workoutPlan, setWorkoutPlan ] = useState<WorkoutPlan | null>(null);
     const [ workoutPlanId, setWorkoutPlanId ] = useState("");
     const [ planCreatedAt, setPlanCreatedAt ] = useState("");
+    const [ completedWorkouts, setCompletedWorkouts ] = useState(0);
+    const [ isFinished, setIsFinished ] = useState(false);
+    const [ maxWorkouts, setMaxWorkouts ] = useState(0);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -49,7 +54,7 @@ const MyWorkouts: React.FC = () => {
 
             const { data: workoutPlanData, error: workoutPlanDataError } = await supabase
             .from("workoutPlans")
-            .select("id, created_at")
+            .select("id, created_at, maxWorkouts")
             .eq("user_id", userData.user.id)
             .single();
 
@@ -65,6 +70,25 @@ const MyWorkouts: React.FC = () => {
 
             setWorkoutPlanId(workoutPlanData.id);
             setPlanCreatedAt(new Date(workoutPlanData.created_at).toLocaleString());
+            setMaxWorkouts(workoutPlanData.maxWorkouts);
+
+            const { data: isWorkoutPlanFinishedData,  error: isWorkoutPlanFinishedDataError } = await supabase
+            .from("workouts")
+            .select("workoutFinished")
+            .eq("user_id", userData.user.id)
+            .eq("workoutPlan_id", workoutPlanData.id)
+            .single();
+
+            if(isWorkoutPlanFinishedDataError){
+                console.log(isWorkoutPlanFinishedDataError);
+                setMessage("Error while fetching the user's workout plan!");
+                return;
+            }
+
+            setCompletedWorkouts(isWorkoutPlanFinishedData.workoutFinished);
+            if(isWorkoutPlanFinishedData.workoutFinished === workoutPlanData.maxWorkouts){
+                setIsFinished(true);
+            }
 
             const { data: workoutPlan, error: workoutPlanError } = await supabase
             .from("workoutPlans")
@@ -90,27 +114,28 @@ const MyWorkouts: React.FC = () => {
     }, []);
 
     return (
-        <IonPage className='page'>
+        <IonPage className={styles.page}>
             <IonHeader>
                 <IonButtons>
-                    <IonBackButton className='backButton' defaultHref='/dashboard'/>
-                    <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                    <IonBackButton className={styles.backButton} defaultHref='/dashboard'/>
+                    <IonTitle className={styles.title}>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding page-content">
+            <IonContent className={styles.content}>
                 {planExisting ? (
-                    <div className='workoutGrid'>
-                        <IonCard key={workoutPlanId} routerLink={`/currentWorkoutPlan/${workoutPlanId}`}>
-                            <IonCardHeader>
-                                <IonCardTitle>{workoutPlan?.seo_title}</IonCardTitle>
-                                <IonCardSubtitle>Created At: {new Date(planCreatedAt).toLocaleString()}</IonCardSubtitle>
-                                <IonCardSubtitle>Workout Duration: {workoutPlan?.total_weeks}</IonCardSubtitle>
+                    <div className={styles.resultContainer}>
+                        <IonCard className={styles.card} key={workoutPlanId} routerLink={`/currentWorkoutPlan/${workoutPlanId}`} disabled={isFinished}>
+                            <IonCardHeader className={styles.cardHeader}>
+                                <IonCardTitle className={styles.cardTitle}>{workoutPlan?.seo_title}</IonCardTitle>
+                                <IonCardSubtitle className={styles.cardSubtitle}>Created At: {new Date(planCreatedAt).toLocaleString()}</IonCardSubtitle>
+                                <IonCardSubtitle className={styles.cardSubtitle}>Workout Duration: {workoutPlan?.total_weeks}</IonCardSubtitle>
                             </IonCardHeader>
-                            <IonCardContent>{workoutPlan?.seo_content}</IonCardContent>
+                            <IonCardContent className={styles.cardContent}>{workoutPlan?.seo_content}</IonCardContent>
+                            {isFinished && (<IonIcon className={styles.icon} icon={checkmarkOutline}/>)}
                         </IonCard>
                     </div>
                 ) : (
-                    <p>You dont have any workout plans yet! Create one now!</p>
+                    <p className={styles.loading}>You dont have any workout plans yet! Create one now!</p>
                 )}
             <IonToast
             isOpen={showToast}

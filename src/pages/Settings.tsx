@@ -10,7 +10,7 @@ import ReactSwitch from "react-switch";
 import { US } from "country-flag-icons/react/3x2";
 import { HU } from "country-flag-icons/react/3x2";
 
-import "./Settings.css";
+import styles from "./Settings.module.css";
 
 import { useTranslation } from 'react-i18next';
 
@@ -61,35 +61,40 @@ const Settings: React.FC = () => {
     }
 
     return (
-        <IonPage className='page'>
-            <IonHeader>
+        <IonPage className={styles.page}>
+            <IonHeader className={styles.header}>
                 <IonButtons>
-                        <IonBackButton className='backButton' defaultHref='/dashboard'/>
-                        <IonTitle className='ion-text-end'>{t("title")}</IonTitle>
+                        <IonBackButton className={styles.backButton} defaultHref='/dashboard'/>
+                        <IonTitle className={styles.title}>{t("title")}</IonTitle>
                 </IonButtons>
             </IonHeader>
-            <IonContent className="ion-padding page-content">
-                <div className='content'>
-                    <IonList className='list'>
-                        <ReactSwitch
-                        checked={isItDark}
-                        onChange={handleThemeChange}
-                        offColor='#ffffff'
-                        onColor='#000000'
-                        checkedIcon={<IonIcon icon={sunnyOutline}/>}
-                        uncheckedIcon={<IonIcon icon={moonOutline}/>}
-                        />
-                        
-                        <ReactSwitch
-                        checked={isItEnglish}
-                        onChange={() => handleLanguageChange()}
-                        offColor={isItDark ? "#ffffff ": "#000000"}
-                        onColor={isItDark ? "#ffffff ": "#000000"}
-                        checkedIcon={<US title="English"/>}
-                        uncheckedIcon={<HU title="Magyar"/>}
-                        />
-                        <IonItem className='version'>
-                            <IonInput label="Version" value="1.1.3." disabled={true}></IonInput>
+            <IonContent className={styles.content}>
+                <div className={styles.listContainer}>
+                    <IonList className={styles.list}>
+                        <div className={styles.switchContainer}>
+                            <div className={styles.switch}>
+                                <ReactSwitch
+                                checked={isItDark}
+                                onChange={handleThemeChange}
+                                offColor='#ffffff'
+                                onColor='#000000'
+                                checkedIcon={<IonIcon icon={sunnyOutline}/>}
+                                uncheckedIcon={<IonIcon icon={moonOutline}/>}
+                                />
+                            </div>
+                            <div className={styles.switch}>
+                                <ReactSwitch
+                                checked={isItEnglish}
+                                onChange={() => handleLanguageChange()}
+                                offColor={isItDark ? "#ffffff ": "#000000"}
+                                onColor={isItDark ? "#ffffff ": "#000000"}
+                                checkedIcon={<US title="English"/>}
+                                uncheckedIcon={<HU title="Magyar"/>}
+                                />
+                            </div>
+                        </div>
+                        <IonItem className={styles.version}>
+                            <IonInput className={styles.input} label="Version" value="1.1.3." disabled={true}></IonInput>
                         </IonItem>
                     </IonList>
                 </div>
