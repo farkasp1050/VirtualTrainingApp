@@ -1,3 +1,6 @@
 {
-    "title": "My Workouts"
+    "title": "My Workouts",
+    "createdAt": "Created At",
+    "workoutDuration": "Workout Duration",
+    "noPlan": "You dont have any workout plans yet! Create one now!"
 }

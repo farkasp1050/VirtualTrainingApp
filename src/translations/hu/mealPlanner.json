@@ -7,5 +7,14 @@
     "calorie": "Kalória",
     "carbohydrate": "Szénhidrát",
     "fat": "Zsír",
-    "protein": "Fehérje"
+    "protein": "Fehérje",
+    "createPlan": "Terv készítése",
+    "name": "Név",
+    "readyIn": "Elkészítési idő",
+    "recipe": "Recept",
+    "deletePlan": "Terv törlése",
+    "savePlan": "Terv mentése",
+    "calorieGoal": "Kalória cél",
+    "dietType": "Diéta típusa",
+    "noPlan": "Nincs még terved. Készíts egyet most!"
 }

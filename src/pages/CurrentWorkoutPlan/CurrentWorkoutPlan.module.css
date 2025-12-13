@@ -1,0 +1,67 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    background: var(--mainBackground);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+.header{
+    padding-top: 25px;
+}
+
+.title{
+    font-weight: 900;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+    text-align: right;
+}
+
+.content{
+    display: flex;
+    padding: 2rem 1rem;
+    align-items: center;
+    justify-content: center;
+    --background: transparent;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.loading{
+    font-weight: 900;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.resultContainer{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    background: transparent;
+    justify-content: center;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    border-radius: 10px;
+    box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    margin: 20px;
+    max-width: 200px;
+    color: var(--primaryContent);
+}
+
+.cardTitle{
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--primaryContent);
+}
+
+.cardContent{
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--primaryContent);
+    margin-left: 0px;
+}

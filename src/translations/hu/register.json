@@ -2,5 +2,8 @@
     "createAccount": "Fiók létrehozása",
     "namePlaceholder": "Kovács Béla",
     "emailPlaceholder": "valaki@valami.com",
-    "register": "Regisztrálás"
+    "register": "Regisztrálás",
+    "fullName": "Teljes név",
+    "email": "Email",
+    "password": "Password"
 }

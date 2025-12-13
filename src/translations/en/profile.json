@@ -7,5 +7,14 @@
     "deleteAccount": "Delete Account",
     "cancel": "Cancel",
     "name": "Name",
-    "friendsSince": "Friends since"
+    "friendsSince": "Friends since",
+    "Age": "Age",
+    "fullName": "Full Name",
+    "email": "Email",
+    "weight": "Weight",
+    "height": "Height",
+    "age": "Age",
+    "gender": "Gender",
+    "diet": "Diet",
+    "calorieGoal": "Calorie Goal"
 }

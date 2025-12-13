@@ -1,3 +1,6 @@
 {
-    "title": "Saját edzésterveim"
+    "title": "Saját edzésterveim",
+    "createdAt": "Létrehozva ekkor",
+    "workoutDuration": "Edzésterv hossza",
+    "noPlan": "Még nincs edzésterved létrehozva. Készíts egyet most!"
 }

@@ -1,3 +1,13 @@
 {
-    "title": "Current Workout"
+    "title": "Current Workout",
+    "name": "Name",
+    "duration": "Duration",
+    "equipment": "Equipment",
+    "reps": "Reps",
+    "sets": "Sets",
+    "repsCompleted": "Reps completed",
+    "nextWorkout": "Next Workout",
+    "finishWorkout": "Finish Workout",
+    "youFinishedWorkout": "Congrats, you finished the workout!",
+    "backToPlan": "Back to workout plan"
 }

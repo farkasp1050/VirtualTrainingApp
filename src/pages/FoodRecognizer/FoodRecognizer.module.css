@@ -1,0 +1,75 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    background: var(--mainBackground);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+.header{
+    padding-top: 25px;
+}
+
+.title{
+    font-weight: 900;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+    text-align: right;
+}
+
+.content{
+    display: flex;
+    padding: 2rem 1rem;
+    align-items: center;
+    justify-content: center;
+    --background: transparent;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.loading{
+    font-weight: 900;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.contentContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+    padding: 1rem;
+    margin: 5rem 0;
+}
+
+.imageContainer{
+    width: 80%;
+    height: 80%;
+}
+
+.image{
+    width: 100%;
+    max-width: 500px;
+    border-radius: 20px;
+    margin-top: 100px;
+    object-fit: cover;
+    box-shadow: 4 8px 16px rgba(0,0,0,0.6);
+}
+
+.dataContainer{
+    display: flex;
+    flex-direction: column;
+    margin-top: 160px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.data{
+    margin-left: 15px;
+    font-weight: 600;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+}

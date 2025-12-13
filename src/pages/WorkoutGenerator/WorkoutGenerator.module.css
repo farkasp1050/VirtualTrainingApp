@@ -1,0 +1,128 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    background: var(--mainBackground);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+.header{
+    padding-top: 25px;
+}
+
+.title{
+    font-weight: 900;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+    text-align: right;
+}
+
+.contentContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    align-items: center;
+    justify-content: center;
+    --background: transparent;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.createButtonContainer{
+    --background: transparent;
+    padding: 1rem 0;
+    margin: 1rem 0;
+}
+
+.button{
+    --background: var(--mainBackground);
+    font-weight: 700;
+    margin-left: 25px;
+    border-radius: 10px;
+}
+
+.info{
+    font-weight: 700;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.dataSection{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 10px;
+    --background: var(--fourthBackground);
+    gap: 10px;
+    margin: 1rem;
+    border-right: 2px solid white;
+}
+
+.data{
+    padding: 5px;
+    border-radius: 10px;
+    margin: 0.5rem;
+    width: 100%;
+    text-align: left;
+    color: var(--primaryContent);
+    background: transparent;
+}
+
+.datacContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.dataInput{
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    color: var(--primaryContent); 
+}
+
+.cardMain{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 0.5rem;
+    text-align: center;
+    color: var(--primaryContent);
+    background: var(--mainBackground);
+}
+
+.cardMainDay{
+    background: transparent;
+}
+
+.dataSectionFooter{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: var(--secondaryBackground);
+    margin-top: 15px;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 10px;
+}
+
+.dataFooter{
+    padding: 10px;
+    border-radius: 10px;
+    background: transparent;
+    text-align: center;
+    color: var(--primaryContent);
+    font-weight: 700;
+}

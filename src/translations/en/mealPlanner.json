@@ -7,5 +7,14 @@
     "calorie": "Calorie",
     "carbohydrate": "Carbohydrate",
     "fat": "Fat",
-    "protein": "Protein"
+    "protein": "Protein",
+    "createPlan": "Create plan",
+    "name": "Name",
+    "readyIn": "Ready In",
+    "recipe": "Recipe",
+    "deletePlan": "Delete Plan",
+    "savePlan": "Save Plan",
+    "calorieGoal": "Calorie Goal",
+    "dietType": "Diet Type",
+    "noPlan": "You dont have any meal plans yet. Create one now!"
 }

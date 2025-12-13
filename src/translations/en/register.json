@@ -2,5 +2,8 @@
     "createAccount": "Create an Account",
     "namePlaceholder": "John Doe",
     "emailPlaceholder": "somebody@something.com",
-    "register": "Register"
+    "register": "Register",
+    "fullName": "Full Name",
+    "email": "Email",
+    "password": "Password"
 }

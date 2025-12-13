@@ -4,5 +4,7 @@
     "login": "Login",
     "register": "Register",
     "googleSignIn": "Sign in with Google!",
-    "introAgain": "Watch intro again!"
+    "introAgain": "Watch intro again!",
+    "mail": "Email",
+    "password": "Password"
 }

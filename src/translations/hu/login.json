@@ -4,5 +4,7 @@
     "login": "Bejelentkezés",
     "register": "Regisztrálás",
     "googleSignIn": "Jelentkezz be a Google segítségével!",
-    "introAgain": "Nézd meg az intrót újra!"
+    "introAgain": "Nézd meg az intrót újra!",
+    "mail": "Email",
+    "password": "Password"
 }

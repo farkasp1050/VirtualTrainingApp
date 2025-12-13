@@ -10,5 +10,6 @@
     "myChats": "My Chats",
     "workoutGenerator": "Workout Generator",
     "myWorkouts": "My Workouts",
-    "logout": "Logout"
+    "logout": "Logout",
+    "welcome": "Hello"
 }

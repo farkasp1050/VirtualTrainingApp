@@ -1,0 +1,132 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    background: var(--mainBackground);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+.header{
+    padding-top: 25px;
+}
+
+.content{
+    display: flex;
+    padding: 2rem 1rem;
+    align-items: center;
+    justify-content: center;
+    --background: transparent;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.grid{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.mainRow{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainCol{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageContainer{
+    width: 100%;
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.image{
+    width: 100%;
+    max-width: 300px;
+    max-height: 300px;
+    border: none;
+    object-fit: cover;
+}
+
+.subRow{
+    display: flex;
+    justify-content: center;
+    margin-top: 0;
+}
+
+.subCol{
+    width: 100%;
+}
+
+.title{
+    font-weight: 900;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+    text-align: right;
+}
+
+.form{
+    width: 100%;
+    display: grid;
+    gap: 1rem;
+}
+
+.icon{
+    display: flex;
+    align-items: center;
+    color: var(--icons);
+    font-size: 1.8rem;
+    margin-left: 0.2rem;
+}
+
+.input{
+    color: var(--primaryContent);
+    border-radius: 10%;
+    --background: var(--mainBackground);
+    --padding-start: 0;
+    --padding-end: 0;
+}
+
+.item{
+    --background: transparent;
+    --border-color: transparent;
+    --inner-border-width: 0;
+    --highlight-height: 0;
+
+    --padding-start: 0;
+    --inner-padding-end: 0;
+
+    margin-bottom: 1rem;
+}
+
+.input::part(native){
+    color: #ffffff;
+}
+
+.buttonRow{
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    width: 100%;
+}
+
+.buttonCol{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.registerButton{
+    --background: var(--mainBackground);
+    --background-hover: linear-gradient(135deg, #ffffff, #242628);
+    font-size: 1rem;
+    color: var(--primaryContent);
+    font-weight: 800;
+}

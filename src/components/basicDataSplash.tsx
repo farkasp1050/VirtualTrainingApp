@@ -49,6 +49,13 @@ const basicDataSplash: React.FC = () => {
 
             setUserId(userData.user.id);
 
+            if(userData.user.created_at === userData.user.last_sign_in_at){
+                await supabase.from("users").insert({
+                    id: userData.user.id,
+                    fullName: userData.user.user_metadata.name
+                });
+            }
+
             const { data: existingData, error: dataFetchError } = await supabase
             .from("users")
             .select("Age, Weight, Height, Gender, Goal, Diet")
@@ -98,33 +105,33 @@ const basicDataSplash: React.FC = () => {
                         <IonRow className={styles.mainRow}>
                             <IonCol className={styles.mainCol} size='12' sizeMd='8' sizeLg='6' sizeXl='4'>
                                 <IonText className={styles.titleContainer}>
-                                    <h2 className={styles.title}>Give some more information</h2>
+                                    <h2 className={styles.title}>{t("moreInfo")}</h2>
                                 </IonText>
                                 <form className={styles.form}>
                                     <IonItem className={styles.item}>
                                         <IonIcon aria-hidden='true' icon={barbellOutline} slot='start' className={styles.icon}></IonIcon>
-                                        <IonInput className={styles.input} label='Weight' value={weight} onIonChange={e => { setWeight(Number(e.detail.value)); setIsWeightSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+                                        <IonInput className={styles.input} label={t("weight")} value={weight} onIonChange={e => { setWeight(Number(e.detail.value)); setIsWeightSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
                                     </IonItem>
                                     {isWeightSet && (
                                         <IonItem className={styles.item}>
                                             <IonIcon aria-hidden='true' icon={accessibilityOutline} slot='start' className={styles.icon}></IonIcon>
-                                            <IonInput className={styles.input} label='Height' value={height} onIonChange={e => { setHeight(Number(e.detail.value)); setIsHeightSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+                                            <IonInput className={styles.input} label={t("height")} value={height} onIonChange={e => { setHeight(Number(e.detail.value)); setIsHeightSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
                                         </IonItem>
                                     )}
 
                                     {isHeightSet && (
                                         <IonItem className={styles.item}>
                                             <IonIcon aria-hidden='true' icon={calendarNumberOutline} slot='start' className={styles.icon}></IonIcon>
-                                            <IonInput className={styles.input} label='Age' value={age} onIonChange={e => { setAge(Number(e.detail.value)); setIsAgeSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+                                            <IonInput className={styles.input} label={t("age")} value={age} onIonChange={e => { setAge(Number(e.detail.value)); setIsAgeSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
                                         </IonItem>
                                     )}
 
                                     {isAgeSet && (
                                         <IonItem className={styles.item}>
                                             <IonIcon aria-hidden='true' icon={maleFemaleOutline} slot='start' className={styles.icon}></IonIcon>
-                                            <IonSelect className={styles.input} label='Gender' value={gender} onIonChange={(e) => { setGender(String(e.detail.value)); setIsGenderSet(true); }} labelPlacement='floating' placeholder='---Please choose an option---'>
-                                                <IonSelectOption value="male">Male</IonSelectOption>
-                                                <IonSelectOption value="female">Female</IonSelectOption>
+                                            <IonSelect className={styles.input} label={t("gender")} value={gender} onIonChange={(e) => { setGender(String(e.detail.value)); setIsGenderSet(true); }} labelPlacement='floating' placeholder='---Please choose an option---'>
+                                                <IonSelectOption value="male">{t("male")}</IonSelectOption>
+                                                <IonSelectOption value="female">{t("female")}</IonSelectOption>
                                             </IonSelect>
                                         </IonItem>
                                     )}
@@ -132,19 +139,19 @@ const basicDataSplash: React.FC = () => {
                                     {isGenderSet && (
                                         <IonItem className={styles.item}>
                                             <IonIcon aria-hidden='true' icon={fastFoodOutline} slot='start' className={styles.icon}></IonIcon>
-                                            <IonInput className={styles.input} label='Diet' value={diet} onIonChange={e => { setDiet(String(e.detail.value)); setIsDietSet(true); }} type='text' labelPlacement='floating' fill='outline'  required placeholder="vegan"></IonInput>
+                                            <IonInput className={styles.input} label={t("diet")} value={diet} onIonChange={e => { setDiet(String(e.detail.value)); setIsDietSet(true); }} type='text' labelPlacement='floating' fill='outline'  required placeholder="vegan"></IonInput>
                                         </IonItem>
                                     )}
 
                                     {isDietSet && (
                                         <IonItem className={styles.item}>
                                             <IonIcon aria-hidden='true' icon={happyOutline} slot='start' className={styles.icon}></IonIcon>
-                                            <IonInput className={styles.input} label='Calorie Goal' value={goal} onIonChange={e => { setGoal(Number(e.detail.value)); setIsGoalSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
+                                            <IonInput className={styles.input} label={t("calorieGoal")} value={goal} onIonChange={e => { setGoal(Number(e.detail.value)); setIsGoalSet(true); }} type='number' labelPlacement='floating' fill='outline'  required placeholder="123"></IonInput>
                                         </IonItem>
                                     )}
 
                                     {isGoalSet && (
-                                        <IonButton className={styles.updateButton} onClick={updateUserBasicData} routerLink="/dashboard" routerDirection='root' shape='round'>Save</IonButton>
+                                        <IonButton className={styles.updateButton} onClick={updateUserBasicData} routerLink="/dashboard" routerDirection='root' shape='round'>{t("save")}</IonButton>
                                     )}
                                 </form>
                                 <IonToast

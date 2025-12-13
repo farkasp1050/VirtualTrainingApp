@@ -1,0 +1,72 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    background: var(--mainBackground);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+.header{
+    padding-top: 25px;
+}
+
+.title{
+    font-weight: 900;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+    text-align: right;
+}
+
+.content{
+    display: flex;
+    padding: 2rem 1rem;
+    align-items: center;
+    justify-content: center;
+    --background: transparent;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.loading{
+    font-weight: 900;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.resultContainer{
+    background: transparent;
+}
+
+.card{
+    background: transparent;
+    border-radius: 10px;
+    box-shadow: 2px 4px 7px rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    margin: 20px;
+    color: var(--primaryContent);
+}
+
+.cardTitle{
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--primaryContent);
+}
+
+.cardSubtitle{
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--primaryContent);
+    margin-left: 15px;
+}
+
+.cardContent{
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--primaryContent);
+    margin-left: 30px;
+}
+
+.icon{
+    font-size: 20px;
+    color: var(--primaryContent);
+}

@@ -7,5 +7,14 @@
     "deleteAccount": "Fiók törlése",
     "cancel": "Mégse",
     "name": "Név",
-    "friendsSince": "Barátság kezdete"
+    "friendsSince": "Barátság kezdete",
+    "Age": "Kor",
+    "fullName": "Teljes Név",
+    "email": "Email",
+    "weight": "Súly",
+    "height": "Magasság",
+    "age": "Kor",
+    "gender": "Nem",
+    "diet": "Diéta",
+    "calorieGoal": "Kalória cél"
 }

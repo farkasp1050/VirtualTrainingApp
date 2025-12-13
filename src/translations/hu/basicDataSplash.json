@@ -2,5 +2,13 @@
     "next": "Következő",
     "finish": "Kész",
     "male": "Férfi",
-    "female": "Nő"
+    "female": "Nő",
+    "moreInfo": "Adj meg még néhány adatot",
+    "weight": "Súly",
+    "height": "Magasság",
+    "age": "Kor",
+    "gender": "Nem",
+    "diet": "Diéta",
+    "calorieGoal": "Kalória cél",
+    "save": "Mentés"
 }

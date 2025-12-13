@@ -1,0 +1,71 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    background: var(--mainBackground);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+.header{
+    padding-top: 25px;
+}
+
+.title{
+    font-weight: 900;
+    color: var(--primaryContent);
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+    text-align: right;
+}
+
+.content{
+    display: flex;
+    padding: 2rem 1rem;
+    align-items: center;
+    justify-content: center;
+    --background: transparent;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.listContainer{
+    background: transparent;
+}
+
+.list{
+    background: transparent;
+}
+
+.switchContainer{
+    display: flex;
+    width: 100%;
+    margin: 2rem 2rem;
+}
+
+.switch{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20%;
+    
+}
+
+.switch :global(.react-switch-bg) {
+  background-color: var(--themeSwitchersBackground) !important;
+}
+
+.switch :global(.react-switch-handle) {
+  background-color: var(--themeSwitchersHandle) !important;
+}
+
+.version{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    margin: 3% 5%;
+    --background: rgba(255, 255, 255, 0.199);
+}
+
+.input{
+    --color: var(--primaryContent);
+    --border-radius: 10px;
+}

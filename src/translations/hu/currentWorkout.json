@@ -1,3 +1,13 @@
 {
-    "title": "Jelenlegi Edzés"
+    "title": "Jelenlegi Edzés",
+    "name": "Név",
+    "duration": "Hossz",
+    "equipment": "Felszerelés",
+    "reps": "Ismétlések",
+    "sets": "Sorozatok",
+    "repsCompleted": "Teljesített ismétlések",
+    "nextWorkout": "Következő gyakorlat",
+    "finishWorkout": "Edzés befejezése",
+    "youFinishedWorkout": "Gratulálok, teljesítetted a mai edzést",
+    "backToPlan": "Vissza az edzéstervre"
 }
